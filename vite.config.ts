@@ -74,4 +74,7 @@ export default defineConfig({
             entryPoint: 'resources/css/app.css',
         },
     },
+    staged: {
+        '*.{ts,tsx,js,jsx,css}': 'vp check --fix',
+    },
 });
