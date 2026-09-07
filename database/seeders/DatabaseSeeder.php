@@ -123,7 +123,7 @@ class DatabaseSeeder extends Seeder
                 ])
             );
 
-            $magasinsChoisis = $magasins->random(random_int(1, min(4, $magasins->count())));
+            $magasinsChoisis = $magasins->random(random_int(1, max(1, min(4, $magasins->count()))));
             $produit->magasins()->attach(
                 $magasinsChoisis->mapWithKeys(fn (Magasin $magasin) => [
                     $magasin->id => ['quantite_stock_magasin' => random_int(0, 50)],
@@ -178,10 +178,10 @@ class DatabaseSeeder extends Seeder
      *
      * @param  Collection<int, Produit>  $produits
      */
-    private function attacherLignesDeCommande(Commande $commande, Collection $produits): string
+    private function attacherLignesDeCommande(Commande $commande, Collection $produits): float
     {
         $lignes = $produits->random(random_int(1, 5));
-        $sousTotal = '0';
+        $sousTotal = 0.0;
 
         foreach ($lignes as $produit) {
             $quantite = random_int(1, 3);
@@ -191,10 +191,10 @@ class DatabaseSeeder extends Seeder
                 'prix_unitaire_vente' => $produit->prix_vente,
             ]);
 
-            $sousTotal = bcadd($sousTotal, bcmul((string) $quantite, (string) $produit->prix_vente, 2), 2);
+            $sousTotal += round($quantite * (float) $produit->prix_vente, 2);
         }
 
-        return $sousTotal;
+        return round($sousTotal, 2);
     }
 
     /**
