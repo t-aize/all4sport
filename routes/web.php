@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 // resources/js/pages/welcome.tsx. Le nom « home » permet de générer l'URL avec
 // route('home') (PHP) plutôt que de l'écrire en dur.
 Route::inertia('/', 'welcome')->name('home');
+Route::resource('fournisseurs', FournisseurController::class)->except('show');
 
 // Routes d'authentification (inscription, connexion, mot de passe oublié).
 require __DIR__.'/auth.php';
