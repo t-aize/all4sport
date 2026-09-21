@@ -22,11 +22,39 @@ export type User = {
 };
 
 /**
+ * Les rôles possibles d'un collaborateur (valeurs de l'enum PHP RoleEmploye).
+ */
+export type RoleEmploye =
+    | 'operateur'
+    | 'vendeur'
+    | 'livreur'
+    | 'service_client';
+
+/**
+ * Le collaborateur connecté au back-office, tel que l'envoie Laravel.
+ *
+ * Les champs reprennent les colonnes de la table `employes`, sans le mot de
+ * passe ni le jeton « se souvenir de moi » (masqués par le modèle PHP).
+ */
+export type Employe = {
+    id: number;
+    nom: string;
+    prenom: string;
+    identifiant_connexion: string;
+    role: RoleEmploye;
+    created_at: string;
+    updated_at: string;
+};
+
+/**
  * Données d'authentification partagées avec toutes les pages
  * (voir HandleInertiaRequests::share côté PHP).
  *
- * `user` vaut `null` tant que le visiteur n'est pas connecté.
+ * `user` (le client) et `employe` (le collaborateur) valent `null` tant que le
+ * visiteur n'est pas connecté dans l'espace correspondant. Les deux espaces
+ * sont indépendants.
  */
 export type Auth = {
     user: User | null;
+    employe: Employe | null;
 };

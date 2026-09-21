@@ -161,3 +161,13 @@ it('lets only the employee whose role matches record a state', function () {
         expect($historique->employe?->role)->toBe($roleAttendu[$historique->etat->value]);
     });
 });
+
+it('creates a demo account for each role, named after the role, with a known password', function (RoleEmploye $role) {
+    $this->seed(DatabaseSeeder::class);
+
+    $employe = Employe::where('identifiant_connexion', $role->value)->first();
+
+    expect($employe)->not->toBeNull()
+        ->and($employe->role)->toBe($role)
+        ->and(Hash::check('password', $employe->password))->toBeTrue();
+})->with(RoleEmploye::cases());

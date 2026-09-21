@@ -16,6 +16,7 @@
 |
 */
 
+use App\Http\Middleware\EnsureEmployeHasRole;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -46,9 +47,30 @@ return Application::configure(basePath: dirname(__DIR__))
             AddLinkHeadersForPreloadedAssets::class,
         ]);
 
-        // Un visiteur non connecté qui tente d'accéder à une page protégée
-        // (middleware « auth ») est renvoyé vers le formulaire de connexion.
-        $middleware->redirectGuestsTo('/login');
+        // Alias utilisable dans les routes : `->middleware('role:livreur')`
+        // réserve une route aux collaborateurs ayant l'un des rôles indiqués.
+        $middleware->alias([
+            'role' => EnsureEmployeHasRole::class,
+        ]);
+
+        // Un visiteur non connecté qui tente d'accéder à une page protégée est
+        // renvoyé vers un formulaire de connexion. On choisit lequel d'après le
+        // guard exigé par la route : « auth:employe » renvoie vers la connexion du
+        // back-office, tout autre « auth » vers celle des clients.
+        $middleware->redirectGuestsTo(
+            fn (Request $request) => in_array('auth:employe', $request->route()?->gatherMiddleware() ?? [], true)
+                ? route('backoffice.login')
+                : route('login'),
+        );
+
+        // Inversement, un utilisateur déjà connecté qui ouvre une page réservée
+        // aux visiteurs (« guest:employe » pour le back-office, « guest » pour le
+        // site) est renvoyé vers son espace.
+        $middleware->redirectUsersTo(
+            fn (Request $request) => in_array('guest:employe', $request->route()?->gatherMiddleware() ?? [], true)
+                ? route('backoffice.dashboard')
+                : route('home'),
+        );
     })
     // Exceptions : personnalise la manière dont les erreurs sont affichées.
     ->withExceptions(function (Exceptions $exceptions): void {

@@ -26,3 +26,14 @@ test('there are exactly six order states', function () {
 test('an unknown state is rejected', function () {
     expect(EtatCommande::tryFrom('annulee'))->toBeNull();
 });
+
+test('each order state has its display label', function (EtatCommande $etat, string $libelle) {
+    expect($etat->libelle())->toBe($libelle);
+})->with([
+    'transmise' => [EtatCommande::Transmise, 'Transmise'],
+    'validee' => [EtatCommande::Validee, 'Validée'],
+    'en preparation' => [EtatCommande::EnPreparation, 'En préparation'],
+    'expediee' => [EtatCommande::Expediee, 'Expédiée'],
+    'livree' => [EtatCommande::Livree, 'Livrée'],
+    'retiree' => [EtatCommande::Retiree, 'Retirée'],
+]);

@@ -43,8 +43,9 @@ class HandleInertiaRequests extends Middleware
      * Les données partagées par défaut avec toutes les pages React.
      *
      * Elles sont lisibles côté React avec `usePage().props` (voir
-     * resources/js/pages/welcome.tsx). Comme `Client` masque son mot de passe
-     * (attribut #[Hidden]), celui-ci n'est jamais envoyé au navigateur.
+     * resources/js/pages/welcome.tsx). Comme `Client` et `Employe` masquent leur
+     * mot de passe (attribut #[Hidden]), celui-ci n'est jamais envoyé au
+     * navigateur.
      *
      * @see https://inertiajs.com/shared-data
      *
@@ -58,7 +59,10 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'auth' => [
                 // Le client connecté, ou null pour un visiteur.
-                'user' => $request->user(),
+                'user' => $request->user('web'),
+                // Le collaborateur connecté au back-office, ou null. Les deux
+                // espaces sont indépendants : un client n'est jamais un employé.
+                'employe' => $request->user('employe'),
             ],
         ];
     }

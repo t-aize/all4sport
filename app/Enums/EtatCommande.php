@@ -38,4 +38,19 @@ enum EtatCommande: string
      * Commande confirmée comme retirée en magasin par le client, par le vendeur.
      */
     case Retiree = 'retiree';
+
+    /**
+     * Le nom de l'état tel qu'il est affiché aux utilisateurs.
+     */
+    public function libelle(): string
+    {
+        return match ($this) {
+            self::Transmise => 'Transmise',
+            self::Validee => 'Validée',
+            self::EnPreparation => 'En préparation',
+            self::Expediee => 'Expédiée',
+            self::Livree => 'Livrée',
+            self::Retiree => 'Retirée',
+        };
+    }
 }
