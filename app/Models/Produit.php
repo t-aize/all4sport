@@ -16,6 +16,10 @@ use Illuminate\Support\Carbon;
  * (3 lettres fournisseur + 3 lettres rayon + 12 chiffres), et non un identifiant
  * technique auto-incrémenté.
  *
+ * `#[Fillable]` liste les attributs qui peuvent être renseignés en masse
+ * (`Model::create`, `fill`) : cela protège contre l'ajout de champs non prévus
+ * par un formulaire.
+ *
  * @property string $reference_produit Référence unique du produit (clé primaire).
  * @property string $description_produit Description commerciale du produit.
  * @property string $cout_unitaire_ht Coût d'achat unitaire hors taxe du produit.

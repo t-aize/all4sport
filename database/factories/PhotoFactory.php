@@ -9,6 +9,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * Fabrique de test pour le modèle Photo.
  *
+ * Une factory génère des enregistrements aux valeurs réalistes (grâce à Faker)
+ * pour les tests et le seeder : `Photo::factory()->create()` l'enregistre en
+ * base, `Photo::factory()->make()` crée seulement l'objet en mémoire.
+ *
  * @extends Factory<Photo>
  */
 class PhotoFactory extends Factory

@@ -14,6 +14,12 @@ import AuthLayout from '@/layouts/auth-layout';
 import { register } from '@/routes';
 import { request } from '@/routes/password';
 
+/**
+ * Page de connexion d'un client (route « login »).
+ *
+ * @param status Message de confirmation envoyé par le contrôleur, par exemple
+ *   « Votre mot de passe a été réinitialisé » après une réinitialisation.
+ */
 export default function Login({ status }: { status?: string }) {
     return (
         <AuthLayout
@@ -25,6 +31,11 @@ export default function Login({ status }: { status?: string }) {
                     {status}
                 </p>
             )}
+            {/* `Form` envoie le formulaire sans recharger la page. `store.form()`
+                (généré par Wayfinder) fournit l'URL et la méthode POST du
+                contrôleur AuthenticatedSessionController::store. `errors`
+                contient les messages de validation renvoyés par Laravel et
+                `processing` vaut true pendant l'envoi. */}
             <Form {...store.form()} resetOnSuccess={['password']}>
                 {({ errors, processing }) => (
                     <FieldGroup>

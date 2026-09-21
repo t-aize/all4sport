@@ -12,6 +12,10 @@ use Illuminate\Support\Carbon;
 /**
  * Un fournisseur livre un ou plusieurs produits à ALL4SPORT (association FOURNIR).
  *
+ * `#[Fillable]` liste les attributs qui peuvent être renseignés en masse
+ * (`Model::create`, `fill`) : cela protège contre l'ajout de champs non prévus
+ * par un formulaire.
+ *
  * @property int $id Identifiant technique du fournisseur.
  * @property string $nom_fournisseur Raison sociale du fournisseur.
  * @property Carbon|null $created_at

@@ -4,10 +4,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Table `magasin_produit` : le stock de chaque produit dans chaque magasin
+ * (association STOCKER).
+ *
+ * C'est une « table pivot » : elle relie deux tables dans une relation
+ * plusieurs-à-plusieurs (un magasin stocke plusieurs produits, un produit est
+ * stocké dans plusieurs magasins) et porte une information propre au couple :
+ * la quantité en stock.
+ */
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Crée la table.
      */
     public function up(): void
     {
@@ -19,12 +28,14 @@ return new class extends Migration
             $table->unsignedInteger('quantite_stock_magasin')->default(0);
             $table->timestamps();
 
+            // Un même produit ne peut apparaître qu'une fois par magasin : pour
+            // changer le stock, on modifie la ligne existante.
             $table->unique(['magasin_id', 'reference_produit']);
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Annule la migration : supprime la table.
      */
     public function down(): void
     {

@@ -17,6 +17,12 @@ use Illuminate\Support\Carbon;
  * enfants rattachés à son compte (association AVOIR), pratiquer un ou plusieurs
  * sports (association PRATIQUER) et passer des commandes (association CHOISIR).
  *
+ * `#[Fillable]` liste les attributs qui peuvent être renseignés en masse
+ * (`Model::create`, `fill`) : cela protège contre l'ajout de champs non prévus
+ * par un formulaire.
+ * `#[Hidden]` exclut le mot de passe et le jeton de session des conversions en
+ * tableau/JSON : ils ne sont donc jamais envoyés au navigateur.
+ *
  * @property int $id Identifiant technique du client.
  * @property string $nom Nom de famille du client.
  * @property string $prenom Prénom du client.

@@ -9,6 +9,10 @@ use Illuminate\Support\Str;
 /**
  * Fabrique de test pour le modèle Entrepot.
  *
+ * Une factory génère des enregistrements aux valeurs réalistes (grâce à Faker)
+ * pour les tests et le seeder : `Entrepot::factory()->create()` l'enregistre en
+ * base, `Entrepot::factory()->make()` crée seulement l'objet en mémoire.
+ *
  * @extends Factory<Entrepot>
  */
 class EntrepotFactory extends Factory

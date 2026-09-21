@@ -13,6 +13,11 @@ use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * Inscription d'un nouveau client sur le site marchand.
+ *
+ * Page React : resources/js/pages/auth/register.tsx.
+ */
 class RegisteredUserController extends Controller
 {
     /**
@@ -28,9 +33,15 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // `validate` renvoie uniquement les champs validés : c'est ce tableau,
+        // et non `$request->all()`, qu'on passe au modèle pour ne jamais
+        // enregistrer un champ que le formulaire n'a pas prévu.
+        // Les tailles maximales (`max:`) reprennent celles des colonnes de la
+        // table `clients` (voir la migration create_clients_table).
         $validated = $request->validate([
             'nom' => ['required', 'string', 'max:30'],
             'prenom' => ['required', 'string', 'max:30'],
+            // `Rule::unique` refuse un email déjà présent dans la table clients.
             'email' => ['required', 'string', 'email', 'max:80', Rule::unique(Client::class)],
             'telephone' => ['nullable', 'string', 'max:15'],
             'adresse' => ['required', 'string', 'max:50'],
@@ -53,10 +64,16 @@ class RegisteredUserController extends Controller
             'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
         ]);
 
+        // Seuls les attributs listés dans #[Fillable] du modèle Client sont
+        // acceptés (protection contre l'« assignation de masse »). Le mot de
+        // passe est haché automatiquement par le cast « hashed ».
         $client = Client::create($validated);
 
+        // Déclenche l'événement « Registered » : point d'accroche pour, plus
+        // tard, envoyer un email de bienvenue ou de vérification.
         event(new Registered($client));
 
+        // Connecte le client immédiatement après son inscription.
         Auth::login($client);
 
         return redirect()->route('home');

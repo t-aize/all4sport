@@ -5,10 +5,21 @@ namespace App\Http\Middleware;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
+/**
+ * Middleware d'Inertia, exécuté à chaque requête web (déclaré dans
+ * bootstrap/app.php).
+ *
+ * Inertia relie le back-end Laravel au front-end React : au lieu de renvoyer du
+ * HTML, les contrôleurs renvoient le nom d'un composant React et ses données
+ * (« props »). Ce middleware définit la vue racine et les données partagées
+ * avec TOUTES les pages.
+ */
 class HandleInertiaRequests extends Middleware
 {
     /**
-     * The root template that's loaded on the first page visit.
+     * Le modèle Blade chargé lors de la première visite d'une page
+     * (resources/views/app.blade.php). Les visites suivantes se font en
+     * JavaScript, sans recharger la page.
      *
      * @see https://inertiajs.com/server-side-setup#root-template
      *
@@ -17,7 +28,9 @@ class HandleInertiaRequests extends Middleware
     protected $rootView = 'app';
 
     /**
-     * Determines the current asset version.
+     * Version des fichiers front-end. Quand elle change (nouveau déploiement),
+     * Inertia recharge entièrement la page pour éviter d'utiliser d'anciens
+     * fichiers JavaScript.
      *
      * @see https://inertiajs.com/asset-versioning
      */
@@ -27,7 +40,11 @@ class HandleInertiaRequests extends Middleware
     }
 
     /**
-     * Define the props that are shared by default.
+     * Les données partagées par défaut avec toutes les pages React.
+     *
+     * Elles sont lisibles côté React avec `usePage().props` (voir
+     * resources/js/pages/welcome.tsx). Comme `Client` masque son mot de passe
+     * (attribut #[Hidden]), celui-ci n'est jamais envoyé au navigateur.
      *
      * @see https://inertiajs.com/shared-data
      *
@@ -37,8 +54,10 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
+            // Nom du site, défini par APP_NAME dans le fichier .env.
             'name' => config('app.name'),
             'auth' => [
+                // Le client connecté, ou null pour un visiteur.
                 'user' => $request->user(),
             ],
         ];

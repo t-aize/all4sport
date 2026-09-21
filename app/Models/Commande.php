@@ -18,6 +18,10 @@ use Illuminate\Support\Carbon;
  * entrepôt (association EXPEDIER) ou retirée dans un magasin (association
  * RETIRER) selon le mode de livraison choisi.
  *
+ * `#[Fillable]` liste les attributs qui peuvent être renseignés en masse
+ * (`Model::create`, `fill`) : cela protège contre l'ajout de champs non prévus
+ * par un formulaire.
+ *
  * @property int $id Identifiant technique de la commande.
  * @property Carbon $date_commande Date de passation de la commande.
  * @property ModeLivraison $mode_livraison Mode de livraison choisi (retrait en magasin / livraison à domicile).

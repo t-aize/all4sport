@@ -9,6 +9,10 @@ use Illuminate\Support\Str;
 /**
  * Fabrique de test pour le modèle Fournisseur.
  *
+ * Une factory génère des enregistrements aux valeurs réalistes (grâce à Faker)
+ * pour les tests et le seeder : `Fournisseur::factory()->create()` l'enregistre en
+ * base, `Fournisseur::factory()->make()` crée seulement l'objet en mémoire.
+ *
  * @extends Factory<Fournisseur>
  */
 class FournisseurFactory extends Factory

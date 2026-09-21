@@ -17,6 +17,12 @@ use Illuminate\Support\Carbon;
  * Il peut traiter des commandes en magasin (association PASSER) et enregistrer
  * les changements d'état d'une commande (association ENREGISTRER).
  *
+ * `#[Fillable]` liste les attributs qui peuvent être renseignés en masse
+ * (`Model::create`, `fill`) : cela protège contre l'ajout de champs non prévus
+ * par un formulaire.
+ * `#[Hidden]` exclut le mot de passe et le jeton de session des conversions en
+ * tableau/JSON : ils ne sont donc jamais envoyés au navigateur.
+ *
  * @property int $id Identifiant technique du collaborateur.
  * @property string $nom Nom de famille du collaborateur.
  * @property string $prenom Prénom du collaborateur.

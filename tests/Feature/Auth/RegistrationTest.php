@@ -2,6 +2,11 @@
 
 use App\Models\Client;
 
+/*
+ * Tests de l'inscription d'un client : création du compte, connexion
+ * automatique et refus des données invalides ou en doublon.
+ */
+
 test('registration screen can be rendered', function () {
     $response = $this->get(route('register'));
 

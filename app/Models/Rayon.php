@@ -15,6 +15,10 @@ use Illuminate\Support\Carbon;
  * (association APPARTENIR) et pour repérer les sports pratiqués par les clients
  * (association PRATIQUER).
  *
+ * `#[Fillable]` liste les attributs qui peuvent être renseignés en masse
+ * (`Model::create`, `fill`) : cela protège contre l'ajout de champs non prévus
+ * par un formulaire.
+ *
  * @property int $id Identifiant technique du rayon.
  * @property string $nom_rayon Libellé du rayon / de la discipline sportive.
  * @property Carbon|null $created_at

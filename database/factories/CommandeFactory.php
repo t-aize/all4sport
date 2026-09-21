@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * Fabrique de test pour le modèle Commande.
  *
+ * Une factory génère des enregistrements aux valeurs réalistes (grâce à Faker)
+ * pour les tests et le seeder : `Commande::factory()->create()` l'enregistre en
+ * base, `Commande::factory()->make()` crée seulement l'objet en mémoire.
+ *
  * @extends Factory<Commande>
  */
 class CommandeFactory extends Factory

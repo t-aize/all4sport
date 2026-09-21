@@ -1,3 +1,10 @@
+/*
+ * Feuille de style principale (Tailwind CSS + shadcn/ui).
+ *
+ * Les variables de couleur ci-dessous (--primary, --background, etc.) forment la
+ * palette du site, adaptée aux couleurs du logo ALL4SPORT. Les composants de
+ * resources/js/components/ui les utilisent via des classes comme `bg-primary`.
+ */
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
