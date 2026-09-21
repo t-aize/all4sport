@@ -64,12 +64,19 @@ class DatabaseSeeder extends Seeder
      * chaque rôle, afin que l'historique des commandes puisse toujours
      * trouver un responsable pour chaque état (association ENREGISTRER).
      *
+     * Ces comptes de démonstration se connectent au back-office avec un
+     * identifiant égal au nom technique du rôle (« operateur », « vendeur »,
+     * « livreur » ou « service_client ») et le mot de passe « password ».
+     *
      * @return Collection<int, Employe>
      */
     private function seedEmployes(): Collection
     {
         $unParRole = collect(RoleEmploye::cases())
-            ->map(fn (RoleEmploye $role) => Employe::factory()->create(['role' => $role]));
+            ->map(fn (RoleEmploye $role) => Employe::factory()->create([
+                'identifiant_connexion' => $role->value,
+                'role' => $role,
+            ]));
 
         return $unParRole->merge(Employe::factory(6)->create());
     }
@@ -260,13 +267,7 @@ class DatabaseSeeder extends Seeder
      */
     private function employeResponsable(EtatCommande $etat, Collection $employes): ?Employe
     {
-        $role = match ($etat) {
-            EtatCommande::Transmise => null,
-            EtatCommande::Validee => RoleEmploye::ServiceClient,
-            EtatCommande::EnPreparation, EtatCommande::Expediee => RoleEmploye::Operateur,
-            EtatCommande::Livree => RoleEmploye::Livreur,
-            EtatCommande::Retiree => RoleEmploye::Vendeur,
-        };
+        $role = RoleEmploye::responsableDe($etat);
 
         if ($role === null) {
             return null;

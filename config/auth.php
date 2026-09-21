@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Client;
+use App\Models\Employe;
 
 return [
 
@@ -42,6 +43,14 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        // Guard du back-office : il authentifie les collaborateurs (table `employes`)
+        // séparément des clients, avec sa propre clé de session. Un client connecté
+        // n'est donc jamais considéré comme un employé, et inversement.
+        'employe' => [
+            'driver' => 'session',
+            'provider' => 'employes',
+        ],
     ],
 
     /*
@@ -65,6 +74,12 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', Client::class),
+        ],
+
+        // Fournisseur des collaborateurs, utilisé par le guard « employe ».
+        'employes' => [
+            'driver' => 'eloquent',
+            'model' => Employe::class,
         ],
 
         // 'users' => [

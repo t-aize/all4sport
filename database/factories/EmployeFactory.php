@@ -40,4 +40,14 @@ class EmployeFactory extends Factory
             'remember_token' => Str::random(10),
         ];
     }
+
+    /**
+     * Donne un rôle précis au collaborateur (par défaut, le rôle est tiré au hasard).
+     */
+    public function avecRole(RoleEmploye $role): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => $role,
+        ]);
+    }
 }

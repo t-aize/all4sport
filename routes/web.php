@@ -23,3 +23,6 @@ Route::inertia('/', 'welcome')->name('home');
 
 // Routes d'authentification (inscription, connexion, mot de passe oublié).
 require __DIR__.'/auth.php';
+
+// Routes du back-office réservées aux collaborateurs (préfixe /backoffice).
+require __DIR__.'/backoffice.php';
