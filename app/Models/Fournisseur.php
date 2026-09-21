@@ -18,10 +18,14 @@ use Illuminate\Support\Carbon;
  *
  * @property int $id Identifiant technique du fournisseur.
  * @property string $nom_fournisseur Raison sociale du fournisseur.
+ * @property string $code_fournisseur Code unique du fournisseur (3 caractères).
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['nom_fournisseur'])]
+#[Fillable([
+    'nom_fournisseur',
+    'code_fournisseur',
+])]
 class Fournisseur extends Model
 {
     /** @use HasFactory<FournisseurFactory> */

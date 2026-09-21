@@ -21,6 +21,8 @@ class ProduitFactory extends Factory
     /**
      * Définit l'état par défaut du modèle.
      *
+     * La référence n'est pas définie ici : elle est générée par Produit::booted().
+     *
      * @return array<string, mixed>
      */
     public function definition(): array
@@ -28,14 +30,15 @@ class ProduitFactory extends Factory
         $coutUnitaireHt = fake()->randomFloat(2, 5, 300);
 
         return [
-            'reference_produit' => fake()->unique()->regexify('[A-Z]{6}[0-9]{12}'),
             'description_produit' => fake('fr_FR')->sentence(12),
             'cout_unitaire_ht' => $coutUnitaireHt,
             'prix_vente' => round($coutUnitaireHt * fake()->randomFloat(2, 1.3, 2.5), 2),
             'quantite_stock_internet' => fake()->numberBetween(0, 500),
             'lieu_stockage' => fake()->optional()->regexify('[A-Z][0-9]D[0-9]\.[0-9]'),
-            'fournisseur_id' => Fournisseur::factory(),
-            'rayon_id' => Rayon::factory(),
+            'fournisseur_id' => Fournisseur::query()->inRandomOrder()->value('id')
+                ?? Fournisseur::factory(),
+            'rayon_id' => Rayon::query()->inRandomOrder()->value('id')
+                ?? Rayon::factory(),
         ];
     }
 }

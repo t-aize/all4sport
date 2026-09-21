@@ -19,6 +19,7 @@ return new class extends Migration
         Schema::create('rayons', function (Blueprint $table) {
             $table->id();
             $table->string('nom_rayon', 30);
+            $table->char('code_rayon', 3)->unique();
             $table->timestamps();
         });
     }

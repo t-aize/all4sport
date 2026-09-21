@@ -24,6 +24,7 @@ return new class extends Migration
             // Clé primaire auto-incrémentée (identifiant technique).
             $table->id();
             $table->string('nom_fournisseur', 40);
+            $table->char('code_fournisseur', 3)->unique();
             // Ajoute les colonnes created_at et updated_at, remplies par Eloquent.
             $table->timestamps();
         });
