@@ -13,6 +13,10 @@ use Illuminate\Support\Carbon;
  * Un entrepôt dessert un ou plusieurs magasins (association DESSERVIR) et expédie
  * les commandes livrées à domicile (association EXPEDIER).
  *
+ * `#[Fillable]` liste les attributs qui peuvent être renseignés en masse
+ * (`Model::create`, `fill`) : cela protège contre l'ajout de champs non prévus
+ * par un formulaire.
+ *
  * @property int $id Identifiant technique de l'entrepôt.
  * @property string $ville Ville d'implantation de l'entrepôt.
  * @property string|null $zone_expedition Zone géographique desservie par l'entrepôt.

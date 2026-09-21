@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * Fabrique de test pour le modèle HistoriqueEtat.
  *
+ * Une factory génère des enregistrements aux valeurs réalistes (grâce à Faker)
+ * pour les tests et le seeder : `HistoriqueEtat::factory()->create()` l'enregistre en
+ * base, `HistoriqueEtat::factory()->make()` crée seulement l'objet en mémoire.
+ *
  * @extends Factory<HistoriqueEtat>
  */
 class HistoriqueEtatFactory extends Factory

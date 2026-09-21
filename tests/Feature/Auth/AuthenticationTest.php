@@ -2,6 +2,11 @@
 
 use App\Models\Client;
 
+/*
+ * Tests de la connexion et de la déconnexion d'un client : affichage du
+ * formulaire, identifiants valides ou invalides, limitation des tentatives.
+ */
+
 test('login screen can be rendered', function () {
     $response = $this->get(route('login'));
 

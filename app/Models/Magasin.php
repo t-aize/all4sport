@@ -16,6 +16,10 @@ use Illuminate\Support\Carbon;
  * de retrait pour les commandes (association RETIRER). Il est rattaché à un
  * entrepôt qui le dessert (association DESSERVIR).
  *
+ * `#[Fillable]` liste les attributs qui peuvent être renseignés en masse
+ * (`Model::create`, `fill`) : cela protège contre l'ajout de champs non prévus
+ * par un formulaire.
+ *
  * @property int $id Identifiant technique du magasin.
  * @property string $ville Ville d'implantation du magasin.
  * @property string $adresse Adresse postale du magasin.

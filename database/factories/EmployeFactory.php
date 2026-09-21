@@ -11,6 +11,10 @@ use Illuminate\Support\Str;
 /**
  * Fabrique de test pour le modèle Employe.
  *
+ * Une factory génère des enregistrements aux valeurs réalistes (grâce à Faker)
+ * pour les tests et le seeder : `Employe::factory()->create()` l'enregistre en
+ * base, `Employe::factory()->make()` crée seulement l'objet en mémoire.
+ *
  * @extends Factory<Employe>
  */
 class EmployeFactory extends Factory

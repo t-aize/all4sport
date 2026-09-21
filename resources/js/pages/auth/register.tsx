@@ -13,6 +13,13 @@ import { Input } from '@/components/ui/input';
 import AuthLayout from '@/layouts/auth-layout';
 import { login } from '@/routes';
 
+/**
+ * Page d'inscription d'un nouveau client (route « register »).
+ *
+ * Les champs correspondent aux colonnes de la table `clients` et aux règles de
+ * validation de RegisteredUserController::store. Les messages d'erreur
+ * renvoyés par Laravel s'affichent sous chaque champ (`errors.nom`, etc.).
+ */
 export default function Register() {
     return (
         <AuthLayout

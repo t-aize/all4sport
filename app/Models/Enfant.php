@@ -12,6 +12,10 @@ use Illuminate\Support\Carbon;
 /**
  * Un enfant rattaché au compte d'un client (association AVOIR).
  *
+ * `#[Fillable]` liste les attributs qui peuvent être renseignés en masse
+ * (`Model::create`, `fill`) : cela protège contre l'ajout de champs non prévus
+ * par un formulaire.
+ *
  * @property int $id Identifiant technique de l'enfant.
  * @property Carbon $date_naissance Date de naissance de l'enfant.
  * @property int $client_id Client parent auquel l'enfant est rattaché.

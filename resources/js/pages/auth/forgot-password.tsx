@@ -13,6 +13,14 @@ import { Input } from '@/components/ui/input';
 import AuthLayout from '@/layouts/auth-layout';
 import { login } from '@/routes';
 
+/**
+ * Page « Mot de passe oublié » (route « password.request »).
+ *
+ * Le client saisit son email ; Laravel lui envoie un lien de réinitialisation
+ * (voir PasswordResetLinkController::store).
+ *
+ * @param status Message de confirmation affiché une fois l'email envoyé.
+ */
 export default function ForgotPassword({ status }: { status?: string }) {
     return (
         <AuthLayout

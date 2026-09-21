@@ -11,6 +11,14 @@ import {
 import { Input } from '@/components/ui/input';
 import AuthLayout from '@/layouts/auth-layout';
 
+/**
+ * Page de choix d'un nouveau mot de passe, ouverte depuis le lien reçu par
+ * email (route « password.reset »).
+ *
+ * @param email Email du compte, transmis par NewPasswordController::create.
+ * @param token Jeton de réinitialisation présent dans le lien. Il est renvoyé
+ *   tel quel à Laravel, qui vérifie qu'il est valide.
+ */
 export default function ResetPassword({
     email,
     token,

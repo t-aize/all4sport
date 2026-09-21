@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * Fabrique de test pour le modèle Produit.
  *
+ * Une factory génère des enregistrements aux valeurs réalistes (grâce à Faker)
+ * pour les tests et le seeder : `Produit::factory()->create()` l'enregistre en
+ * base, `Produit::factory()->make()` crée seulement l'objet en mémoire.
+ *
  * @extends Factory<Produit>
  */
 class ProduitFactory extends Factory

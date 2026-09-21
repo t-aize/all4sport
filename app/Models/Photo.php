@@ -13,6 +13,10 @@ use Illuminate\Support\Carbon;
  * Une photographie illustrant un produit (association ILLUSTRER). Un produit
  * peut avoir de 1 à 5 photos.
  *
+ * `#[Fillable]` liste les attributs qui peuvent être renseignés en masse
+ * (`Model::create`, `fill`) : cela protège contre l'ajout de champs non prévus
+ * par un formulaire.
+ *
  * @property int $id Identifiant technique de la photo.
  * @property string $url_photo Chemin/URL de la photographie du produit.
  * @property string $reference_produit Produit illustré par cette photo.

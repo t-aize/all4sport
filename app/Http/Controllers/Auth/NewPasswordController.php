@@ -13,10 +13,19 @@ use Illuminate\Validation\Rules\Password as PasswordRule;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * Seconde étape du « mot de passe oublié » : le client arrive depuis le lien
+ * reçu par email et choisit un nouveau mot de passe.
+ *
+ * Page React : resources/js/pages/auth/reset-password.tsx.
+ */
 class NewPasswordController extends Controller
 {
     /**
      * Affiche le formulaire de réinitialisation du mot de passe.
+     *
+     * Le jeton (dans l'URL) et l'email (dans la query string) sont transmis à
+     * la page pour être renvoyés tels quels lors de l'envoi du formulaire.
      */
     public function create(Request $request, string $token): Response
     {
@@ -31,6 +40,9 @@ class NewPasswordController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // `confirmed` exige un champ `password_confirmation` identique.
+        // `PasswordRule::defaults()` applique la règle de robustesse définie
+        // dans AppServiceProvider (plus stricte en production).
         $request->validate([
             'token' => ['required'],
             'email' => ['required', 'string', 'email'],
@@ -42,9 +54,14 @@ class NewPasswordController extends Controller
             'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
         ]);
 
+        // Le broker vérifie que le jeton correspond bien à l'email, puis appelle
+        // la fonction ci-dessous si tout est valide.
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function (Client $client) use ($request): void {
+                // Le mot de passe est haché automatiquement par le cast
+                // « hashed » du modèle Client. Le « remember token » est
+                // régénéré pour déconnecter les autres appareils.
                 $client->forceFill([
                     'password' => $request->password,
                 ])->setRememberToken(Str::random(60));

@@ -16,6 +16,10 @@ use Illuminate\Support\Carbon;
  * (association ENREGISTRER) : transmise, validée, en préparation, expédiée,
  * livrée ou retirée.
  *
+ * `#[Fillable]` liste les attributs qui peuvent être renseignés en masse
+ * (`Model::create`, `fill`) : cela protège contre l'ajout de champs non prévus
+ * par un formulaire.
+ *
  * @property int $id Identifiant technique de la ligne d'historique.
  * @property EtatCommande $etat Libellé de l'état de la commande.
  * @property Carbon $date_etat Date d'enregistrement de l'état.

@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * Fabrique de test pour le modèle Rayon.
  *
+ * Une factory génère des enregistrements aux valeurs réalistes (grâce à Faker)
+ * pour les tests et le seeder : `Rayon::factory()->create()` l'enregistre en
+ * base, `Rayon::factory()->make()` crée seulement l'objet en mémoire.
+ *
  * @extends Factory<Rayon>
  */
 class RayonFactory extends Factory

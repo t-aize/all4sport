@@ -4,10 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Table `magasins` : les magasins physiques ALL4SPORT. Chaque magasin est
+ * approvisionné par un entrepôt (association DESSERVIR).
+ */
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Crée la table.
      */
     public function up(): void
     {
@@ -15,13 +19,15 @@ return new class extends Migration
             $table->id();
             $table->string('ville', 30);
             $table->string('adresse', 60);
+            // Clé étrangère vers `entrepots`. `restrictOnDelete` interdit de
+            // supprimer un entrepôt tant qu'il dessert encore un magasin.
             $table->foreignId('entrepot_id')->constrained()->restrictOnDelete();
             $table->timestamps();
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Annule la migration : supprime la table.
      */
     public function down(): void
     {

@@ -10,6 +10,10 @@ use Illuminate\Support\Str;
 /**
  * Fabrique de test pour le modèle Client.
  *
+ * Une factory génère des enregistrements aux valeurs réalistes (grâce à Faker)
+ * pour les tests et le seeder : `Client::factory()->create()` l'enregistre en
+ * base, `Client::factory()->make()` crée seulement l'objet en mémoire.
+ *
  * @extends Factory<Client>
  */
 class ClientFactory extends Factory
