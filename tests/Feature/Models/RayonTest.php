@@ -30,9 +30,14 @@ it('lists the clients who practice the sport with the pivot timestamps', functio
         ->and($rayon->clients->first()->pivot->created_at)->not->toBeNull();
 });
 
-it('only mass assigns its name', function () {
-    $rayon = Rayon::create(['nom_rayon' => 'Football', 'id' => 999]);
+it('only mass assigns its name and code', function () {
+    $rayon = Rayon::create([
+        'nom_rayon' => 'Football',
+        'code_rayon' => 'FOO',
+        'id' => 999,
+    ]);
 
     expect($rayon->id)->not->toBe(999)
-        ->and($rayon->nom_rayon)->toBe('Football');
+        ->and($rayon->nom_rayon)->toBe('Football')
+        ->and($rayon->code_rayon)->toBe('FOO');
 });

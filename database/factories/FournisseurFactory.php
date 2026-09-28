@@ -26,6 +26,7 @@ class FournisseurFactory extends Factory
     {
         return [
             'nom_fournisseur' => Str::limit(fake('fr_FR')->unique()->company(), 40, ''),
+            'code_fournisseur' => strtoupper(fake('fr_FR')->unique()->lexify('???')),
         ];
     }
 }

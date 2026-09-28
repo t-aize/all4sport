@@ -18,8 +18,26 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ProduitFactory extends Factory
 {
+    public function configure(): static
+    {
+        return $this->afterMaking(function (Produit $produit): void {
+            if (blank($produit->reference_produit)
+                && is_int($produit->fournisseur_id)
+                && is_int($produit->rayon_id)
+                && Fournisseur::query()->whereKey($produit->fournisseur_id)->exists()
+                && Rayon::query()->whereKey($produit->rayon_id)->exists()) {
+                $produit->reference_produit = Produit::genererReference(
+                    $produit->fournisseur_id,
+                    $produit->rayon_id,
+                );
+            }
+        });
+    }
+
     /**
      * Définit l'état par défaut du modèle.
+     *
+     * La référence n'est pas définie ici : elle est générée par Produit::booted().
      *
      * @return array<string, mixed>
      */
@@ -28,7 +46,6 @@ class ProduitFactory extends Factory
         $coutUnitaireHt = fake()->randomFloat(2, 5, 300);
 
         return [
-            'reference_produit' => fake()->unique()->regexify('[A-Z]{6}[0-9]{12}'),
             'description_produit' => fake('fr_FR')->sentence(12),
             'cout_unitaire_ht' => $coutUnitaireHt,
             'prix_vente' => round($coutUnitaireHt * fake()->randomFloat(2, 1.3, 2.5), 2),

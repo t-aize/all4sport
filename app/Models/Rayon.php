@@ -21,10 +21,14 @@ use Illuminate\Support\Carbon;
  *
  * @property int $id Identifiant technique du rayon.
  * @property string $nom_rayon Libellé du rayon / de la discipline sportive.
+ * @property string $code_rayon Code unique du rayon (3 caractères).
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['nom_rayon'])]
+#[Fillable([
+    'nom_rayon',
+    'code_rayon',
+])]
 class Rayon extends Model
 {
     /** @use HasFactory<RayonFactory> */
