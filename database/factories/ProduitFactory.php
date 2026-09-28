@@ -18,6 +18,22 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ProduitFactory extends Factory
 {
+    public function configure(): static
+    {
+        return $this->afterMaking(function (Produit $produit): void {
+            if (blank($produit->reference_produit)
+                && is_int($produit->fournisseur_id)
+                && is_int($produit->rayon_id)
+                && Fournisseur::query()->whereKey($produit->fournisseur_id)->exists()
+                && Rayon::query()->whereKey($produit->rayon_id)->exists()) {
+                $produit->reference_produit = Produit::genererReference(
+                    $produit->fournisseur_id,
+                    $produit->rayon_id,
+                );
+            }
+        });
+    }
+
     /**
      * Définit l'état par défaut du modèle.
      *
@@ -35,10 +51,8 @@ class ProduitFactory extends Factory
             'prix_vente' => round($coutUnitaireHt * fake()->randomFloat(2, 1.3, 2.5), 2),
             'quantite_stock_internet' => fake()->numberBetween(0, 500),
             'lieu_stockage' => fake()->optional()->regexify('[A-Z][0-9]D[0-9]\.[0-9]'),
-            'fournisseur_id' => Fournisseur::query()->inRandomOrder()->value('id')
-                ?? Fournisseur::factory(),
-            'rayon_id' => Rayon::query()->inRandomOrder()->value('id')
-                ?? Rayon::factory(),
+            'fournisseur_id' => Fournisseur::factory(),
+            'rayon_id' => Rayon::factory(),
         ];
     }
 }

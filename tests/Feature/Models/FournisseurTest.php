@@ -15,9 +15,14 @@ it('lists only the products supplied by the supplier', function () {
     expect($fournisseur->produits->pluck('reference_produit')->all())->toBe([$produit->reference_produit]);
 });
 
-it('only mass assigns its name', function () {
-    $fournisseur = Fournisseur::create(['nom_fournisseur' => 'Decathlon', 'id' => 999]);
+it('only mass assigns its name and code', function () {
+    $fournisseur = Fournisseur::create([
+        'nom_fournisseur' => 'Decathlon',
+        'code_fournisseur' => 'DEC',
+        'id' => 999,
+    ]);
 
     expect($fournisseur->id)->not->toBe(999)
-        ->and($fournisseur->nom_fournisseur)->toBe('Decathlon');
+        ->and($fournisseur->nom_fournisseur)->toBe('Decathlon')
+        ->and($fournisseur->code_fournisseur)->toBe('DEC');
 });

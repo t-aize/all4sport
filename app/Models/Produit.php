@@ -20,14 +20,14 @@ use Illuminate\Support\Carbon;
  * (`Model::create`, `fill`) : cela protège contre l'ajout de champs non prévus
  * par un formulaire.
  *
- * @property string $reference_produit Référence unique du produit (clé primaire).
+ * @property string|null $reference_produit Référence unique du produit (clé primaire).
  * @property string $description_produit Description commerciale du produit.
  * @property string $cout_unitaire_ht Coût d'achat unitaire hors taxe du produit.
  * @property string $prix_vente Prix de vente unitaire TTC du produit.
  * @property int $quantite_stock_internet Quantité du produit disponible à la vente en ligne.
  * @property string|null $lieu_stockage Emplacement de stockage en entrepôt (ex : M2D3.5).
- * @property int $fournisseur_id Fournisseur qui livre ce produit.
- * @property int $rayon_id Rayon auquel appartient ce produit.
+ * @property int|null $fournisseur_id Fournisseur qui livre ce produit.
+ * @property int|null $rayon_id Rayon auquel appartient ce produit.
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
@@ -69,6 +69,36 @@ class Produit extends Model
             'cout_unitaire_ht' => 'decimal:2',
             'prix_vente' => 'decimal:2',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (Produit $produit): void {
+            if (blank($produit->reference_produit)
+                && is_int($produit->fournisseur_id)
+                && is_int($produit->rayon_id)
+                && Fournisseur::query()->whereKey($produit->fournisseur_id)->exists()
+                && Rayon::query()->whereKey($produit->rayon_id)->exists()) {
+                $produit->reference_produit = static::genererReference(
+                    $produit->fournisseur_id,
+                    $produit->rayon_id,
+                );
+            }
+        });
+    }
+
+    public static function genererReference(int $fournisseurId, int $rayonId): string
+    {
+        $codeFournisseur = Fournisseur::query()->findOrFail($fournisseurId)->code_fournisseur;
+        $codeRayon = Rayon::query()->findOrFail($rayonId)->code_rayon;
+        $prefixe = strtoupper($codeFournisseur.$codeRayon);
+
+        do {
+            $suffixe = str_pad((string) random_int(0, 999_999_999_999), 12, '0', STR_PAD_LEFT);
+            $reference = $prefixe.$suffixe;
+        } while (static::query()->whereKey($reference)->exists());
+
+        return $reference;
     }
 
     /**
