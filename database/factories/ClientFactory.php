@@ -44,4 +44,13 @@ class ClientFactory extends Factory
             'remember_token' => Str::random(10),
         ];
     }
+
+    public function configure(): static
+{
+    return $this->afterMaking(function (Client $client): void {
+        if (blank($client->code_cli)) {
+            $client->code_cli = Client::genererCodeCli();
+        }
+    });
+}
 }
