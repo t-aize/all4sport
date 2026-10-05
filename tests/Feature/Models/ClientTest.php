@@ -87,11 +87,30 @@ it('lists the sports the client practices with the pivot timestamps', function (
 it('generates a unique code_cli when a client is created', function () {
     $client = Client::factory()->create();
 
-    expect($client->code_cli)->toMatch('/^CLI\d{6}$/');
+    expect($client->code_cli)->toMatch('/^CLI\d{8}$/');
 });
 
 it('keeps an explicitly provided code_cli', function () {
-    $client = Client::factory()->create(['code_cli' => 'CLI000042']);
+    $client = Client::factory()->create(['code_cli' => 'CLI00000042']);
 
-    expect($client->code_cli)->toBe('CLI000042');
+    expect($client->code_cli)->toBe('CLI00000042');
+});
+
+it('numbers the code_cli of the clients one after the other', function () {
+    $premier = Client::factory()->create();
+    $second = Client::factory()->create();
+
+    expect((int) substr($second->code_cli, 3))->toBe((int) substr($premier->code_cli, 3) + 1);
+});
+
+it('gives a different code_cli to each client created in a batch', function () {
+    $codes = Client::factory()->count(3)->create()->pluck('code_cli');
+
+    expect($codes->unique())->toHaveCount(3);
+});
+
+it('generates the next code_cli from the last one stored', function () {
+    Client::factory()->create(['code_cli' => 'CLI00000041']);
+
+    expect(Client::genererCodeCli())->toBe('CLI00000042');
 });

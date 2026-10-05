@@ -45,11 +45,19 @@ class ClientFactory extends Factory
         ];
     }
 
+    /**
+     * Le dernier numéro de code client attribué par la fabrique. La fabrique
+     * fabrique plusieurs clients avant de les enregistrer : sans ce compteur,
+     * ils recevraient tous le même code.
+     */
+    protected static int $dernierNumeroCli = 0;
+
     public function configure(): static
     {
         return $this->afterMaking(function (Client $client): void {
             if (blank($client->code_cli)) {
-                $client->code_cli = Client::genererCodeCli();
+                static::$dernierNumeroCli = max(static::$dernierNumeroCli, Client::dernierNumeroCli()) + 1;
+                $client->code_cli = Client::formaterCodeCli(static::$dernierNumeroCli);
             }
         });
     }

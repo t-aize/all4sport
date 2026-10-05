@@ -18,6 +18,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ProduitFactory extends Factory
 {
+    /**
+     * Le dernier numéro de référence attribué par la fabrique. La fabrique
+     * fabrique plusieurs produits avant de les enregistrer : sans ce compteur,
+     * ils recevraient tous la même référence.
+     */
+    protected static int $dernierNumeroReference = 0;
+
     public function configure(): static
     {
         return $this->afterMaking(function (Produit $produit): void {
@@ -26,9 +33,11 @@ class ProduitFactory extends Factory
                 && is_int($produit->rayon_id)
                 && Fournisseur::query()->whereKey($produit->fournisseur_id)->exists()
                 && Rayon::query()->whereKey($produit->rayon_id)->exists()) {
+                static::$dernierNumeroReference = max(static::$dernierNumeroReference, Produit::dernierNumeroReference()) + 1;
                 $produit->reference_produit = Produit::genererReference(
                     $produit->fournisseur_id,
                     $produit->rayon_id,
+                    static::$dernierNumeroReference,
                 );
             }
         });

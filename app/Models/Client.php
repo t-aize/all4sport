@@ -24,7 +24,7 @@ use Illuminate\Support\Carbon;
  * tableau/JSON : ils ne sont donc jamais envoyés au navigateur.
  *
  * @property int $id Identifiant technique du client.
- * @property string $code_cli Code client unique, généré automatiquement (CLI + 6 chiffres).
+ * @property string $code_cli Code client unique, généré automatiquement (CLI + 8 chiffres auto-incrémentés).
  * @property string $nom Nom de famille du client.
  * @property string $prenom Prénom du client.
  * @property string $email Adresse email du client (identifiant de connexion).
@@ -55,13 +55,31 @@ class Client extends Authenticatable
         });
     }
 
+    /**
+     * Le numéro du dernier code client attribué (0 s'il n'y a aucun client).
+     */
+    public static function dernierNumeroCli(): int
+    {
+        $dernierCode = static::query()->max('code_cli');
+
+        return is_string($dernierCode) ? (int) substr($dernierCode, 3) : 0;
+    }
+
+    /**
+     * Met un numéro au format du code client : « CLI » + 8 chiffres.
+     */
+    public static function formaterCodeCli(int $numero): string
+    {
+        return 'CLI'.str_pad((string) $numero, 8, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * Le prochain code client : « CLI » suivi d'un nombre auto-incrémenté
+     * de 8 chiffres.
+     */
     public static function genererCodeCli(): string
     {
-        do {
-            $code = 'CLI'.str_pad((string) random_int(0, 999_999), 6, '0', STR_PAD_LEFT);
-        } while (static::query()->where('code_cli', $code)->exists());
-
-        return $code;
+        return static::formaterCodeCli(static::dernierNumeroCli() + 1);
     }
 
     /**
