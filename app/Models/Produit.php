@@ -87,18 +87,30 @@ class Produit extends Model
         });
     }
 
-    public static function genererReference(int $fournisseurId, int $rayonId): string
+    /**
+     * Le numéro auto-incrémenté de la dernière référence attribuée, c'est-à-dire
+     * les 12 derniers chiffres (0 s'il n'y a aucun produit).
+     */
+    public static function dernierNumeroReference(): int
+    {
+        $dernierNumero = static::query()->selectRaw('MAX(SUBSTR(reference_produit, 7)) as dernier_numero')->value('dernier_numero');
+
+        return is_string($dernierNumero) ? (int) $dernierNumero : 0;
+    }
+
+    /**
+     * Construit une référence : 3 lettres du fournisseur, 3 lettres du rayon
+     * puis un nombre auto-incrémenté de 12 chiffres. Sans numéro donné, le
+     * numéro suivant la dernière référence attribuée est utilisé.
+     */
+    public static function genererReference(int $fournisseurId, int $rayonId, ?int $numero = null): string
     {
         $codeFournisseur = Fournisseur::query()->findOrFail($fournisseurId)->code_fournisseur;
         $codeRayon = Rayon::query()->findOrFail($rayonId)->code_rayon;
         $prefixe = strtoupper($codeFournisseur.$codeRayon);
+        $numero ??= static::dernierNumeroReference() + 1;
 
-        do {
-            $suffixe = str_pad((string) random_int(0, 999_999_999_999), 12, '0', STR_PAD_LEFT);
-            $reference = $prefixe.$suffixe;
-        } while (static::query()->whereKey($reference)->exists());
-
-        return $reference;
+        return $prefixe.str_pad((string) $numero, 12, '0', STR_PAD_LEFT);
     }
 
     /**

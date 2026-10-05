@@ -31,3 +31,17 @@ it('conserve une référence fournie explicitement', function () {
 
     expect($produit->reference_produit)->toBe('ABCDEF000000000042');
 });
+
+it('numérote les références les unes après les autres sur 12 chiffres', function () {
+    $premier = Produit::factory()->create();
+    $second = Produit::factory()->create();
+
+    expect((int) substr($second->reference_produit, 6))->toBe((int) substr($premier->reference_produit, 6) + 1);
+});
+
+it('génère la référence suivante à partir de la dernière référence enregistrée', function () {
+    $produit = Produit::factory()->create(['reference_produit' => 'ABCDEF000000000041']);
+
+    expect(Produit::genererReference($produit->fournisseur_id, $produit->rayon_id))
+        ->toEndWith('000000000042');
+});
