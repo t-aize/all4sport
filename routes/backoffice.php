@@ -21,6 +21,7 @@
 
 use App\Http\Controllers\BackOffice\AuthenticatedSessionController;
 use App\Http\Controllers\BackOffice\DashboardController;
+use App\Http\Controllers\BackOffice\ProduitController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('backoffice')->name('backoffice.')->group(function () {
@@ -37,5 +38,11 @@ Route::prefix('backoffice')->name('backoffice.')->group(function () {
     Route::middleware('auth:employe')->group(function () {
         Route::get('/', DashboardController::class)->name('dashboard');
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
+        // Gestion des produits (stock Internet, stock magasin, photos) : réservée
+        // aux opérateurs et aux vendeurs. Le produit est identifié par sa référence.
+        Route::resource('produits', ProduitController::class)
+            ->except('show')
+            ->middleware('role:operateur,vendeur');
     });
 });
