@@ -20,6 +20,8 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
+            // Code client unique, généré automatiquement par le modèle.
+            $table->char('code_cli', 9)->unique();
             $table->string('nom', 30);
             $table->string('prenom', 30);
             // Identifiant de connexion, unique pour toute la table.

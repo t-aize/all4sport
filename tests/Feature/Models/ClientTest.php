@@ -84,7 +84,6 @@ it('lists the sports the client practices with the pivot timestamps', function (
         ->and($client->rayons->first()->pivot->created_at)->not->toBeNull();
 });
 
-
 it('generates a unique code_cli when a client is created', function () {
     $client = Client::factory()->create();
 

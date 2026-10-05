@@ -24,6 +24,7 @@ use Illuminate\Support\Carbon;
  * tableau/JSON : ils ne sont donc jamais envoyés au navigateur.
  *
  * @property int $id Identifiant technique du client.
+ * @property string $code_cli Code client unique, généré automatiquement (CLI + 6 chiffres).
  * @property string $nom Nom de famille du client.
  * @property string $prenom Prénom du client.
  * @property string $email Adresse email du client (identifiant de connexion).
@@ -44,6 +45,24 @@ class Client extends Authenticatable
 {
     /** @use HasFactory<ClientFactory> */
     use HasFactory, Notifiable;
+
+    protected static function booted(): void
+    {
+        static::creating(function (Client $client): void {
+            if (blank($client->code_cli)) {
+                $client->code_cli = static::genererCodeCli();
+            }
+        });
+    }
+
+    public static function genererCodeCli(): string
+    {
+        do {
+            $code = 'CLI'.str_pad((string) random_int(0, 999_999), 6, '0', STR_PAD_LEFT);
+        } while (static::query()->where('code_cli', $code)->exists());
+
+        return $code;
+    }
 
     /**
      * Les attributs à transtyper (cast).

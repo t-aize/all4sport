@@ -46,11 +46,11 @@ class ClientFactory extends Factory
     }
 
     public function configure(): static
-{
-    return $this->afterMaking(function (Client $client): void {
-        if (blank($client->code_cli)) {
-            $client->code_cli = Client::genererCodeCli();
-        }
-    });
-}
+    {
+        return $this->afterMaking(function (Client $client): void {
+            if (blank($client->code_cli)) {
+                $client->code_cli = Client::genererCodeCli();
+            }
+        });
+    }
 }
