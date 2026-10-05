@@ -13,6 +13,7 @@
 |
 */
 
+use App\Http\Controllers\CatalogueController;
 use Illuminate\Support\Facades\Route;
 
 // Page d'accueil. `Route::inertia` évite d'écrire un contrôleur quand la page
@@ -26,3 +27,8 @@ require __DIR__.'/auth.php';
 
 // Routes du back-office réservées aux collaborateurs (préfixe /backoffice).
 require __DIR__.'/backoffice.php';
+
+// Catalogue public du site marchand : produits par rayon et fiche produit.
+// Le produit est identifié dans l'URL par sa référence (clé primaire).
+Route::get('catalogue', [CatalogueController::class, 'index'])->name('catalogue.index');
+Route::get('catalogue/{produit}', [CatalogueController::class, 'show'])->name('catalogue.show');
