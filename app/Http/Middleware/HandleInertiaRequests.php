@@ -57,6 +57,9 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             // Nom du site, défini par APP_NAME dans le fichier .env.
             'name' => config('app.name'),
+            // Message de confirmation d'une action (« Produit créé. »…), envoyé
+            // une seule fois par `->with('status', ...)` après une redirection.
+            'status' => fn () => $request->session()->get('status'),
             'auth' => [
                 // Le client connecté, ou null pour un visiteur.
                 'user' => $request->user('web'),

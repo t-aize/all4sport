@@ -1,8 +1,9 @@
-import { Form, Head, usePage } from '@inertiajs/react';
+import { Form, Head, Link, usePage } from '@inertiajs/react';
 import { type ReactNode } from 'react';
 
 import { destroy } from '@/actions/App/Http/Controllers/BackOffice/AuthenticatedSessionController';
 import { Button } from '@/components/ui/button';
+import { index as produits } from '@/routes/backoffice/produits';
 import type { Auth } from '@/types';
 
 /**
@@ -42,6 +43,17 @@ export default function BackOfficeLayout({
                             {roleLibelle}
                         </p>
                     </div>
+                    {/* Seuls les opérateurs et les vendeurs gèrent les produits
+                        (voir routes/backoffice.php). */}
+                    {(auth.employe?.role === 'operateur' ||
+                        auth.employe?.role === 'vendeur') && (
+                        <Link
+                            href={produits()}
+                            className="text-muted-foreground hover:text-foreground ml-auto text-sm font-medium"
+                        >
+                            Produits
+                        </Link>
+                    )}
                     {/* `destroy.form()` est généré par Wayfinder à partir du
                         contrôleur PHP (déconnexion en POST). */}
                     <Form {...destroy.form()}>
