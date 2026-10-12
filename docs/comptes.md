@@ -14,12 +14,12 @@ Le mot de passe de **tous** les comptes générés par le seeder est `password`.
 - Guard : `employe` (séparé de celui des clients)
 - Ce ne sont pas des administrateurs : chaque collaborateur a un rôle qui limite ses droits.
 
-| Identifiant | Mot de passe | Rôle | Droits |
-|---|---|---|---|
-| `operateur` | `password` | Opérateur | Produits (CRUD, stocks, photos) ; états « en préparation » et « expédiée » |
-| `vendeur` | `password` | Vendeur | Produits (CRUD, stocks, photos) ; état « retirée » (retrait magasin) |
-| `livreur` | `password` | Livreur | État « livrée » (livraison à domicile) |
-| `service_client` | `password` | Service client | État « validée » |
+| Identifiant      | Mot de passe | Rôle           | Droits                                                                     |
+| ---------------- | ------------ | -------------- | -------------------------------------------------------------------------- |
+| `operateur`      | `password`   | Opérateur      | Produits (CRUD, stocks, photos) ; états « en préparation » et « expédiée » |
+| `vendeur`        | `password`   | Vendeur        | Produits (CRUD, stocks, photos) ; état « retirée » (retrait magasin)       |
+| `livreur`        | `password`   | Livreur        | État « livrée » (livraison à domicile)                                     |
+| `service_client` | `password`   | Service client | État « validée »                                                           |
 
 La gestion des produits (`/backoffice/produits`) est réservée aux rôles `operateur` et `vendeur`. Le livreur et le service client accèdent seulement au tableau de bord.
 
