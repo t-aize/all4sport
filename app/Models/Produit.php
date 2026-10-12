@@ -75,13 +75,13 @@ class Produit extends Model
     {
         static::creating(function (Produit $produit): void {
             if (blank($produit->reference_produit)
-                && is_int($produit->fournisseur_id)
-                && is_int($produit->rayon_id)
+                && is_numeric($produit->fournisseur_id)
+                && is_numeric($produit->rayon_id)
                 && Fournisseur::query()->whereKey($produit->fournisseur_id)->exists()
                 && Rayon::query()->whereKey($produit->rayon_id)->exists()) {
                 $produit->reference_produit = static::genererReference(
-                    $produit->fournisseur_id,
-                    $produit->rayon_id,
+                    (int) $produit->fournisseur_id,
+                    (int) $produit->rayon_id,
                 );
             }
         });
