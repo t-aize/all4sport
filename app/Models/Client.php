@@ -6,6 +6,7 @@ use Database\Factories\ClientFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -32,6 +33,7 @@ use Illuminate\Support\Carbon;
  * @property string $adresse Adresse postale du client (numéro et rue).
  * @property string $code_postal Code postal du client.
  * @property string $ville Ville du client.
+ * @property int|null $magasin_id Magasin par défaut du client (retrait, entrepôt d'expédition).
  * @property Carbon|null $date_naissance Date de naissance du client.
  * @property Carbon|null $date_dernier_achat Date de la dernière commande passée par le client.
  * @property string $password Mot de passe (haché).
@@ -39,7 +41,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['nom', 'prenom', 'email', 'telephone', 'adresse', 'code_postal', 'ville', 'date_naissance', 'password'])]
+#[Fillable(['nom', 'prenom', 'email', 'telephone', 'adresse', 'code_postal', 'ville', 'magasin_id', 'date_naissance', 'password'])]
 #[Hidden(['password', 'remember_token'])]
 class Client extends Authenticatable
 {
@@ -124,5 +126,33 @@ class Client extends Authenticatable
     public function commandes(): HasMany
     {
         return $this->hasMany(Commande::class);
+    }
+
+    /**
+     * Le magasin par défaut du client, proposé pour le retrait des commandes.
+     *
+     * @return BelongsTo<Magasin, $this>
+     */
+    public function magasin(): BelongsTo
+    {
+        return $this->belongsTo(Magasin::class);
+    }
+
+    /**
+     * L'adresse complète du client sur une ligne.
+     */
+    public function adresseComplete(): string
+    {
+        return "{$this->adresse}, {$this->code_postal} {$this->ville}";
+    }
+
+    /**
+     * Le panier du client connecté.
+     *
+     * @return HasMany<Panier, $this>
+     */
+    public function paniers(): HasMany
+    {
+        return $this->hasMany(Panier::class);
     }
 }
