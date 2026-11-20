@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 /**
  * Un fournisseur livre un ou plusieurs produits à ALL4SPORT (association FOURNIR).
@@ -39,5 +40,16 @@ class Fournisseur extends Model
     public function produits(): HasMany
     {
         return $this->hasMany(Produit::class);
+    }
+
+    /**
+     * Le code fournisseur déduit d'un nom : ses 3 premières lettres, sans
+     * accent, en majuscules (ex : « Équipe Sud » → « EQU »).
+     */
+    public static function codeDepuisNom(string $nom): string
+    {
+        $lettres = preg_replace('/[^A-Z]/', '', mb_strtoupper(Str::ascii($nom))) ?? '';
+
+        return substr($lettres, 0, 3);
     }
 }
