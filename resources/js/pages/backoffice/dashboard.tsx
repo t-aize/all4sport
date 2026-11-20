@@ -288,12 +288,12 @@ export default function Dashboard({
                             <TriangleAlert className="size-5 text-amber-500" />{' '}
                             Stock Internet faible
                         </h2>
-                        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
                             {stocksFaibles.map((produit) => (
                                 <Link
                                     key={produit.reference}
                                     href={produitEdit(produit.reference)}
-                                    className="hover:border-primary/40 flex items-center justify-between gap-3 rounded-xl border p-3 text-sm transition-colors"
+                                    className="hover:border-primary/40 flex min-w-0 items-center justify-between gap-3 rounded-xl border p-3 text-sm transition-colors"
                                 >
                                     <span className="min-w-0">
                                         <span className="block truncate font-medium">
