@@ -1,60 +1,325 @@
+import { Link } from '@inertiajs/react';
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
-import BackOfficeLayout from '@/layouts/back-office-layout';
+    ArrowRight,
+    ClipboardCheck,
+    Euro,
+    Package,
+    ShoppingCart,
+    TriangleAlert,
+    Users,
+} from 'lucide-react';
 
-/**
- * Un état de commande tel que l'envoie DashboardController (valeur technique
- * de l'enum PHP EtatCommande et libellé à afficher).
- */
-type EtatGerable = {
-    value: string;
-    label: string;
+import { EtatBadge } from '@/components/etat-badge';
+import BackOfficeLayout from '@/layouts/back-office-layout';
+import { formatDate, formatPrix } from '@/lib/format';
+import {
+    index as commandesIndex,
+    show as commandeShow,
+} from '@/routes/backoffice/commandes';
+import { edit as produitEdit } from '@/routes/backoffice/produits';
+import type { EtatCommande, Option } from '@/types/catalogue';
+
+type Indicateurs = {
+    aTraiter: number;
+    commandes: number;
+    chiffreAffaires: string;
+    panierMoyen: string;
+    clients: number;
+    produits: number;
+};
+
+type CommandeATraiter = {
+    id: number;
+    numero: string;
+    date: string;
+    client: string;
+    etat: EtatCommande;
+    etatLibelle: string;
+    modeLivraison: string;
+    montantTotal: string;
 };
 
 /**
- * Tableau de bord du back-office (route « backoffice.dashboard »).
- *
- * Rappelle au collaborateur son rôle et les états de commande qu'il peut
- * enregistrer. Les écrans de gestion des commandes viendront s'y rattacher.
- *
- * @param roleLibelle Nom du rôle de l'employé.
- * @param etatsGerables États de commande que ce rôle a le droit d'enregistrer.
+ * Tableau de bord du back-office : indicateurs clés, commandes à traiter par
+ * le collaborateur (selon son rôle), répartition des commandes par état,
+ * ventes des 6 derniers mois, meilleurs rayons et stocks faibles.
  */
 export default function Dashboard({
     roleLibelle,
     etatsGerables,
+    indicateurs,
+    commandesParEtat,
+    ventesMensuelles,
+    aTraiter,
+    stocksFaibles,
+    meilleursRayons,
 }: {
     roleLibelle: string;
-    etatsGerables: EtatGerable[];
+    etatsGerables: Option[];
+    indicateurs: Indicateurs;
+    commandesParEtat: (Option & { total: number })[];
+    ventesMensuelles: { mois: string; total: string; commandes: number }[];
+    aTraiter: CommandeATraiter[];
+    stocksFaibles: {
+        reference: string;
+        description: string;
+        rayon: string | null;
+        stockInternet: number;
+    }[];
+    meilleursRayons: { nom: string; total: string }[];
 }) {
+    const venteMax = Math.max(
+        1,
+        ...ventesMensuelles.map((mois) => Number(mois.total)),
+    );
+    const etatMax = Math.max(1, ...commandesParEtat.map((etat) => etat.total));
+    const rayonMax = Math.max(
+        1,
+        ...meilleursRayons.map((rayon) => Number(rayon.total)),
+    );
+
+    const cartes = [
+        {
+            libelle: 'À traiter par vous',
+            valeur: String(indicateurs.aTraiter),
+            icone: ClipboardCheck,
+            accent: true,
+        },
+        {
+            libelle: "Chiffre d'affaires",
+            valeur: formatPrix(indicateurs.chiffreAffaires),
+            icone: Euro,
+        },
+        {
+            libelle: 'Commandes',
+            valeur: String(indicateurs.commandes),
+            icone: ShoppingCart,
+        },
+        {
+            libelle: 'Panier moyen',
+            valeur: formatPrix(indicateurs.panierMoyen),
+            icone: Package,
+        },
+        {
+            libelle: 'Clients',
+            valeur: String(indicateurs.clients),
+            icone: Users,
+        },
+    ];
+
     return (
         <BackOfficeLayout title="Tableau de bord" roleLibelle={roleLibelle}>
-            <Card>
-                <CardHeader>
-                    <CardTitle>Vos responsabilités</CardTitle>
-                    <CardDescription>
-                        En tant que {roleLibelle.toLowerCase()}, vous pouvez
-                        enregistrer les états de commande suivants.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <ul className="flex flex-col gap-2">
-                        {etatsGerables.map((etat) => (
-                            <li
-                                key={etat.value}
-                                className="bg-muted rounded-md px-3 py-2 text-sm font-medium"
+            <div className="mb-6 flex flex-wrap items-center gap-2 text-sm">
+                <span className="text-muted-foreground">
+                    Vous enregistrez les états :
+                </span>
+                {etatsGerables.map((etat) => (
+                    <EtatBadge
+                        key={etat.value}
+                        etat={etat.value as EtatCommande}
+                        libelle={etat.label}
+                    />
+                ))}
+            </div>
+
+            <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-5">
+                {cartes.map(
+                    ({ libelle, valeur, icone: Icone, accent }, position) => (
+                        <div
+                            key={libelle}
+                            className={`animate-apparition rounded-2xl border p-4 transition-transform hover:-translate-y-0.5 ${
+                                accent
+                                    ? 'bg-primary text-primary-foreground shadow-primary/30 border-transparent shadow-lg'
+                                    : 'bg-card'
+                            }`}
+                            style={{ animationDelay: `${position * 60}ms` }}
+                        >
+                            <Icone
+                                className={`mb-3 size-5 ${accent ? '' : 'text-primary'}`}
+                            />
+                            <p
+                                className={`text-xs ${accent ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}
                             >
-                                {etat.label}
+                                {libelle}
+                            </p>
+                            <p className="text-2xl font-bold tracking-tight">
+                                {valeur}
+                            </p>
+                        </div>
+                    ),
+                )}
+            </div>
+
+            <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
+                <section className="bg-card rounded-3xl border p-6">
+                    <div className="mb-4 flex items-center justify-between">
+                        <h2 className="font-semibold">Commandes à traiter</h2>
+                        <Link
+                            href={commandesIndex()}
+                            className="text-primary flex items-center gap-1 text-sm font-medium hover:underline"
+                        >
+                            Tout voir <ArrowRight className="size-4" />
+                        </Link>
+                    </div>
+                    {aTraiter.length === 0 ? (
+                        <p className="text-muted-foreground py-8 text-center text-sm">
+                            Rien à traiter pour le moment. Bravo ! 🎉
+                        </p>
+                    ) : (
+                        <ul className="divide-y">
+                            {aTraiter.map((commande) => (
+                                <li key={commande.id}>
+                                    <Link
+                                        href={commandeShow(commande.id)}
+                                        className="group hover:bg-muted/50 -mx-2 flex flex-wrap items-center gap-3 rounded-xl px-2 py-3 transition-colors"
+                                    >
+                                        <span className="font-mono text-sm font-semibold">
+                                            {commande.numero}
+                                        </span>
+                                        <EtatBadge
+                                            etat={commande.etat}
+                                            libelle={commande.etatLibelle}
+                                        />
+                                        <span className="text-muted-foreground flex-1 truncate text-sm">
+                                            {commande.client} ·{' '}
+                                            {commande.modeLivraison} ·{' '}
+                                            {formatDate(commande.date)}
+                                        </span>
+                                        <span className="font-semibold">
+                                            {formatPrix(commande.montantTotal)}
+                                        </span>
+                                        <ArrowRight className="text-muted-foreground size-4 transition-transform group-hover:translate-x-1" />
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </section>
+
+                <section className="bg-card rounded-3xl border p-6">
+                    <h2 className="mb-4 font-semibold">Commandes par état</h2>
+                    <ul className="flex flex-col gap-3">
+                        {commandesParEtat.map((etat) => (
+                            <li key={etat.value} className="text-sm">
+                                <div className="mb-1 flex justify-between">
+                                    <span>{etat.label}</span>
+                                    <span className="font-semibold">
+                                        {etat.total}
+                                    </span>
+                                </div>
+                                <div className="bg-muted h-2 overflow-hidden rounded-full">
+                                    <div
+                                        className="bg-primary h-full origin-left rounded-full transition-all duration-700"
+                                        style={{
+                                            width: `${(etat.total / etatMax) * 100}%`,
+                                        }}
+                                    />
+                                </div>
                             </li>
                         ))}
                     </ul>
-                </CardContent>
-            </Card>
+                </section>
+
+                <section className="bg-card rounded-3xl border p-6">
+                    <h2 className="mb-1 font-semibold">
+                        Ventes des 6 derniers mois
+                    </h2>
+                    <p className="text-muted-foreground mb-6 text-xs">
+                        Chiffre d'affaires TTC par mois
+                    </p>
+                    <div className="flex h-48 items-end gap-3">
+                        {ventesMensuelles.map((mois, position) => (
+                            <div
+                                key={mois.mois}
+                                className="group flex flex-1 flex-col items-center gap-2"
+                            >
+                                <span className="text-muted-foreground text-[10px] opacity-0 transition-opacity group-hover:opacity-100">
+                                    {formatPrix(mois.total)}
+                                </span>
+                                <div
+                                    className="from-primary to-primary/60 animate-apparition w-full rounded-t-lg bg-linear-to-t transition-all group-hover:opacity-80"
+                                    style={{
+                                        height: `${Math.max(4, (Number(mois.total) / venteMax) * 140)}px`,
+                                        animationDelay: `${position * 80}ms`,
+                                    }}
+                                    title={`${mois.commandes} commande(s)`}
+                                />
+                                <span className="text-muted-foreground text-xs capitalize">
+                                    {mois.mois}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                <section className="bg-card rounded-3xl border p-6">
+                    <h2 className="mb-4 font-semibold">Meilleurs rayons</h2>
+                    <ol className="flex flex-col gap-3">
+                        {meilleursRayons.map((rayon, position) => (
+                            <li
+                                key={rayon.nom}
+                                className="flex items-center gap-3 text-sm"
+                            >
+                                <span className="bg-navy text-navy-foreground flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-bold">
+                                    {position + 1}
+                                </span>
+                                <span className="flex-1">
+                                    <span className="flex justify-between">
+                                        <span>{rayon.nom}</span>
+                                        <span className="font-semibold">
+                                            {formatPrix(rayon.total)}
+                                        </span>
+                                    </span>
+                                    <span className="bg-muted mt-1 block h-1.5 overflow-hidden rounded-full">
+                                        <span
+                                            className="bg-navy block h-full rounded-full"
+                                            style={{
+                                                width: `${(Number(rayon.total) / rayonMax) * 100}%`,
+                                            }}
+                                        />
+                                    </span>
+                                </span>
+                            </li>
+                        ))}
+                    </ol>
+                </section>
+
+                {stocksFaibles.length > 0 && (
+                    <section className="bg-card rounded-3xl border p-6 lg:col-span-2">
+                        <h2 className="mb-4 flex items-center gap-2 font-semibold">
+                            <TriangleAlert className="size-5 text-amber-500" />{' '}
+                            Stock Internet faible
+                        </h2>
+                        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                            {stocksFaibles.map((produit) => (
+                                <Link
+                                    key={produit.reference}
+                                    href={produitEdit(produit.reference)}
+                                    className="hover:border-primary/40 flex items-center justify-between gap-3 rounded-xl border p-3 text-sm transition-colors"
+                                >
+                                    <span className="min-w-0">
+                                        <span className="block truncate font-medium">
+                                            {produit.description}
+                                        </span>
+                                        <span className="text-muted-foreground font-mono text-[11px]">
+                                            {produit.reference}
+                                        </span>
+                                    </span>
+                                    <span
+                                        className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-bold ${
+                                            produit.stockInternet === 0
+                                                ? 'bg-destructive/10 text-destructive'
+                                                : 'bg-amber-500/10 text-amber-700'
+                                        }`}
+                                    >
+                                        {produit.stockInternet}
+                                    </span>
+                                </Link>
+                            ))}
+                        </div>
+                    </section>
+                )}
+            </div>
         </BackOfficeLayout>
     );
 }

@@ -20,7 +20,9 @@
 */
 
 use App\Http\Controllers\BackOffice\AuthenticatedSessionController;
+use App\Http\Controllers\BackOffice\CommandeController;
 use App\Http\Controllers\BackOffice\DashboardController;
+use App\Http\Controllers\BackOffice\FournisseurController;
 use App\Http\Controllers\BackOffice\ProduitController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,5 +46,19 @@ Route::prefix('backoffice')->name('backoffice.')->group(function () {
         Route::resource('produits', ProduitController::class)
             ->except('show')
             ->middleware('role:operateur,vendeur');
+
+        // Fournisseurs (code de 3 lettres repris dans la référence produit) :
+        // mêmes droits que les produits.
+        Route::resource('fournisseurs', FournisseurController::class)
+            ->except('show')
+            ->middleware('role:operateur,vendeur');
+
+        // Commandes : consultables par tous les collaborateurs. Le changement
+        // d'état est contrôlé par WorkflowCommande selon le rôle de chacun.
+        Route::get('commandes', [CommandeController::class, 'index'])->name('commandes.index');
+        Route::get('commandes/{commande}', [CommandeController::class, 'show'])->name('commandes.show');
+        Route::post('commandes/{commande}/etat', [CommandeController::class, 'changerEtat'])
+            ->middleware('throttle:60,1')
+            ->name('commandes.etat');
     });
 });
