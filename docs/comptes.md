@@ -12,22 +12,39 @@ Le mot de passe de **tous** les comptes générés par le seeder est `password`.
 
 - URL de connexion : `/backoffice/login`
 - Guard : `employe` (séparé de celui des clients)
-- Ce ne sont pas des administrateurs : chaque collaborateur a un rôle qui limite ses droits.
+- Chaque collaborateur a un rôle qui limite ses droits.
 
-| Identifiant      | Mot de passe | Rôle           | Droits                                                                     |
-| ---------------- | ------------ | -------------- | -------------------------------------------------------------------------- |
-| `operateur`      | `password`   | Opérateur      | Produits (CRUD, stocks, photos) ; états « en préparation » et « expédiée » |
-| `vendeur`        | `password`   | Vendeur        | Produits (CRUD, stocks, photos) ; état « retirée » (retrait magasin)       |
-| `livreur`        | `password`   | Livreur        | État « livrée » (livraison à domicile)                                     |
-| `service_client` | `password`   | Service client | État « validée »                                                           |
+| Identifiant      | Nom            | Rôle           | Droits                                                                                       |
+| ---------------- | -------------- | -------------- | -------------------------------------------------------------------------------------------- |
+| `service_client` | Inès Rousseau  | Service client | Commandes : état « validée »                                                                 |
+| `operateur`      | Julien Mercier | Opérateur      | Commandes : « en préparation », « expédiée » ; produits (CRUD, stocks, photos), fournisseurs |
+| `livreur`        | Mehdi Garnier  | Livreur        | Commandes : « livrée » (livraison à domicile)                                                |
+| `vendeur`        | Sarah Lefebvre | Vendeur        | Commandes : « retirée » (retrait magasin) ; produits, fournisseurs                           |
 
-La gestion des produits (`/backoffice/produits`) est réservée aux rôles `operateur` et `vendeur`. Le livreur et le service client accèdent seulement au tableau de bord.
-
-Le seeder crée aussi 6 collaborateurs supplémentaires avec un identifiant aléatoire (mot de passe `password`). Pour les retrouver : `php artisan tinker --execute 'App\Models\Employe::pluck("role", "identifiant_connexion");'`
+Tous les collaborateurs consultent les commandes et le tableau de bord. Le seeder crée aussi 12 collaborateurs supplémentaires (3 par rôle) avec un identifiant aléatoire : `php artisan tinker --execute 'App\Models\Employe::pluck("role", "identifiant_connexion");'`
 
 ## Clients (site public)
 
 - URL de connexion : `/login`, inscription : `/register`
-- Le seeder crée 30 clients avec un e-mail aléatoire et le mot de passe `password`.
-- Pour en retrouver un : `php artisan tinker --execute 'App\Models\Client::pluck("email");'`
-- Le plus simple reste de créer son propre compte via `/register`.
+
+| Email                    | Mot de passe | Profil                                                                                                             |
+| ------------------------ | ------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `client@all4sport.local` | `password`   | Camille Martin, magasin par défaut Lille, 2 enfants, 3 sports, une commande dans chaque état, panier de 3 articles |
+
+Le seeder crée aussi 80 clients (email aléatoire, mot de passe `password`) : `php artisan tinker --execute 'App\Models\Client::pluck("email");'`
+
+## API Logistique (Lot B)
+
+Pas de compte : un jeton partagé. Générer avec `php artisan logistique:jeton` puis le placer dans `LOGISTIQUE_API_TOKEN` (`.env`). Voir [api-logistique.md](api-logistique.md).
+
+## Jeu de données
+
+| Donnée       | Volume                                                                                          |
+| ------------ | ----------------------------------------------------------------------------------------------- |
+| Entrepôts    | 3 : Le Havre (Nord-Ouest), Lyon (Centre-Est), Marseille (Sud)                                   |
+| Magasins     | 12 : Lille, Arras, Amiens, Paris, Reims, Metz, Rennes, Tours, Lyon, Bordeaux, Toulouse, Nice    |
+| Rayons       | 14 sports (Football, Running, Cyclisme, Natation, Tennis, Basketball, Randonnée, Ski, Fitness…) |
+| Fournisseurs | 10                                                                                              |
+| Produits     | 105, avec 1 à 5 visuels, lieu de stockage, stock Internet et stock dans 4 à 12 magasins         |
+| Commandes    | 257 sur 12 mois, avec leur historique d'états complet                                           |
+| Paniers      | 11 paniers en cours                                                                             |
