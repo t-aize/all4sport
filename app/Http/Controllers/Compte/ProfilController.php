@@ -15,7 +15,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 
 /**
- * Espace « Mon compte » du client : informations personnelles, adresse,
+ * Espace "Mon compte" du client : informations personnelles, adresse,
  * magasin par défaut, sports pratiqués et enfants (fichier client du dossier
  * de contexte).
  *

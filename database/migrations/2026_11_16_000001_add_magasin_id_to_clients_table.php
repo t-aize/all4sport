@@ -5,8 +5,8 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Ajoute le magasin par défaut du client (dossier de contexte, « Workflow de
- * gestion » : préciser le compte client avec choix d'un magasin par défaut).
+ * Ajoute le magasin par défaut du client (dossier de contexte, "Workflow de
+ * gestion" : préciser le compte client avec choix d'un magasin par défaut).
  * Il est proposé en premier pour le retrait en magasin et détermine l'entrepôt
  * d'expédition des livraisons à domicile.
  */

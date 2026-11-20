@@ -48,7 +48,7 @@ const STYLES: Record<EtatCommande, { classes: string; icone: typeof Send }> = {
  * Pastille colorée indiquant l'état d'une commande.
  *
  * @param etat Valeur technique de l'état.
- * @param libelle Libellé affiché (« En préparation »…).
+ * @param libelle Libellé affiché ("En préparation"...).
  */
 export function EtatBadge({
     etat,

@@ -73,7 +73,7 @@ function Disponibilite({ quantite }: { quantite: number }) {
 }
 
 /**
- * Fiche produit publique (route « catalogue.show ») : galerie de 1 à 5
+ * Fiche produit publique (route "catalogue.show") : galerie de 1 à 5
  * photos, prix de vente, référence, disponibilité (stock Internet et stock de
  * chaque magasin), ajout au panier et produits du même rayon.
  */

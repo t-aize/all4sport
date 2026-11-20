@@ -1,8 +1,8 @@
-# API d'échange avec le Lot B « Logistique »
+# API d'échange avec le Lot B "Logistique"
 
 Les deux activités d'ALL4SPORT (vente et logistique) forment **deux SI disjoints** : ils échangent des données, sans interconnexion (pas de base partagée). Cette API REST, exposée par le SI Vente, est la seule porte d'entrée du SI Logistique.
 
-- Préfixe : `/api/v1` — format JSON (`Accept: application/json`)
+- Préfixe : `/api/v1` - format JSON (`Accept: application/json`)
 - Code : [routes/api.php](../routes/api.php), [app/Http/Controllers/Api/V1](../app/Http/Controllers/Api/V1)
 - Tests : [tests/Feature/Api/LogistiqueApiTest.php](../tests/Feature/Api/LogistiqueApiTest.php)
 
@@ -49,7 +49,7 @@ Content-Type: application/json
 }
 ```
 
-Le lieu de stockage suit l'identification des cellules d'entrepôt : module `M1`–`M6`, rangée `A`–`L`, section `1`–`12`, étagère `1`–`8` (ex. `M2D3.5`).
+Le lieu de stockage suit l'identification des cellules d'entrepôt : module `M1`-`M6`, rangée `A`-`L`, section `1`-`12`, étagère `1`-`8` (ex. `M2D3.5`).
 
 ### Exemple : cycle logistique d'une commande
 

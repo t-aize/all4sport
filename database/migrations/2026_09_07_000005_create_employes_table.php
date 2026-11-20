@@ -24,9 +24,9 @@ return new class extends Migration
             // Contient le hash du mot de passe (jamais le mot de passe en clair),
             // d'où une longueur libre.
             $table->string('password');
-            // Valeur de l'enum App\Enums\RoleEmploye (ex : « livreur »).
+            // Valeur de l'enum App\Enums\RoleEmploye (ex : "livreur").
             $table->string('role', 20);
-            // Jeton de la case « Se souvenir de moi ».
+            // Jeton de la case "Se souvenir de moi".
             $table->rememberToken();
             $table->timestamps();
         });

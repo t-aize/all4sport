@@ -62,7 +62,7 @@ export function ProduitCard({
                         {formatPrix(produit.prixVente)}
                     </p>
                     <span className="text-primary text-xs font-semibold opacity-0 transition-opacity group-hover:opacity-100">
-                        Voir →
+                        Voir
                     </span>
                 </div>
             </div>

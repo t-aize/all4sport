@@ -14,7 +14,7 @@ import AuthLayout from '@/layouts/auth-layout';
 import { login } from '@/routes';
 
 /**
- * Page « Mot de passe oublié » (route « password.request »).
+ * Page "Mot de passe oublié" (route "password.request").
  *
  * Le client saisit son email ; Laravel lui envoie un lien de réinitialisation
  * (voir PasswordResetLinkController::store).
@@ -50,7 +50,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                         <Field>
                             <Button type="submit" disabled={processing}>
                                 {processing
-                                    ? 'Envoi…'
+                                    ? 'Envoi...'
                                     : 'Envoyer le lien de réinitialisation'}
                             </Button>
                             <FieldDescription className="text-center">

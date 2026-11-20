@@ -13,7 +13,7 @@ import BackOfficeLayout from '@/layouts/back-office-layout';
 import { store } from '@/actions/App/Http/Controllers/BackOffice/ProduitController';
 
 /**
- * Création d'un produit (route « backoffice.produits.create »).
+ * Création d'un produit (route "backoffice.produits.create").
  *
  * La référence du produit n'est pas saisie : elle est générée à
  * l'enregistrement à partir des codes du fournisseur et du rayon.

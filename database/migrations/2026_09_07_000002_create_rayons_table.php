@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 /**
  * Table `rayons` : les rayons (sports) dans lesquels les produits sont classés
- * (football, tennis, running…). Un rayon correspond aussi à un sport pratiqué
+ * (football, tennis, running...). Un rayon correspond aussi à un sport pratiqué
  * par un client (voir la table `client_rayon`).
  */
 return new class extends Migration

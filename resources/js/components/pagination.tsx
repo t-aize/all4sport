@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import type { LienPagination } from '@/types/catalogue';
 
 /**
- * Libellés lisibles pour les liens « précédent » / « suivant » de Laravel.
+ * Libellés lisibles pour les liens "précédent" / "suivant" de Laravel.
  */
 function libelle(label: string): string {
     if (label.includes('Previous') || label.includes('&laquo;')) {

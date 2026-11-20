@@ -85,4 +85,4 @@ php artisan wayfinder:generate # régénère les routes TypeScript
 php artisan queue:listen       # worker de queue (QUEUE_CONNECTION=database)
 ```
 
-Erreur « Unable to locate file in Vite manifest » : lancer `npm run build` ou `composer dev`.
+Erreur "Unable to locate file in Vite manifest" : lancer `npm run build` ou `composer dev`.

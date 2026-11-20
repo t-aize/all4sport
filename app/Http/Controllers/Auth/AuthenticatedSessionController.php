@@ -25,8 +25,8 @@ class AuthenticatedSessionController extends Controller
      *
      * `Inertia::render` ne renvoie pas du HTML : il indique quel composant React
      * afficher (resources/js/pages/auth/login.tsx) et lui transmet des données
-     * (les « props »). Ici, `status` contient un éventuel message flash, par
-     * exemple « Votre mot de passe a été réinitialisé ».
+     * (les "props"). Ici, `status` contient un éventuel message flash, par
+     * exemple "Votre mot de passe a été réinitialisé".
      */
     public function create(): Response
     {
@@ -39,7 +39,7 @@ class AuthenticatedSessionController extends Controller
      * Authentifie le client à partir des identifiants fournis.
      *
      * La validation des champs, la limitation des tentatives et la vérification
-     * du mot de passe sont déléguées à LoginRequest (un « Form Request »), ce qui
+     * du mot de passe sont déléguées à LoginRequest (un "Form Request"), ce qui
      * garde le contrôleur court et lisible.
      */
     public function store(LoginRequest $request, ServicePanier $servicePanier): RedirectResponse
@@ -53,7 +53,7 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         // Nouvel identifiant de session après connexion : protège contre la
-        // « fixation de session » (un attaquant qui aurait imposé un ancien
+        // "fixation de session" (un attaquant qui aurait imposé un ancien
         // identifiant à la victime).
         $request->session()->regenerate();
 

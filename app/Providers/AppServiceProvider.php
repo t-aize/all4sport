@@ -15,7 +15,7 @@ use Illuminate\Validation\Rules\Password;
 /**
  * Fournisseur de services principal de l'application.
  *
- * Un « service provider » est un point de démarrage : il enregistre des services
+ * Un "service provider" est un point de démarrage : il enregistre des services
  * dans le conteneur d'injection de dépendances (`register`) puis configure le
  * comportement global de l'application au démarrage (`boot`).
  */

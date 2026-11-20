@@ -14,7 +14,7 @@ import BackOfficeLayout from '@/layouts/back-office-layout';
 import { update } from '@/actions/App/Http/Controllers/BackOffice/ProduitController';
 
 /**
- * Modification d'un produit (route « backoffice.produits.edit »). La référence
+ * Modification d'un produit (route "backoffice.produits.edit"). La référence
  * ne peut pas être modifiée.
  *
  * @param roleLibelle Nom du rôle de l'employé connecté.
@@ -37,7 +37,7 @@ export default function EditProduit({
     magasins: MagasinStock[];
 }) {
     // `update.form()` renvoie l'adresse du produit ; Laravel reçoit la requête
-    // en POST avec « _method=PUT », ce qui permet d'envoyer des fichiers.
+    // en POST avec "_method=PUT", ce qui permet d'envoyer des fichiers.
     const formulaire = update.form(produit.reference);
 
     return (

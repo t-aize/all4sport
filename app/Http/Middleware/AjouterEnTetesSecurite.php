@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Ajoute les en-têtes HTTP de sécurité à chaque réponse (besoin « Sécurité du
- * SI » du lot A) :
+ * Ajoute les en-têtes HTTP de sécurité à chaque réponse (besoin "Sécurité du
+ * SI" du lot A) :
  * - HSTS (HTTPS uniquement) : le navigateur n'utilisera plus que HTTPS ;
  * - X-Frame-Options : interdit d'afficher le site dans une iframe (clickjacking) ;
  * - X-Content-Type-Options : interdit au navigateur de deviner le type MIME ;

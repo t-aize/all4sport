@@ -66,7 +66,7 @@ const classeChamp =
  * informations, stock Internet, stock de chaque magasin et photos (de 1 à 5).
  *
  * @param action Adresse d'envoi du formulaire (générée par Wayfinder).
- * @param method Méthode HTTP du formulaire (POST, avec « _method » pour PUT).
+ * @param method Méthode HTTP du formulaire (POST, avec "_method" pour PUT).
  * @param fournisseurs Fournisseurs proposés dans la liste déroulante.
  * @param rayons Rayons proposés dans la liste déroulante.
  * @param magasins Magasins dont on saisit le stock.
@@ -320,7 +320,7 @@ export default function ProduitForm({
 
                     <div className="flex gap-3">
                         <Button type="submit" disabled={processing}>
-                            {processing ? 'Enregistrement…' : libelleBouton}
+                            {processing ? 'Enregistrement...' : libelleBouton}
                         </Button>
                         <Button
                             render={<Link href={index()} />}

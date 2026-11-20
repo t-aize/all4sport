@@ -2,7 +2,7 @@
 
 /*
 |--------------------------------------------------------------------------
-| API d'échange avec le Lot B « Logistique »
+| API d'échange avec le Lot B "Logistique"
 |--------------------------------------------------------------------------
 |
 | Les deux activités d'ALL4SPORT (vente et logistique) forment deux systèmes
@@ -10,9 +10,9 @@
 | interconnexion. Ces routes (préfixe /api/v1) permettent au SI Logistique :
 |   - de lire et de mettre à jour les stocks (Internet et magasins) ;
 |   - de récupérer les commandes à préparer et d'en faire évoluer l'état
-|     (« en préparation », « expédiée »).
+|     ("en préparation", "expédiée").
 |
-| Sécurité : jeton d'API obligatoire (en-tête « Authorization: Bearer … »),
+| Sécurité : jeton d'API obligatoire (en-tête "Authorization: Bearer ..."),
 | HTTPS exigé en production, limitation à 60 requêtes par minute.
 | Documentation : docs/api-logistique.md.
 |

@@ -22,7 +22,7 @@ type Commande = {
 };
 
 /**
- * Historique des commandes du client (route « compte.commandes.index »).
+ * Historique des commandes du client (route "compte.commandes.index").
  */
 export default function MesCommandes({
     commandes,

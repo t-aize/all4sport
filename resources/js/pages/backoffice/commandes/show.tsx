@@ -37,7 +37,7 @@ type Commande = CommandeDetail & {
 };
 
 /**
- * Détail d'une commande dans le back-office (route « backoffice.commandes.show ») :
+ * Détail d'une commande dans le back-office (route "backoffice.commandes.show") :
  * suivi, client, produits, historique des états et bouton permettant au
  * collaborateur responsable d'enregistrer l'état suivant.
  */
@@ -95,22 +95,21 @@ export default function CommandeShow({
                                             className="w-full rounded-xl sm:w-auto"
                                         >
                                             {processing
-                                                ? 'Enregistrement…'
-                                                : `Passer à « ${etatSuivant.label} »`}
+                                                ? 'Enregistrement...'
+                                                : `Passer à "${etatSuivant.label}"`}
                                         </Button>
                                     </>
                                 )}
                             </Form>
                         ) : (
                             <p className="text-muted-foreground flex items-center gap-2 text-sm">
-                                <Lock className="size-4" /> Prochaine étape «{' '}
-                                {etatSuivant.label} » : rôle{' '}
-                                {responsableSuivant}
+                                <Lock className="size-4" /> Prochaine étape "
+                                {etatSuivant.label}" : rôle {responsableSuivant}
                             </p>
                         )
                     ) : (
                         <p className="text-sm font-medium text-emerald-600">
-                            Commande terminée ✓
+                            Commande terminée
                         </p>
                     )}
                 </div>
@@ -133,7 +132,7 @@ export default function CommandeShow({
                         </li>
                         <li className="flex items-center gap-2">
                             <Phone className="text-muted-foreground size-4" />{' '}
-                            {commande.client.telephone ?? '—'}
+                            {commande.client.telephone ?? '-'}
                         </li>
                         <li className="flex items-center gap-2">
                             <MapPin className="text-muted-foreground size-4 shrink-0" />{' '}

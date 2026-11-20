@@ -13,7 +13,7 @@ import AuthLayout from '@/layouts/auth-layout';
 
 /**
  * Page de choix d'un nouveau mot de passe, ouverte depuis le lien reçu par
- * email (route « password.reset »).
+ * email (route "password.reset").
  *
  * @param email Email du compte, transmis par NewPasswordController::create.
  * @param token Jeton de réinitialisation présent dans le lien. Il est renvoyé
@@ -83,7 +83,7 @@ export default function ResetPassword({
                         <Field>
                             <Button type="submit" disabled={processing}>
                                 {processing
-                                    ? 'Réinitialisation…'
+                                    ? 'Réinitialisation...'
                                     : 'Réinitialiser le mot de passe'}
                             </Button>
                         </Field>

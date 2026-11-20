@@ -44,7 +44,7 @@ class Fournisseur extends Model
 
     /**
      * Le code fournisseur déduit d'un nom : ses 3 premières lettres, sans
-     * accent, en majuscules (ex : « Équipe Sud » → « EQU »).
+     * accent, en majuscules (ex : "Équipe Sud" -> "EQU").
      */
     public static function codeDepuisNom(string $nom): string
     {

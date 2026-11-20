@@ -27,7 +27,7 @@ type ProduitLigne = {
 };
 
 /**
- * Un lien de pagination Laravel (« Précédent », « 1 », « 2 », « Suivant »…).
+ * Un lien de pagination Laravel ("Précédent", "1", "2", "Suivant"...).
  */
 type LienPagination = {
     url: string | null;
@@ -36,7 +36,7 @@ type LienPagination = {
 };
 
 /**
- * Liste des produits (route « backoffice.produits.index »), avec recherche par
+ * Liste des produits (route "backoffice.produits.index"), avec recherche par
  * référence ou description, modification et suppression.
  *
  * @param roleLibelle Nom du rôle de l'employé connecté.

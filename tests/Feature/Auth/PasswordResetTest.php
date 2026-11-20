@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 
 /*
- * Tests du parcours « mot de passe oublié » : demande du lien par email
+ * Tests du parcours "mot de passe oublié" : demande du lien par email
  * (notification simulée) puis choix d'un nouveau mot de passe avec le jeton.
  */
 

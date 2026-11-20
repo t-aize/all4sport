@@ -1,6 +1,6 @@
 # Contributions
 
-Ce dépôt est un **projet pédagogique archivé** (BTS SIO, option SLAM — cas
+Ce dépôt est un **projet pédagogique archivé** (BTS SIO, option SLAM - cas
 d'étude fictif ALL4SPORT). Il est publié en lecture seule pour présenter le
 travail réalisé.
 

@@ -28,7 +28,7 @@ use Illuminate\Support\Collection;
  * - commandes : ~260 commandes sur 12 mois, avec leur historique d'états ;
  * - paniers en cours (PanierSeeder).
  *
- * Tous les mots de passe valent « password ». Voir docs/comptes.md.
+ * Tous les mots de passe valent "password". Voir docs/comptes.md.
  */
 class DatabaseSeeder extends Seeder
 {
@@ -69,7 +69,7 @@ class DatabaseSeeder extends Seeder
 
     /**
      * Crée les collaborateurs : un compte de démonstration par rôle (identifiant
-     * = nom technique du rôle, mot de passe « password ») et 12 autres
+     * = nom technique du rôle, mot de passe "password") et 12 autres
      * collaborateurs répartis entre les rôles.
      *
      * @return Collection<int, Employe>

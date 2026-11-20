@@ -1,8 +1,8 @@
-# ALL4SPORT — Lot A « Vente »
+# ALL4SPORT - Lot A "Vente"
 
 <p align="center"><img src="public/images/all4sport-banner.webp" alt="ALL4SPORT" width="560"></p>
 
-Refonte du système d'information de vente d'**ALL4SPORT** (appel d'offre **AO-03569 « Refonte du SI »**, lot A) : un **site marchand** et un **module de traitement des commandes**, interopérables avec le Lot B « Logistique » et cadrés avec le Lot C « Systèmes et réseaux ».
+Refonte du système d'information de vente d'**ALL4SPORT** (appel d'offre **AO-03569 "Refonte du SI"**, lot A) : un **site marchand** et un **module de traitement des commandes**, interopérables avec le Lot B "Logistique" et cadrés avec le Lot C "Systèmes et réseaux".
 
 > [!IMPORTANT]
 > **Projet pédagogique archivé.** Ce dépôt a été réalisé dans le cadre du **BTS SIO, option SLAM**, pour répondre à un cas d'étude. L'entreprise ALL4SPORT, l'appel d'offre, les magasins, les clients et toutes les données sont **fictifs**. Le projet est terminé et publié en lecture seule : **aucune évolution, maintenance, correction ni contribution** n'est prévue, et il n'est pas destiné à un usage en production.
@@ -20,8 +20,8 @@ Refonte du système d'information de vente d'**ALL4SPORT** (appel d'offre **AO-0
 **Traitement des commandes (back-office)**
 
 - Authentification des collaborateurs et rôles : service client, opérateur, livreur, vendeur
-- Workflow **transmise → validée → en préparation → expédiée → livrée / retirée**, chaque état saisi par le rôle responsable, avec historique
-- Tableau de bord (à traiter, chiffre d'affaires, ventes mensuelles, stocks faibles…)
+- Workflow **transmise -> validée -> en préparation -> expédiée -> livrée / retirée**, chaque état saisi par le rôle responsable, avec historique
+- Tableau de bord (à traiter, chiffre d'affaires, ventes mensuelles, stocks faibles...)
 - Gestion des produits (référence générée, stocks, photos) et des fournisseurs
 
 **Interopérabilité et sécurité**
@@ -37,7 +37,7 @@ php artisan migrate:fresh --seed
 composer dev
 ```
 
-Ouvrir http://localhost:8000 — comptes de démonstration (mot de passe `password`) :
+Ouvrir http://localhost:8000 - comptes de démonstration (mot de passe `password`) :
 
 - Client : `client@all4sport.local`
 - Back-office (`/backoffice`) : `service_client`, `operateur`, `livreur`, `vendeur`

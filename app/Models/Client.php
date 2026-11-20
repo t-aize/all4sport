@@ -68,7 +68,7 @@ class Client extends Authenticatable
     }
 
     /**
-     * Met un numéro au format du code client : « CLI » + 8 chiffres.
+     * Met un numéro au format du code client : "CLI" + 8 chiffres.
      */
     public static function formaterCodeCli(int $numero): string
     {
@@ -76,7 +76,7 @@ class Client extends Authenticatable
     }
 
     /**
-     * Le prochain code client : « CLI » suivi d'un nombre auto-incrémenté
+     * Le prochain code client : "CLI" suivi d'un nombre auto-incrémenté
      * de 8 chiffres.
      */
     public static function genererCodeCli(): string

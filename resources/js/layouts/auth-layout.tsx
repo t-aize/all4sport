@@ -10,7 +10,7 @@ import { home } from '@/routes';
  * mot de passe oublié, réinitialisation, connexion du back-office) : un
  * panneau de marque à gauche (sur grand écran) et le formulaire à droite.
  *
- * Un « layout » évite de recopier la même structure dans chaque page : la page
+ * Un "layout" évite de recopier la même structure dans chaque page : la page
  * fournit seulement son titre, sa description et son formulaire (`children`).
  *
  * @param title Titre affiché au-dessus du formulaire et dans l'onglet.

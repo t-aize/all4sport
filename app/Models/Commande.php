@@ -44,7 +44,7 @@ class Commande extends Model
     use HasFactory;
 
     /**
-     * Valeurs par défaut : une nouvelle commande est « transmise ».
+     * Valeurs par défaut : une nouvelle commande est "transmise".
      *
      * @var array<string, mixed>
      */

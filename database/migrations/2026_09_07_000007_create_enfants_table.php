@@ -19,7 +19,7 @@ return new class extends Migration
         Schema::create('enfants', function (Blueprint $table) {
             $table->id();
             $table->date('date_naissance');
-            // Relation « un client a plusieurs enfants ». `cascadeOnDelete`
+            // Relation "un client a plusieurs enfants". `cascadeOnDelete`
             // supprime automatiquement les enfants quand le client est supprimé.
             $table->foreignId('client_id')->constrained()->cascadeOnDelete();
             $table->timestamps();

@@ -30,11 +30,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         // Routes des pages du site (voir routes/web.php).
         web: __DIR__.'/../routes/web.php',
-        // API d'échange avec le SI du Lot B « Logistique » (préfixe /api).
+        // API d'échange avec le SI du Lot B "Logistique" (préfixe /api).
         api: __DIR__.'/../routes/api.php',
         // Commandes artisan personnalisées (voir routes/console.php).
         commands: __DIR__.'/../routes/console.php',
-        // URL de « santé » : renvoie 200 si l'application démarre correctement.
+        // URL de "santé" : renvoie 200 si l'application démarre correctement.
         // Utile pour la supervision et le déploiement (voir Laravel Cloud).
         health: '/up',
     )
@@ -48,7 +48,7 @@ return Application::configure(basePath: dirname(__DIR__))
             // Ajoute des en-têtes HTTP pour que le navigateur précharge les
             // fichiers CSS/JS générés par Vite (pages plus rapides).
             AddLinkHeadersForPreloadedAssets::class,
-            // En-têtes HTTP de sécurité (HSTS, anti-clickjacking…).
+            // En-têtes HTTP de sécurité (HSTS, anti-clickjacking...).
             AjouterEnTetesSecurite::class,
         ]);
 
@@ -64,8 +64,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Un visiteur non connecté qui tente d'accéder à une page protégée est
         // renvoyé vers un formulaire de connexion. On choisit lequel d'après le
-        // guard exigé par la route : « auth:employe » renvoie vers la connexion du
-        // back-office, tout autre « auth » vers celle des clients.
+        // guard exigé par la route : "auth:employe" renvoie vers la connexion du
+        // back-office, tout autre "auth" vers celle des clients.
         $middleware->redirectGuestsTo(
             fn (Request $request) => in_array('auth:employe', $request->route()?->gatherMiddleware() ?? [], true)
                 ? route('backoffice.login')
@@ -73,7 +73,7 @@ return Application::configure(basePath: dirname(__DIR__))
         );
 
         // Inversement, un utilisateur déjà connecté qui ouvre une page réservée
-        // aux visiteurs (« guest:employe » pour le back-office, « guest » pour le
+        // aux visiteurs ("guest:employe" pour le back-office, "guest" pour le
         // site) est renvoyé vers son espace.
         $middleware->redirectUsersTo(
             fn (Request $request) => in_array('guest:employe', $request->route()?->gatherMiddleware() ?? [], true)

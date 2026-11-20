@@ -13,9 +13,9 @@ use Illuminate\Validation\ValidationException;
  * Requête de connexion d'un collaborateur au back-office.
  *
  * Elle joue le même rôle que App\Http\Requests\Auth\LoginRequest pour les
- * clients, avec deux différences : l'identifiant est l'« identifiant de
- * connexion » de l'employé (et non un email) et l'authentification passe par le
- * guard « employe », qui lit la table `employes`.
+ * clients, avec deux différences : l'identifiant est l'"identifiant de
+ * connexion" de l'employé (et non un email) et l'authentification passe par le
+ * guard "employe", qui lit la table `employes`.
  *
  * Utilisée par BackOffice\AuthenticatedSessionController::store.
  */
@@ -105,7 +105,7 @@ class LoginRequest extends FormRequest
     /**
      * La clé du rate limiter : identifiant (en minuscules) + adresse IP.
      *
-     * Le préfixe « backoffice| » sépare ces compteurs de ceux des clients, pour
+     * Le préfixe "backoffice|" sépare ces compteurs de ceux des clients, pour
      * qu'un identifiant identique côté client et côté employé ne partage pas
      * le même quota d'essais.
      */

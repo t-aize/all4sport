@@ -9,7 +9,7 @@
 | compte, de se connecter, de se déconnecter et de récupérer son mot de passe.
 |
 | Il est inclus par routes/web.php et bénéficie donc du groupe de middlewares
-| « web ». Les pages React correspondantes sont dans resources/js/pages/auth.
+| "web". Les pages React correspondantes sont dans resources/js/pages/auth.
 |
 */
 
@@ -19,7 +19,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 
-// Le middleware « guest » réserve ces routes aux visiteurs NON connectés : un
+// Le middleware "guest" réserve ces routes aux visiteurs NON connectés : un
 // client déjà connecté qui visite /login est redirigé vers l'accueil.
 Route::middleware('guest')->group(function () {
     // Inscription : GET affiche le formulaire, POST enregistre le client.
@@ -47,7 +47,7 @@ Route::middleware('guest')->group(function () {
         ->name('password.store');
 });
 
-// Le middleware « auth » réserve ces routes aux clients connectés. Déconnexion
+// Le middleware "auth" réserve ces routes aux clients connectés. Déconnexion
 // en POST (et non en GET) pour qu'un simple lien ne puisse pas déconnecter
 // quelqu'un à son insu.
 Route::middleware('auth')->group(function () {

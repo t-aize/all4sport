@@ -27,7 +27,7 @@ class ProduitRequest extends FormRequest
     public const PHOTOS_MAX = 5;
 
     /**
-     * L'accès est déjà réservé aux rôles autorisés par le middleware « role ».
+     * L'accès est déjà réservé aux rôles autorisés par le middleware "role".
      */
     public function authorize(): bool
     {

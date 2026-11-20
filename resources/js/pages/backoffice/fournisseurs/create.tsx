@@ -3,7 +3,7 @@ import { FournisseurForm } from '@/components/fournisseur-form';
 import BackOfficeLayout from '@/layouts/back-office-layout';
 
 /**
- * Création d'un fournisseur (route « backoffice.fournisseurs.create »).
+ * Création d'un fournisseur (route "backoffice.fournisseurs.create").
  */
 export default function CreateFournisseur() {
     return (

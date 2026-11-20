@@ -18,7 +18,7 @@ use Inertia\Response;
 /**
  * Validation du panier et passage de commande (processus de vente en ligne) :
  * le client choisit son mode de livraison, les stocks sont vérifiés, puis la
- * commande est ajoutée à son compte avec l'état « transmise ».
+ * commande est ajoutée à son compte avec l'état "transmise".
  *
  * Si le panier est vide ou qu'un stock est insuffisant, la validation est
  * annulée et le client revient au panier.

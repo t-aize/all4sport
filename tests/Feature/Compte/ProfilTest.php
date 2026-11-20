@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Inertia\Testing\AssertableInertia;
 
 /*
- * Espace « Mon compte » : informations personnelles, magasin par défaut,
+ * Espace "Mon compte" : informations personnelles, magasin par défaut,
  * sports pratiqués, enfants et mot de passe.
  */
 

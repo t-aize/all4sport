@@ -41,7 +41,7 @@ type Mode = {
 };
 
 /**
- * Validation du panier (route « commande.create ») : choix du mode de
+ * Validation du panier (route "commande.create") : choix du mode de
  * livraison (retrait magasin gratuit ou livraison à domicile à 10 €), puis
  * paiement. Les stocks sont vérifiés par le serveur à l'envoi ; s'ils sont
  * insuffisants, la validation est annulée et le client revient au panier.
@@ -211,7 +211,7 @@ export default function CommandeCreate({
                                                         className={`mt-1 block text-xs font-semibold ${magasin.disponible ? 'text-emerald-600' : 'text-amber-600'}`}
                                                     >
                                                         {magasin.disponible
-                                                            ? '✓ Tout est disponible'
+                                                            ? 'Tout est disponible'
                                                             : 'Stock insuffisant pour certains articles'}
                                                     </span>
                                                 </span>
@@ -330,7 +330,7 @@ export default function CommandeCreate({
                                                 />
                                             )}
                                             <span className="bg-navy text-navy-foreground absolute -top-0 -right-0 rounded-bl-md px-1 text-[10px] font-bold">
-                                                ×{ligne.quantite}
+                                                x{ligne.quantite}
                                             </span>
                                         </span>
                                         <span className="line-clamp-2 flex-1">
@@ -391,7 +391,7 @@ export default function CommandeCreate({
                             >
                                 <Lock />{' '}
                                 {processing
-                                    ? 'Vérification des stocks…'
+                                    ? 'Vérification des stocks...'
                                     : `Payer ${formatPrix(total)}`}
                             </Button>
                         </aside>

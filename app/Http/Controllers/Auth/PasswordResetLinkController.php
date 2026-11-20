@@ -10,7 +10,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 
 /**
- * Première étape du « mot de passe oublié » : le client saisit son email et
+ * Première étape du "mot de passe oublié" : le client saisit son email et
  * reçoit un lien de réinitialisation.
  *
  * La deuxième étape (choix du nouveau mot de passe) est dans
@@ -43,7 +43,7 @@ class PasswordResetLinkController extends Controller
             'email.email' => "L'adresse email n'est pas valide.",
         ]);
 
-        // Le « broker » de mots de passe de Laravel crée un jeton temporaire,
+        // Le "broker" de mots de passe de Laravel crée un jeton temporaire,
         // l'enregistre (table password_reset_tokens) et envoie l'email.
         $status = Password::sendResetLink($request->only('email'));
 

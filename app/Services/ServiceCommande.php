@@ -15,8 +15,8 @@ use Illuminate\Validation\ValidationException;
 
 /**
  * Passage d'une commande à partir du panier, selon le processus de vente en
- * ligne : validation du panier → choix du mode de livraison → vérification des
- * stocks → ajout de la commande au compte client → gestion de la livraison.
+ * ligne : validation du panier -> choix du mode de livraison -> vérification des
+ * stocks -> ajout de la commande au compte client -> gestion de la livraison.
  *
  * Le stock contrôlé (puis décrémenté) dépend du mode de livraison :
  * - retrait en magasin : le stock du magasin choisi ;
@@ -29,7 +29,7 @@ class ServiceCommande
 
     /**
      * Crée la commande, décrémente les stocks, vide le panier et enregistre
-     * l'état « transmise ». Tout se fait dans une transaction : en cas de stock
+     * l'état "transmise". Tout se fait dans une transaction : en cas de stock
      * insuffisant, rien n'est enregistré.
      *
      * @param  array{adresse?: string|null, code_postal?: string|null, ville?: string|null}  $adresse
@@ -98,7 +98,7 @@ class ServiceCommande
 
             if ($ligne->quantite > $disponible) {
                 $lieu = $mode === ModeLivraison::RetraitMagasin ? "au magasin de {$magasin?->ville}" : 'sur Internet';
-                $erreurs[] = "« {$produit->description_produit} » : {$disponible} disponible(s) {$lieu}, {$ligne->quantite} demandé(s).";
+                $erreurs[] = "\"{$produit->description_produit}\" : {$disponible} disponible(s) {$lieu}, {$ligne->quantite} demandé(s).";
             }
         }
 

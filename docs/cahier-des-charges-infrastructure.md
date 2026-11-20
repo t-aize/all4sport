@@ -1,6 +1,6 @@
-# Cahier des charges technique — Infrastructure (établi avec le Lot C)
+# Cahier des charges technique - Infrastructure (établi avec le Lot C)
 
-Besoins en infrastructure système et réseau des modules du Lot A « Vente », à valider conjointement avec le Lot C « Systèmes et réseaux ».
+Besoins en infrastructure système et réseau des modules du Lot A "Vente", à valider conjointement avec le Lot C "Systèmes et réseaux".
 
 ## 1. Architecture applicative
 
@@ -26,7 +26,7 @@ Besoins en infrastructure système et réseau des modules du Lot A « Vente », 
      │ Serveur applicatif Vente │──── Base de données Vente (3306, réseau privé)
      └────────────┬────────────┘
                   │ HTTPS + jeton (API /api/v1)
-     ┌────────────┴────────────┐   SI Logistique (Lot B) — réseau séparé
+     ┌────────────┴────────────┐   SI Logistique (Lot B) - réseau séparé
      │ Applications Logistique  │
      └─────────────────────────┘
 ```
@@ -42,7 +42,7 @@ Besoins en infrastructure système et réseau des modules du Lot A « Vente », 
 | Serveur applicatif | 2 vCPU, 4 Go RAM, 40 Go SSD   | 1 vCPU, 2 Go RAM |
 | Base de données    | 2 vCPU, 4 Go RAM, 50 Go SSD   | Mutualisée       |
 | Stockage photos    | 20 Go (disque `public` ou S3) | 5 Go             |
-| Bande passante     | 100 Mbit/s                    | —                |
+| Bande passante     | 100 Mbit/s                    | -                |
 
 Volumétrie : ~1 000 à 10 000 produits (5 photos max), quelques milliers de clients, 200 collaborateurs.
 
@@ -57,7 +57,7 @@ Volumétrie : ~1 000 à 10 000 produits (5 photos max), quelques milliers de cli
 | SI Logistique (Lot B) | API Vente `/api/v1` | 443      | HTTPS + Bearer       |
 | Serveur applicatif    | Serveur SMTP        | 587      | SMTP + STARTTLS      |
 
-## 5. Sécurité (exigences « Sécurité du SI »)
+## 5. Sécurité (exigences "Sécurité du SI")
 
 - **Chiffrement** : certificat TLS (Let's Encrypt ou AC interne), TLS 1.2 minimum, HSTS activé par l'application.
 - **Authentification** : clients (email + mot de passe) et collaborateurs (identifiant + mot de passe) sur deux espaces séparés ; mots de passe hachés (bcrypt) ; limitation des tentatives de connexion.

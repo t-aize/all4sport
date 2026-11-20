@@ -3,8 +3,8 @@ import { formatDateHeure } from '@/lib/format';
 import type { EtapeSuivi } from '@/types/catalogue';
 
 /**
- * Frise de suivi d'une commande : chaque état du parcours (transmise →
- * validée → en préparation → expédiée → livrée/retirée), avec sa date s'il est
+ * Frise de suivi d'une commande : chaque état du parcours (transmise ->
+ * validée -> en préparation -> expédiée -> livrée/retirée), avec sa date s'il est
  * atteint. L'étape en cours est mise en avant.
  *
  * @param etapes Les étapes du parcours, dans l'ordre.

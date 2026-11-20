@@ -10,7 +10,7 @@ import { index } from '@/routes/compte/commandes';
 import type { CommandeDetail } from '@/types/catalogue';
 
 /**
- * Détail d'une commande du client (route « compte.commandes.show ») : suivi
+ * Détail d'une commande du client (route "compte.commandes.show") : suivi
  * des états, produits, quantités, prix, totaux, lieu d'expédition et adresse
  * de livraison. Juste après la commande, un message de confirmation s'affiche.
  */

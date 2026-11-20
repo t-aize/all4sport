@@ -13,7 +13,7 @@
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 
-// Génère un jeton aléatoire pour l'API d'échange avec le Lot B « Logistique ».
+// Génère un jeton aléatoire pour l'API d'échange avec le Lot B "Logistique".
 // Le jeton est à copier dans LOGISTIQUE_API_TOKEN (.env) et à transmettre au
 // Lot B par un canal sûr (jamais par email en clair).
 Artisan::command('logistique:jeton', function (): void {

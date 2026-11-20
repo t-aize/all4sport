@@ -3,7 +3,7 @@ import { CircleAlert, CircleCheck, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 /**
- * Message de confirmation (« Produit ajouté au panier. ») envoyé par Laravel
+ * Message de confirmation ("Produit ajouté au panier.") envoyé par Laravel
  * avec `->with('status', ...)`, affiché en bas à droite puis masqué après
  * quelques secondes. Les erreurs générales (stock, panier) sont affichées de
  * la même façon, en rouge.

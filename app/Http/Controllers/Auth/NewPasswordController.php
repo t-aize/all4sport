@@ -14,7 +14,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 
 /**
- * Seconde étape du « mot de passe oublié » : le client arrive depuis le lien
+ * Seconde étape du "mot de passe oublié" : le client arrive depuis le lien
  * reçu par email et choisit un nouveau mot de passe.
  *
  * Page React : resources/js/pages/auth/reset-password.tsx.
@@ -60,7 +60,7 @@ class NewPasswordController extends Controller
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function (Client $client) use ($request): void {
                 // Le mot de passe est haché automatiquement par le cast
-                // « hashed » du modèle Client. Le « remember token » est
+                // "hashed" du modèle Client. Le "remember token" est
                 // régénéré pour déconnecter les autres appareils.
                 $client->forceFill([
                     'password' => $request->password,

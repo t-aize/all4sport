@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Réserve une route du back-office aux collaborateurs ayant l'un des rôles
  * indiqués.
  *
- * Le middleware est enregistré sous l'alias « role » (voir bootstrap/app.php).
+ * Le middleware est enregistré sous l'alias "role" (voir bootstrap/app.php).
  * On lui passe les rôles autorisés après les deux-points, séparés par des
  * virgules, avec le nom technique de l'enum RoleEmploye :
  *
@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * Il doit toujours être placé APRÈS `auth:employe` : celui-ci redirige les
  * visiteurs non connectés vers la page de connexion, alors que ce middleware
- * répond « 403 Interdit » à un employé connecté dont le rôle ne convient pas.
+ * répond "403 Interdit" à un employé connecté dont le rôle ne convient pas.
  */
 class EnsureEmployeHasRole
 {

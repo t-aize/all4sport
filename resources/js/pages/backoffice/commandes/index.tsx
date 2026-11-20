@@ -27,8 +27,8 @@ type Commande = {
 };
 
 /**
- * Liste des commandes du back-office (route « backoffice.commandes.index ») :
- * filtre « à traiter » (selon le rôle), filtre par état et par mode de
+ * Liste des commandes du back-office (route "backoffice.commandes.index") :
+ * filtre "à traiter" (selon le rôle), filtre par état et par mode de
  * livraison, recherche par numéro ou client.
  */
 export default function CommandesIndex({
@@ -108,7 +108,7 @@ export default function CommandesIndex({
                         onChange={(evenement) =>
                             setRecherche(evenement.target.value)
                         }
-                        placeholder="N° de commande, nom, email ou code client…"
+                        placeholder="N° de commande, nom, email ou code client..."
                         className="bg-card pl-9"
                         aria-label="Rechercher une commande"
                     />

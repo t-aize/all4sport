@@ -13,7 +13,7 @@ import { createInertiaApp } from '@inertiajs/react';
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 void createInertiaApp({
-    // Titre de l'onglet du navigateur : « Titre de la page - ALL4SPORT ».
+    // Titre de l'onglet du navigateur : "Titre de la page - ALL4SPORT".
     title: (title) => (title ? `${title} - ${appName}` : appName),
     // Barre de progression affichée pendant le chargement d'une page.
     progress: {

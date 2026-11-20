@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
  * Table `fournisseurs` : les entreprises qui livrent les produits à ALL4SPORT.
  *
  * Une migration décrit une modification de la structure de la base de données
- * (créer une table, ajouter une colonne…). Elle est versionnée avec le code :
+ * (créer une table, ajouter une colonne...). Elle est versionnée avec le code :
  * `php artisan migrate` exécute `up()`, `php artisan migrate:rollback` exécute
  * `down()`. Les migrations sont jouées dans l'ordre alphabétique de leur nom,
  * d'où le préfixe daté et numéroté.

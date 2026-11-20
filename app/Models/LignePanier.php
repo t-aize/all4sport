@@ -18,7 +18,7 @@ use Illuminate\Support\Carbon;
  * @property string $reference_produit Référence du produit ajouté.
  * @property int $quantite Quantité souhaitée.
  * @property string $prix_unitaire Prix unitaire figé à l'ajout.
- * @property-read float $sous_total Prix unitaire × quantité.
+ * @property-read float $sous_total Prix unitaire x quantité.
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */

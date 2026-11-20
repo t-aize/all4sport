@@ -160,7 +160,7 @@ export default function Dashboard({
                     </div>
                     {aTraiter.length === 0 ? (
                         <p className="text-muted-foreground py-8 text-center text-sm">
-                            Rien à traiter pour le moment. Bravo ! 🎉
+                            Rien à traiter pour le moment. Bravo !
                         </p>
                     ) : (
                         <ul className="divide-y">

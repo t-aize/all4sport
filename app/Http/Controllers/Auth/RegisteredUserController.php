@@ -66,11 +66,11 @@ class RegisteredUserController extends Controller
         ]);
 
         // Seuls les attributs listés dans #[Fillable] du modèle Client sont
-        // acceptés (protection contre l'« assignation de masse »). Le mot de
-        // passe est haché automatiquement par le cast « hashed ».
+        // acceptés (protection contre l'"assignation de masse"). Le mot de
+        // passe est haché automatiquement par le cast "hashed".
         $client = Client::create($validated);
 
-        // Déclenche l'événement « Registered » : point d'accroche pour, plus
+        // Déclenche l'événement "Registered" : point d'accroche pour, plus
         // tard, envoyer un email de bienvenue ou de vérification.
         event(new Registered($client));
 

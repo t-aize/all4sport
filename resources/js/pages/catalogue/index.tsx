@@ -30,7 +30,7 @@ const TRIS = [
 ];
 
 /**
- * Catalogue public (route « catalogue.index ») : produits triés par rayon
+ * Catalogue public (route "catalogue.index") : produits triés par rayon
  * (sport), avec filtre par rayon, recherche et tri.
  */
 export default function CatalogueIndex({
@@ -83,7 +83,7 @@ export default function CatalogueIndex({
                 </h1>
                 <p className="text-muted-foreground">
                     {pluriel(produits.total, 'article')}
-                    {recherche && ` pour « ${recherche} »`}
+                    {recherche && ` pour "${recherche}"`}
                 </p>
             </div>
 
@@ -99,7 +99,7 @@ export default function CatalogueIndex({
                         onChange={(evenement) =>
                             setSaisie(evenement.target.value)
                         }
-                        placeholder="Rechercher par nom, référence ou sport…"
+                        placeholder="Rechercher par nom, référence ou sport..."
                         aria-label="Rechercher dans le catalogue"
                         className="h-11 rounded-xl pl-9"
                     />

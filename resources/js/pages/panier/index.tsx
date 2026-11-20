@@ -38,7 +38,7 @@ type Ligne = {
 };
 
 /**
- * Le panier (route « panier.index ») : modification des quantités, retrait
+ * Le panier (route "panier.index") : modification des quantités, retrait
  * d'articles et validation. Un visiteur peut remplir son panier mais doit se
  * connecter pour le valider (processus de vente en ligne).
  */
@@ -81,9 +81,9 @@ export default function PanierIndex({
                         <CircleAlert className="size-4" /> Validation annulée :
                         stock insuffisant
                     </p>
-                    <ul className="text-sm">
+                    <ul className="list-disc pl-5 text-sm">
                         {erreursStock.map((erreur) => (
-                            <li key={erreur}>• {erreur}</li>
+                            <li key={erreur}>{erreur}</li>
                         ))}
                     </ul>
                     <p className="text-muted-foreground mt-2 text-xs">

@@ -106,7 +106,7 @@ export function FournisseurForm({
                         disabled={processing}
                         className="w-fit"
                     >
-                        {processing ? 'Enregistrement…' : libelleBouton}
+                        {processing ? 'Enregistrement...' : libelleBouton}
                     </Button>
                 </FieldGroup>
             )}

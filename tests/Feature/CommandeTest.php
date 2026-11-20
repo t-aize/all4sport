@@ -13,7 +13,7 @@ use Inertia\Testing\AssertableInertia;
 /*
  * Tests du passage de commande (processus de vente en ligne) : validation du
  * panier, choix du mode de livraison, vérification des stocks, ajout de la
- * commande au compte client et état « transmise ».
+ * commande au compte client et état "transmise".
  */
 
 /**

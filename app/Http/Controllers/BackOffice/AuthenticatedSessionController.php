@@ -37,7 +37,7 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         // Nouvel identifiant de session après connexion (protection contre la
-        // « fixation de session »).
+        // "fixation de session").
         $request->session()->regenerate();
 
         return redirect()->intended(route('backoffice.dashboard'));

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Exceptions;
 use Illuminate\Support\Facades\Route;
 
 /*
- * Tests du middleware « role » : il réserve une route du back-office aux
+ * Tests du middleware "role" : il réserve une route du back-office aux
  * collaborateurs ayant l'un des rôles indiqués. Les routes ci-dessous n'existent
  * que pour ces tests.
  */

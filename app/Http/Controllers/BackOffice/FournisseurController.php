@@ -105,7 +105,7 @@ class FournisseurController extends Controller
     {
         if ($fournisseur->produits()->exists()) {
             return back()->withErrors([
-                'fournisseur' => "Impossible de supprimer « {$fournisseur->nom_fournisseur} » : des produits y sont rattachés.",
+                'fournisseur' => "Impossible de supprimer \"{$fournisseur->nom_fournisseur}\" : des produits y sont rattachés.",
             ]);
         }
 

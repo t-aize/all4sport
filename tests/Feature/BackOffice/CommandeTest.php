@@ -41,11 +41,11 @@ it('lists by default the orders that the role has to process', function (RoleEmp
             ->where('compteurs.a_traiter', 1)
             ->where('compteurs.toutes', 2));
 })->with([
-    'service client → transmise' => [RoleEmploye::ServiceClient, EtatCommande::Transmise, 'retraitMagasin'],
-    'opérateur → validée' => [RoleEmploye::Operateur, EtatCommande::Validee, 'livraisonDomicile'],
-    'opérateur → en préparation' => [RoleEmploye::Operateur, EtatCommande::EnPreparation, 'retraitMagasin'],
-    'livreur → expédiée à domicile' => [RoleEmploye::Livreur, EtatCommande::Expediee, 'livraisonDomicile'],
-    'vendeur → expédiée en magasin' => [RoleEmploye::Vendeur, EtatCommande::Expediee, 'retraitMagasin'],
+    'service client -> transmise' => [RoleEmploye::ServiceClient, EtatCommande::Transmise, 'retraitMagasin'],
+    'opérateur -> validée' => [RoleEmploye::Operateur, EtatCommande::Validee, 'livraisonDomicile'],
+    'opérateur -> en préparation' => [RoleEmploye::Operateur, EtatCommande::EnPreparation, 'retraitMagasin'],
+    'livreur -> expédiée à domicile' => [RoleEmploye::Livreur, EtatCommande::Expediee, 'livraisonDomicile'],
+    'vendeur -> expédiée en magasin' => [RoleEmploye::Vendeur, EtatCommande::Expediee, 'retraitMagasin'],
 ]);
 
 it('filters by state, delivery mode and search', function () {

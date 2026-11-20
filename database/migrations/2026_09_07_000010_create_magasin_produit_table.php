@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
  * Table `magasin_produit` : le stock de chaque produit dans chaque magasin
  * (association STOCKER).
  *
- * C'est une « table pivot » : elle relie deux tables dans une relation
+ * C'est une "table pivot" : elle relie deux tables dans une relation
  * plusieurs-à-plusieurs (un magasin stocke plusieurs produits, un produit est
  * stocké dans plusieurs magasins) et porte une information propre au couple :
  * la quantité en stock.

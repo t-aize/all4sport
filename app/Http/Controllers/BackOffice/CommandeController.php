@@ -41,7 +41,7 @@ class CommandeController extends Controller
 
     /**
      * Liste les commandes. Par défaut, seules celles que le rôle du
-     * collaborateur doit traiter sont affichées (filtre « à traiter »).
+     * collaborateur doit traiter sont affichées (filtre "à traiter").
      */
     public function index(Request $request): Response
     {
@@ -168,6 +168,6 @@ class CommandeController extends Controller
         $etat = EtatCommande::from($donnees['etat']);
         $this->workflow->enregistrer($commande, $etat, $employe);
 
-        return back()->with('status', "Commande {$commande->numero()} : état « {$etat->libelle()} » enregistré.");
+        return back()->with('status', "Commande {$commande->numero()} : état \"{$etat->libelle()}\" enregistré.");
     }
 }

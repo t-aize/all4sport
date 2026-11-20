@@ -18,7 +18,7 @@ use Illuminate\Validation\Rule;
 class FournisseurRequest extends FormRequest
 {
     /**
-     * L'accès est déjà réservé aux rôles autorisés par le middleware « role ».
+     * L'accès est déjà réservé aux rôles autorisés par le middleware "role".
      */
     public function authorize(): bool
     {

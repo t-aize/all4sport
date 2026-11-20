@@ -26,7 +26,7 @@ return new class extends Migration
             $table->dateTime('date_etat');
             // L'historique n'a pas de sens sans sa commande : il est supprimé avec elle.
             $table->foreignId('commande_id')->constrained()->cascadeOnDelete();
-            // Facultatif : l'état « transmise » est enregistré automatiquement,
+            // Facultatif : l'état "transmise" est enregistré automatiquement,
             // sans employé. Si l'employé est supprimé, on garde la trace.
             $table->foreignId('employe_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();

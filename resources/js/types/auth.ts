@@ -36,7 +36,7 @@ export type RoleEmploye =
  * Le collaborateur connecté au back-office, tel que l'envoie Laravel.
  *
  * Les champs reprennent les colonnes de la table `employes`, sans le mot de
- * passe ni le jeton « se souvenir de moi » (masqués par le modèle PHP).
+ * passe ni le jeton "se souvenir de moi" (masqués par le modèle PHP).
  */
 export type Employe = {
     id: number;

@@ -1,5 +1,5 @@
 {{--
-    Modèle Blade racine de l'application (vue « app »).
+    Modèle Blade racine de l'application (vue "app").
 
     C'est la seule page HTML réellement renvoyée par Laravel : elle est chargée
     à la première visite (voir HandleInertiaRequests::$rootView). Ensuite,

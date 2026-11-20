@@ -184,7 +184,7 @@ export default function SiteLayout({
                             onChange={(evenement) =>
                                 setRecherche(evenement.target.value)
                             }
-                            placeholder="Rechercher un article…"
+                            placeholder="Rechercher un article..."
                             aria-label="Rechercher un article"
                             className="rounded-full pl-9"
                         />
@@ -357,14 +357,14 @@ function PiedDePage() {
                         href="/backoffice"
                         className="text-primary text-sm font-semibold hover:underline"
                     >
-                        Accéder au back-office →
+                        Accéder au back-office
                     </a>
                 </div>
             </div>
             <div className="border-t border-white/10">
                 <p className="mx-auto max-w-7xl px-4 py-4 text-xs text-white/50">
-                    © {new Date().getFullYear()} ALL4SPORT SA — Lille. Données
-                    fictives (projet AO-03569, lot A « Vente »).
+                    © {new Date().getFullYear()} ALL4SPORT SA - Lille. Données
+                    fictives (projet AO-03569, lot A "Vente").
                 </p>
             </div>
         </footer>

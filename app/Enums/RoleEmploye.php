@@ -7,7 +7,7 @@ namespace App\Enums;
  * évoluer manuellement l'état d'une commande.
  *
  * Chaque rôle est responsable d'un ou plusieurs états de la commande
- * (voir `etatsGerables`). L'état « transmise » n'appartient à aucun rôle : il
+ * (voir `etatsGerables`). L'état "transmise" n'appartient à aucun rôle : il
  * est enregistré automatiquement quand le client valide sa commande.
  */
 enum RoleEmploye: string
@@ -62,7 +62,7 @@ enum RoleEmploye: string
 
     /**
      * Le rôle responsable d'un état de commande, ou null si l'état est
-     * enregistré automatiquement (cas de « transmise »).
+     * enregistré automatiquement (cas de "transmise").
      */
     public static function responsableDe(EtatCommande $etat): ?self
     {

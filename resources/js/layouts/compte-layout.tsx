@@ -8,8 +8,8 @@ import { edit as monCompte } from '@/routes/compte/profil';
 import type { Auth } from '@/types';
 
 /**
- * Mise en page de l'espace client : en-tête de bienvenue et onglets « Mon
- * compte » / « Mes commandes ».
+ * Mise en page de l'espace client : en-tête de bienvenue et onglets "Mon
+ * compte" / "Mes commandes".
  *
  * @param title Titre de la page.
  * @param children Contenu de la page.
@@ -43,7 +43,7 @@ export default function CompteLayout({
             <div className="bg-navy text-navy-foreground fond-sport animate-apparition relative mb-8 overflow-hidden rounded-3xl p-6 sm:p-8">
                 <p className="text-sm text-white/70">Espace client</p>
                 <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-                    Bonjour {auth.user?.prenom} 👋
+                    Bonjour {auth.user?.prenom}
                 </h1>
                 <p className="mt-1 font-mono text-xs text-white/60">
                     Code client : {String(auth.user?.code_cli ?? '')}

@@ -14,7 +14,7 @@ import AuthLayout from '@/layouts/auth-layout';
 import { login } from '@/routes';
 
 /**
- * Page d'inscription d'un nouveau client (route « register »).
+ * Page d'inscription d'un nouveau client (route "register").
  *
  * Les champs correspondent aux colonnes de la table `clients` et aux règles de
  * validation de RegisteredUserController::store. Les messages d'erreur
@@ -158,7 +158,7 @@ export default function Register() {
                         <Field>
                             <Button type="submit" disabled={processing}>
                                 {processing
-                                    ? 'Création du compte…'
+                                    ? 'Création du compte...'
                                     : 'Créer mon compte'}
                             </Button>
                             <FieldDescription className="text-center">

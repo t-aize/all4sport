@@ -4,7 +4,7 @@
 
 Ce dépôt est un **projet pédagogique archivé**, réalisé dans le cadre du BTS SIO
 (option SLAM) pour le cas d'étude fictif ALL4SPORT (appel d'offre AO-03569
-« Refonte du SI », Lot A – Vente). Il n'est déployé nulle part et **n'est pas
+"Refonte du SI", Lot A - Vente). Il n'est déployé nulle part et **n'est pas
 destiné à un usage en production**.
 
 ## Versions supportées

@@ -58,7 +58,7 @@ enum EtatCommande: string
      * L'état qui suit celui-ci dans le traitement d'une commande, selon son
      * mode de livraison, ou null si la commande est terminée.
      *
-     * Ordre : transmise → validée → en préparation → expédiée → livrée (livraison
+     * Ordre : transmise -> validée -> en préparation -> expédiée -> livrée (livraison
      * à domicile) ou retirée (retrait en magasin).
      */
     public function suivant(ModeLivraison $modeLivraison): ?self

@@ -15,10 +15,10 @@ import { register } from '@/routes';
 import { request } from '@/routes/password';
 
 /**
- * Page de connexion d'un client (route « login »).
+ * Page de connexion d'un client (route "login").
  *
  * @param status Message de confirmation envoyé par le contrôleur, par exemple
- *   « Votre mot de passe a été réinitialisé » après une réinitialisation.
+ *   "Votre mot de passe a été réinitialisé" après une réinitialisation.
  */
 export default function Login({ status }: { status?: string }) {
     return (
@@ -74,7 +74,7 @@ export default function Login({ status }: { status?: string }) {
                         </Field>
                         <Field>
                             <Button type="submit" disabled={processing}>
-                                {processing ? 'Connexion…' : 'Se connecter'}
+                                {processing ? 'Connexion...' : 'Se connecter'}
                             </Button>
                             <FieldDescription className="text-center">
                                 Pas encore de compte ?{' '}

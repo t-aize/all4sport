@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 /**
- * Validation du formulaire « Mon compte ».
+ * Validation du formulaire "Mon compte".
  */
 class ProfilRequest extends FormRequest
 {

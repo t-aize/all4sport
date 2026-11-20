@@ -172,7 +172,7 @@ export default function Welcome({
                     {
                         icone: PackageCheck,
                         titre: 'Suivi en temps réel',
-                        texte: 'Transmise, validée, en préparation, expédiée… suivez chaque étape.',
+                        texte: 'Transmise, validée, en préparation, expédiée... suivez chaque étape.',
                     },
                 ].map(({ icone: Icone, titre, texte }) => (
                     <div
@@ -245,7 +245,7 @@ export default function Welcome({
                             href={catalogue()}
                             className="text-primary hidden text-sm font-semibold hover:underline sm:block"
                         >
-                            Tout voir →
+                            Tout voir
                         </Link>
                     </div>
                     <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">

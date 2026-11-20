@@ -33,7 +33,7 @@ return new class extends Migration
             $table->date('date_naissance')->nullable();
             // Mise à jour par l'application à chaque nouvelle commande.
             $table->date('date_dernier_achat')->nullable();
-            // Hash du mot de passe (le cast « hashed » du modèle le calcule).
+            // Hash du mot de passe (le cast "hashed" du modèle le calcule).
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

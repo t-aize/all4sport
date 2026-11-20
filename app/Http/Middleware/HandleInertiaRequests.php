@@ -13,7 +13,7 @@ use Inertia\Middleware;
  *
  * Inertia relie le back-end Laravel au front-end React : au lieu de renvoyer du
  * HTML, les contrôleurs renvoient le nom d'un composant React et ses données
- * (« props »). Ce middleware définit la vue racine et les données partagées
+ * ("props"). Ce middleware définit la vue racine et les données partagées
  * avec TOUTES les pages.
  */
 class HandleInertiaRequests extends Middleware
@@ -59,7 +59,7 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             // Nom du site, défini par APP_NAME dans le fichier .env.
             'name' => config('app.name'),
-            // Message de confirmation d'une action (« Produit créé. »…), envoyé
+            // Message de confirmation d'une action ("Produit créé."...), envoyé
             // une seule fois par `->with('status', ...)` après une redirection.
             'status' => fn () => $request->session()->get('status'),
             'auth' => [
@@ -68,7 +68,7 @@ class HandleInertiaRequests extends Middleware
                 // Le collaborateur connecté au back-office, ou null. Les deux
                 // espaces sont indépendants : un client n'est jamais un employé.
                 'employe' => $request->user('employe'),
-                // Libellé du rôle du collaborateur (« Opérateur »…), pour l'en-tête.
+                // Libellé du rôle du collaborateur ("Opérateur"...), pour l'en-tête.
                 'roleLibelle' => fn (): ?string => $request->user('employe') instanceof Employe
                     ? $request->user('employe')->role->libelle()
                     : null,

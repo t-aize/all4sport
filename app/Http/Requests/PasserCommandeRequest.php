@@ -15,7 +15,7 @@ use Illuminate\Validation\Rule;
 class PasserCommandeRequest extends FormRequest
 {
     /**
-     * Seul un client connecté peut passer commande (route protégée par « auth »).
+     * Seul un client connecté peut passer commande (route protégée par "auth").
      */
     public function authorize(): bool
     {

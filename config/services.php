@@ -35,7 +35,7 @@ return [
         ],
     ],
 
-    // Jeton partagé avec le SI du Lot B « Logistique » pour l'API d'échange
+    // Jeton partagé avec le SI du Lot B "Logistique" pour l'API d'échange
     // (routes/api.php). À générer avec `php artisan logistique:jeton`.
     'logistique' => [
         'token' => env('LOGISTIQUE_API_TOKEN'),

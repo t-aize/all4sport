@@ -6,7 +6,7 @@
 |--------------------------------------------------------------------------
 |
 | Une route associe une URL à une action. Ces routes sont chargées par
-| bootstrap/app.php et passent par le groupe de middlewares « web » : session,
+| bootstrap/app.php et passent par le groupe de middlewares "web" : session,
 | cookies, protection CSRF, etc.
 |
 | Astuce : `php artisan route:list` affiche toutes les routes de l'application.

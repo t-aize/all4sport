@@ -5,8 +5,8 @@
 | Routes de l'espace client
 |--------------------------------------------------------------------------
 |
-| Routes réservées aux clients connectés (guard « web ») : validation du
-| panier et passage de commande, espace « Mon compte » et historique des
+| Routes réservées aux clients connectés (guard "web") : validation du
+| panier et passage de commande, espace "Mon compte" et historique des
 | commandes. Un visiteur est redirigé vers /login puis ramené ici après sa
 | connexion (son panier est alors fusionné avec celui de son compte).
 |

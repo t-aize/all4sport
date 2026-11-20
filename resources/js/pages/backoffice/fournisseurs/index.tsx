@@ -31,7 +31,7 @@ type Fournisseur = {
 };
 
 /**
- * Liste des fournisseurs (route « backoffice.fournisseurs.index ») avec
+ * Liste des fournisseurs (route "backoffice.fournisseurs.index") avec
  * recherche, modification et suppression (impossible si des produits y sont
  * rattachés).
  */
@@ -80,7 +80,7 @@ export default function FournisseursIndex({
                 <Input
                     value={saisie}
                     onChange={(evenement) => setSaisie(evenement.target.value)}
-                    placeholder="Rechercher un nom ou un code…"
+                    placeholder="Rechercher un nom ou un code..."
                     className="bg-card pl-9"
                     aria-label="Rechercher un fournisseur"
                 />
@@ -168,9 +168,8 @@ export default function FournisseursIndex({
                                                 <AlertDialogContent>
                                                     <AlertDialogHeader>
                                                         <AlertDialogTitle>
-                                                            Supprimer «{' '}
-                                                            {fournisseur.nom} »
-                                                            ?
+                                                            Supprimer "
+                                                            {fournisseur.nom}" ?
                                                         </AlertDialogTitle>
                                                         <AlertDialogDescription>
                                                             Cette action est

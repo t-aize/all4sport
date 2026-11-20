@@ -81,9 +81,9 @@ function Bloc({
 }
 
 /**
- * Espace « Mon compte » (route « compte.profil.edit ») : informations
+ * Espace "Mon compte" (route "compte.profil.edit") : informations
  * personnelles, adresse, magasin par défaut, sports pratiqués, enfants et mot
- * de passe — le fichier client décrit dans le dossier de contexte.
+ * de passe - le fichier client décrit dans le dossier de contexte.
  */
 export default function Profil({
     client,
@@ -292,7 +292,7 @@ export default function Profil({
                                             key={magasin.id}
                                             value={magasin.id}
                                         >
-                                            {magasin.ville} — {magasin.adresse}
+                                            {magasin.ville} - {magasin.adresse}
                                         </option>
                                     ))}
                                 </select>
@@ -331,7 +331,7 @@ export default function Profil({
                             <div className="flex items-center justify-end gap-3">
                                 {recentlySuccessful && (
                                     <span className="animate-in fade-in text-sm text-emerald-600">
-                                        Enregistré ✓
+                                        Enregistré
                                     </span>
                                 )}
                                 <Button
@@ -341,7 +341,7 @@ export default function Profil({
                                     className="rounded-xl"
                                 >
                                     {processing
-                                        ? 'Enregistrement…'
+                                        ? 'Enregistrement...'
                                         : 'Enregistrer mes informations'}
                                 </Button>
                             </div>
@@ -484,7 +484,7 @@ export default function Profil({
                                         disabled={processing}
                                     >
                                         {recentlySuccessful
-                                            ? 'Mot de passe modifié ✓'
+                                            ? 'Mot de passe modifié'
                                             : 'Changer le mot de passe'}
                                     </Button>
                                 </FieldGroup>

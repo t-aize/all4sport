@@ -1,6 +1,6 @@
 # Déploiement et environnement de production
 
-Mise en production progressive des deux modules du Lot A (méthodologie « livraisons au fur et à mesure ») : d'abord le **site marchand** (catalogue, panier, compte client), puis le **traitement des commandes** (passage de commande, back-office, API Logistique). Les deux modules vivent dans la même application ; un module se « livre » en déployant la version qui le contient puis en passant sa recette ([recette.md](recette.md)).
+Mise en production progressive des deux modules du Lot A (méthodologie "livraisons au fur et à mesure") : d'abord le **site marchand** (catalogue, panier, compte client), puis le **traitement des commandes** (passage de commande, back-office, API Logistique). Les deux modules vivent dans la même application ; un module se "livre" en déployant la version qui le contient puis en passant sa recette ([recette.md](recette.md)).
 
 ## 1. Prérequis serveur
 

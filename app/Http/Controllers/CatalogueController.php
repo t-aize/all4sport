@@ -107,7 +107,7 @@ class CatalogueController extends Controller
                     ])
                     ->values(),
             ],
-            // Produits du même rayon, pour la section « Vous aimerez aussi ».
+            // Produits du même rayon, pour la section "Vous aimerez aussi".
             'similaires' => Produit::query()
                 ->with(['rayon', 'photos'])
                 ->where('rayon_id', $produit->rayon_id)

@@ -6,7 +6,7 @@ use App\Models\Magasin;
 use App\Models\Produit;
 
 /*
- * API d'échange sécurisée avec le SI du Lot B « Logistique » : jeton
+ * API d'échange sécurisée avec le SI du Lot B "Logistique" : jeton
  * obligatoire, synchronisation des stocks, commandes à préparer.
  */
 

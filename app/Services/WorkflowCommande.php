@@ -14,14 +14,14 @@ use Illuminate\Validation\ValidationException;
 
 /**
  * Workflow de traitement d'une commande (besoins du lot A, module b) :
- * transmise → validée → en préparation → expédiée → livrée ou retirée.
+ * transmise -> validée -> en préparation -> expédiée -> livrée ou retirée.
  *
- * - « transmise » est enregistrée automatiquement quand le client valide et
+ * - "transmise" est enregistrée automatiquement quand le client valide et
  *   paie sa commande ;
  * - chaque état suivant est indiqué manuellement par le collaborateur dont le
  *   rôle en est responsable (voir RoleEmploye::etatsGerables) ;
  * - les états ne peuvent pas être sautés ni revenir en arrière ;
- * - « livrée » n'existe que pour une livraison à domicile, « retirée » que
+ * - "livrée" n'existe que pour une livraison à domicile, "retirée" que
  *   pour un retrait en magasin.
  *
  * Chaque changement est tracé dans `historique_etats` et recopié dans la
@@ -30,7 +30,7 @@ use Illuminate\Validation\ValidationException;
 class WorkflowCommande
 {
     /**
-     * Enregistre l'état « transmise » d'une commande qui vient d'être payée.
+     * Enregistre l'état "transmise" d'une commande qui vient d'être payée.
      */
     public function transmettre(Commande $commande): HistoriqueEtat
     {
@@ -71,7 +71,7 @@ class WorkflowCommande
             throw ValidationException::withMessages([
                 'etat' => $suivant === null
                     ? 'Cette commande est déjà terminée.'
-                    : "La commande est « {$commande->etat->libelle()} » : l'état suivant est « {$suivant->libelle()} ».",
+                    : "La commande est \"{$commande->etat->libelle()}\" : l'état suivant est \"{$suivant->libelle()}\".",
             ]);
         }
 
@@ -79,7 +79,7 @@ class WorkflowCommande
             $responsable = RoleEmploye::responsableDe($etat);
 
             throw ValidationException::withMessages([
-                'etat' => "L'état « {$etat->libelle()} » est enregistré par le rôle « ".($responsable?->libelle() ?? 'système').' ».',
+                'etat' => "L'état \"{$etat->libelle()}\" est enregistré par le rôle \"".($responsable?->libelle() ?? 'système').'".',
             ]);
         }
 
@@ -90,8 +90,8 @@ class WorkflowCommande
      * Restreint une requête aux commandes qu'un rôle doit traiter : celles dont
      * l'état suivant fait partie des états gérés par ce rôle.
      *
-     * Exemple : le livreur voit les commandes « expédiées » à livrer à domicile,
-     * le vendeur les commandes « expédiées » à retirer en magasin.
+     * Exemple : le livreur voit les commandes "expédiées" à livrer à domicile,
+     * le vendeur les commandes "expédiées" à retirer en magasin.
      *
      * @param  Builder<Commande>  $requete
      * @return Builder<Commande>

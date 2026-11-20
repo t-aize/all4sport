@@ -12,7 +12,7 @@ use Illuminate\Validation\ValidationException;
 /**
  * Requête de connexion d'un client.
  *
- * Un « Form Request » regroupe au même endroit la validation d'une requête
+ * Un "Form Request" regroupe au même endroit la validation d'une requête
  * (`rules`) et la logique associée. Laravel l'exécute automatiquement AVANT
  * d'appeler la méthode du contrôleur qui le reçoit en paramètre : si les
  * règles échouent, le contrôleur n'est jamais atteint.
@@ -69,7 +69,7 @@ class LoginRequest extends FormRequest
 
         // `Auth::attempt` cherche le client par email et compare le mot de
         // passe saisi au hash enregistré. Le second argument active la case
-        // « Se souvenir de moi ».
+        // "Se souvenir de moi".
         if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             // Chaque échec est compté pour limiter les attaques par force brute.
             RateLimiter::hit($this->throttleKey());

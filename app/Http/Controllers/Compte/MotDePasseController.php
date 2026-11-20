@@ -10,7 +10,7 @@ use Illuminate\Validation\Rules\Password;
 
 /**
  * Changement du mot de passe du client connecté. Le mot de passe actuel est
- * exigé ; le nouveau est haché (cast « hashed » du modèle Client).
+ * exigé ; le nouveau est haché (cast "hashed" du modèle Client).
  */
 class MotDePasseController extends Controller
 {

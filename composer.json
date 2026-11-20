@@ -2,7 +2,7 @@
     "$schema": "https://getcomposer.org/schema.json",
     "name": "t-aize/all4sport",
     "type": "project",
-    "description": "ALL4SPORT — Lot A Vente : site marchand et traitement des commandes (projet pédagogique BTS SIO SLAM, archivé).",
+    "description": "ALL4SPORT - Lot A Vente : site marchand et traitement des commandes (projet pédagogique BTS SIO SLAM, archivé).",
     "keywords": [
         "laravel",
         "bts-sio",

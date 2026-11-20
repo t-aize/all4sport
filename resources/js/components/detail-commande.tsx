@@ -41,7 +41,7 @@ export function DetailCommande({ commande }: { commande: CommandeDetail }) {
                                     {ligne.description}
                                 </span>
                                 <span className="text-muted-foreground text-xs">
-                                    {ligne.quantite} ×{' '}
+                                    {ligne.quantite} x{' '}
                                     {formatPrix(ligne.prixUnitaire)}
                                 </span>
                             </span>
@@ -163,7 +163,7 @@ export function DetailCommande({ commande }: { commande: CommandeDetail }) {
                                 Lieu d'expédition
                             </dt>
                             <dd className="font-medium">
-                                {commande.lieuExpedition ?? '—'}
+                                {commande.lieuExpedition ?? '-'}
                             </dd>
                         </div>
                         <div>
@@ -177,8 +177,8 @@ export function DetailCommande({ commande }: { commande: CommandeDetail }) {
                                 {commande.modeLivraison === 'retrait_magasin'
                                     ? commande.magasin
                                         ? `${commande.magasin.adresse}, ${commande.magasin.ville}`
-                                        : '—'
-                                    : (commande.adresseLivraison ?? '—')}
+                                        : '-'
+                                    : (commande.adresseLivraison ?? '-')}
                             </dd>
                         </div>
                     </dl>

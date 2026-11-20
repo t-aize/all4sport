@@ -76,7 +76,7 @@ return [
             'model' => env('AUTH_MODEL', Client::class),
         ],
 
-        // Fournisseur des collaborateurs, utilisé par le guard « employe ».
+        // Fournisseur des collaborateurs, utilisé par le guard "employe".
         'employes' => [
             'driver' => 'eloquent',
             'model' => Employe::class,

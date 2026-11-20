@@ -24,7 +24,7 @@ use RuntimeException;
  * photos (de 1 à 5 par produit).
  *
  * L'accès est réservé aux opérateurs et aux vendeurs (voir routes/backoffice.php).
- * Les photos téléversées sont enregistrées sur le disque « public » (dossier
+ * Les photos téléversées sont enregistrées sur le disque "public" (dossier
  * produits/) ; la table `photos` en garde l'URL.
  *
  * Pages React : resources/js/pages/backoffice/produits/.

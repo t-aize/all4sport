@@ -4,7 +4,7 @@ import BackOfficeLayout from '@/layouts/back-office-layout';
 import { pluriel } from '@/lib/format';
 
 /**
- * Modification d'un fournisseur (route « backoffice.fournisseurs.edit »).
+ * Modification d'un fournisseur (route "backoffice.fournisseurs.edit").
  */
 export default function EditFournisseur({
     fournisseur,

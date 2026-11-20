@@ -57,7 +57,7 @@ class CommandeController extends Controller
     }
 
     /**
-     * Enregistre l'état « en préparation » ou « expédiée » d'une commande.
+     * Enregistre l'état "en préparation" ou "expédiée" d'une commande.
      */
     public function changerEtat(Request $request, Commande $commande): CommandeLogistiqueResource
     {

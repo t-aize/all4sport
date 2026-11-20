@@ -14,7 +14,7 @@ import AuthLayout from '@/layouts/auth-layout';
 
 /**
  * Page de connexion des collaborateurs au back-office (route
- * « backoffice.login »).
+ * "backoffice.login").
  *
  * Contrairement aux clients, un collaborateur se connecte avec un identifiant
  * de connexion (et non un email). Les erreurs de validation renvoyées par
@@ -61,7 +61,7 @@ export default function BackOfficeLogin() {
                         </Field>
                         <Field>
                             <Button type="submit" disabled={processing}>
-                                {processing ? 'Connexion…' : 'Se connecter'}
+                                {processing ? 'Connexion...' : 'Se connecter'}
                             </Button>
                             <FieldDescription className="text-center">
                                 Espace réservé aux collaborateurs ALL4SPORT.
