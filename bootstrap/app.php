@@ -16,6 +16,7 @@
 |
 */
 
+use App\Http\Middleware\AjouterEnTetesSecurite;
 use App\Http\Middleware\EnsureEmployeHasRole;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
@@ -29,6 +30,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         // Routes des pages du site (voir routes/web.php).
         web: __DIR__.'/../routes/web.php',
+        // API d'échange avec le SI du Lot B « Logistique » (préfixe /api).
+        api: __DIR__.'/../routes/api.php',
         // Commandes artisan personnalisées (voir routes/console.php).
         commands: __DIR__.'/../routes/console.php',
         // URL de « santé » : renvoie 200 si l'application démarre correctement.
@@ -45,6 +48,12 @@ return Application::configure(basePath: dirname(__DIR__))
             // Ajoute des en-têtes HTTP pour que le navigateur précharge les
             // fichiers CSS/JS générés par Vite (pages plus rapides).
             AddLinkHeadersForPreloadedAssets::class,
+            // En-têtes HTTP de sécurité (HSTS, anti-clickjacking…).
+            AjouterEnTetesSecurite::class,
+        ]);
+
+        $middleware->api(append: [
+            AjouterEnTetesSecurite::class,
         ]);
 
         // Alias utilisable dans les routes : `->middleware('role:livreur')`

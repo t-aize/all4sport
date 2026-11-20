@@ -3,8 +3,12 @@
 namespace App\Providers;
 
 use Carbon\CarbonImmutable;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -34,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+        $this->configureRateLimiting();
     }
 
     /**
@@ -52,6 +57,10 @@ class AppServiceProvider extends ServiceProvider
             app()->isProduction(),
         );
 
+        // En production, toutes les URL générées utilisent HTTPS : les échanges
+        // (formulaires, cookies de session) sont chiffrés après authentification.
+        URL::forceHttps(app()->isProduction());
+
         // Règle de robustesse des mots de passe, utilisée partout via
         // `Password::defaults()`. En production : 12 caractères minimum avec
         // majuscules, minuscules, chiffres, symboles, et absent des fuites de
@@ -66,5 +75,14 @@ class AppServiceProvider extends ServiceProvider
                 ->uncompromised()
             : null,
         );
+    }
+
+    /**
+     * Limite le nombre de requêtes sur l'API d'échange avec le Lot B :
+     * 60 par minute et par adresse IP, pour se protéger des abus.
+     */
+    protected function configureRateLimiting(): void
+    {
+        RateLimiter::for('api', fn (Request $request): Limit => Limit::perMinute(60)->by((string) $request->ip()));
     }
 }
