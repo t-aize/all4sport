@@ -20,6 +20,7 @@ import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
     DropdownMenuContent,
+    DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
@@ -229,12 +230,16 @@ export default function SiteLayout({
                                     align="end"
                                     className="w-56"
                                 >
-                                    <DropdownMenuLabel>
-                                        {auth.user.prenom} {auth.user.nom}
-                                        <span className="text-muted-foreground block text-xs font-normal">
-                                            {String(auth.user.code_cli ?? '')}
-                                        </span>
-                                    </DropdownMenuLabel>
+                                    <DropdownMenuGroup>
+                                        <DropdownMenuLabel>
+                                            {auth.user.prenom} {auth.user.nom}
+                                            <span className="text-muted-foreground block text-xs font-normal">
+                                                {String(
+                                                    auth.user.code_cli ?? '',
+                                                )}
+                                            </span>
+                                        </DropdownMenuLabel>
+                                    </DropdownMenuGroup>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem
                                         render={<Link href={monCompte()} />}
