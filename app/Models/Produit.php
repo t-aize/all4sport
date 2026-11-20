@@ -114,6 +114,37 @@ class Produit extends Model
     }
 
     /**
+     * La quantité en stock de ce produit dans un magasin donné (0 si le
+     * produit n'y est pas référencé).
+     */
+    public function stockMagasin(int $magasinId): int
+    {
+        $quantite = $this->magasins()->whereKey($magasinId)->value('magasin_produit.quantite_stock_magasin');
+
+        return (int) ($quantite ?? 0);
+    }
+
+    /**
+     * Le meilleur stock disponible pour ce produit : le stock Internet ou le
+     * stock du magasin le mieux approvisionné.
+     */
+    public function stockDisponibleMaximum(): int
+    {
+        $meilleurStockMagasin = (int) ($this->magasins()->max('magasin_produit.quantite_stock_magasin') ?? 0);
+
+        return max((int) $this->quantite_stock_internet, $meilleurStockMagasin);
+    }
+
+    /**
+     * Le stock total du produit : Internet + tous les magasins.
+     */
+    public function stockTotal(): int
+    {
+        return (int) $this->quantite_stock_internet
+            + (int) $this->magasins()->sum('magasin_produit.quantite_stock_magasin');
+    }
+
+    /**
      * Le fournisseur qui livre ce produit (association FOURNIR).
      *
      * @return BelongsTo<Fournisseur, $this>

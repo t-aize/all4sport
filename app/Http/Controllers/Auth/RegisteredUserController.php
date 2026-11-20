@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Client;
+use App\Services\ServicePanier;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -31,7 +32,7 @@ class RegisteredUserController extends Controller
     /**
      * Enregistre un nouveau client puis le connecte.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, ServicePanier $servicePanier): RedirectResponse
     {
         // `validate` renvoie uniquement les champs validés : c'est ce tableau,
         // et non `$request->all()`, qu'on passe au modèle pour ne jamais
@@ -74,7 +75,13 @@ class RegisteredUserController extends Controller
         event(new Registered($client));
 
         // Connecte le client immédiatement après son inscription.
+        // La connexion régénère la session : on note l'identifiant actuel pour
+        // rattacher au nouveau compte le panier rempli en tant que visiteur.
+        $ancienneSession = $request->session()->getId();
+
         Auth::login($client);
+
+        $servicePanier->fusionnerPanierInvite($ancienneSession, $client->id);
 
         return redirect()->route('home');
     }

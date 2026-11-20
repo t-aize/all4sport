@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Services\ServicePanier;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,8 +42,12 @@ class AuthenticatedSessionController extends Controller
      * du mot de passe sont déléguées à LoginRequest (un « Form Request »), ce qui
      * garde le contrôleur court et lisible.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request, ServicePanier $servicePanier): RedirectResponse
     {
+        // Identifiant de session du visiteur, lu AVANT sa régénération : il sert
+        // à retrouver le panier rempli avant la connexion pour le fusionner.
+        $ancienneSession = $request->session()->getId();
+
         // Lance une ValidationException (donc renvoie les erreurs au
         // formulaire) si l'email ou le mot de passe est incorrect.
         $request->authenticate();
@@ -51,6 +56,9 @@ class AuthenticatedSessionController extends Controller
         // « fixation de session » (un attaquant qui aurait imposé un ancien
         // identifiant à la victime).
         $request->session()->regenerate();
+
+        // Le panier du visiteur rejoint celui du compte client.
+        $servicePanier->fusionnerPanierInvite($ancienneSession, (int) Auth::guard('web')->id());
 
         // `intended` renvoie le client vers la page qu'il voulait consulter
         // avant d'être redirigé vers /login, ou vers l'accueil à défaut.

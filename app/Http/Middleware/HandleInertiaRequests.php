@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Employe;
+use App\Services\ServicePanier;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -66,7 +68,13 @@ class HandleInertiaRequests extends Middleware
                 // Le collaborateur connecté au back-office, ou null. Les deux
                 // espaces sont indépendants : un client n'est jamais un employé.
                 'employe' => $request->user('employe'),
+                // Libellé du rôle du collaborateur (« Opérateur »…), pour l'en-tête.
+                'roleLibelle' => fn (): ?string => $request->user('employe') instanceof Employe
+                    ? $request->user('employe')->role->libelle()
+                    : null,
             ],
+            // Nombre d'articles du panier courant, affiché dans l'en-tête du site.
+            'nombreArticlesPanier' => fn (): int => app(ServicePanier::class)->existant()->nombre_articles ?? 0,
         ];
     }
 }
