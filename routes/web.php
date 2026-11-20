@@ -14,6 +14,7 @@
 */
 
 use App\Http\Controllers\CatalogueController;
+use App\Http\Controllers\PanierController;
 use Illuminate\Support\Facades\Route;
 
 // Page d'accueil. `Route::inertia` évite d'écrire un contrôleur quand la page
@@ -32,3 +33,13 @@ require __DIR__.'/backoffice.php';
 // Le produit est identifié dans l'URL par sa référence (clé primaire).
 Route::get('catalogue', [CatalogueController::class, 'index'])->name('catalogue.index');
 Route::get('catalogue/{produit}', [CatalogueController::class, 'show'])->name('catalogue.show');
+
+ 
+Route::prefix('panier')->name('panier.')->group(function () {
+    Route::get('/', [PanierController::class, 'index'])->name('index');
+    Route::post('/produits/{produit}', [PanierController::class, 'ajouter'])->name('ajouter');
+    Route::patch('/produits/{produit}', [PanierController::class, 'modifier'])->name('modifier');
+    Route::delete('/produits/{produit}', [PanierController::class, 'retirer'])->name('retirer');
+    Route::delete('/', [PanierController::class, 'vider'])->name('vider');
+});
+ 
