@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\EtatCommande;
 use App\Enums\ModeLivraison;
 use App\Models\Client;
 use App\Models\Commande;
@@ -35,6 +36,7 @@ class CommandeFactory extends Factory
                 : null,
             'frais_livraison' => $modeLivraison === ModeLivraison::LivraisonDomicile ? 10 : 0,
             'montant_total' => fake()->randomFloat(2, 20, 500),
+            'etat' => EtatCommande::Transmise,
             'client_id' => Client::factory(),
             'employe_id' => null,
             'magasin_id' => null,
@@ -66,5 +68,13 @@ class CommandeFactory extends Factory
             'frais_livraison' => 10,
             'magasin_id' => null,
         ]);
+    }
+
+    /**
+     * Indique l'état courant de la commande.
+     */
+    public function etat(EtatCommande $etat): static
+    {
+        return $this->state(fn (array $attributes) => ['etat' => $etat]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\EtatCommande;
 use App\Enums\ModeLivraison;
 use Database\Factories\CommandeFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -28,6 +29,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $adresse_livraison Adresse de livraison à domicile de la commande.
  * @property string $frais_livraison Frais de livraison facturés (0 € ou 10 €).
  * @property string $montant_total Montant total TTC de la commande.
+ * @property EtatCommande $etat État courant (dernier état de l'historique).
  * @property int $client_id Client ayant passé la commande.
  * @property int|null $employe_id Collaborateur ayant traité la commande, le cas échéant.
  * @property int|null $magasin_id Magasin de retrait, si la commande est retirée en magasin.
@@ -35,11 +37,20 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['date_commande', 'mode_livraison', 'adresse_livraison', 'frais_livraison', 'montant_total', 'client_id', 'employe_id', 'magasin_id', 'entrepot_id'])]
+#[Fillable(['date_commande', 'mode_livraison', 'adresse_livraison', 'frais_livraison', 'montant_total', 'etat', 'client_id', 'employe_id', 'magasin_id', 'entrepot_id'])]
 class Commande extends Model
 {
     /** @use HasFactory<CommandeFactory> */
     use HasFactory;
+
+    /**
+     * Valeurs par défaut : une nouvelle commande est « transmise ».
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = [
+        'etat' => 'transmise',
+    ];
 
     /**
      * Les attributs à transtyper (cast).
@@ -51,6 +62,7 @@ class Commande extends Model
         return [
             'date_commande' => 'date',
             'mode_livraison' => ModeLivraison::class,
+            'etat' => EtatCommande::class,
             'frais_livraison' => 'decimal:2',
             'montant_total' => 'decimal:2',
         ];
@@ -118,5 +130,35 @@ class Commande extends Model
     public function historiqueEtats(): HasMany
     {
         return $this->hasMany(HistoriqueEtat::class);
+    }
+
+    /**
+     * Le numéro de commande affiché aux clients et collaborateurs
+     * (ex : CMD-000042).
+     */
+    public function numero(): string
+    {
+        return 'CMD-'.str_pad((string) $this->id, 6, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * Le sous-total des articles, hors frais de livraison.
+     */
+    public function sousTotal(): float
+    {
+        return round((float) $this->montant_total - (float) $this->frais_livraison, 2);
+    }
+
+    /**
+     * Le lieu d'expédition : le magasin de retrait ou l'entrepôt qui expédie la
+     * livraison à domicile.
+     */
+    public function lieuExpedition(): ?string
+    {
+        if ($this->mode_livraison === ModeLivraison::RetraitMagasin) {
+            return $this->magasin ? "Magasin de {$this->magasin->ville}" : null;
+        }
+
+        return $this->entrepot ? "Entrepôt de {$this->entrepot->ville}" : null;
     }
 }

@@ -17,4 +17,31 @@ enum ModeLivraison: string
      * (association EXPEDIER).
      */
     case LivraisonDomicile = 'livraison_domicile';
+
+    /**
+     * Forfait de livraison à domicile, en euros (dossier de contexte).
+     */
+    public const FORFAIT_DOMICILE = 10.0;
+
+    /**
+     * Le nom du mode de livraison tel qu'il est affiché aux utilisateurs.
+     */
+    public function libelle(): string
+    {
+        return match ($this) {
+            self::RetraitMagasin => 'Retrait en magasin',
+            self::LivraisonDomicile => 'Livraison à domicile',
+        };
+    }
+
+    /**
+     * Les frais de livraison facturés : retrait gratuit, domicile 10 €.
+     */
+    public function frais(): float
+    {
+        return match ($this) {
+            self::RetraitMagasin => 0.0,
+            self::LivraisonDomicile => self::FORFAIT_DOMICILE,
+        };
+    }
 }
