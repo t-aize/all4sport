@@ -2,40 +2,30 @@
 
 ## Portée
 
-Ce dépôt est un projet privé réalisé dans le cadre de l'appel d'offre
-AO-03569 « Refonte du SI » (Lot A – Vente) pour l'entreprise fictive
-ALL4SPORT. Il n'est pas destiné à un usage en production ni ouvert au
-public.
+Ce dépôt est un **projet pédagogique archivé**, réalisé dans le cadre du BTS SIO
+(option SLAM) pour le cas d'étude fictif ALL4SPORT (appel d'offre AO-03569
+« Refonte du SI », Lot A – Vente). Il n'est déployé nulle part et **n'est pas
+destiné à un usage en production**.
 
 ## Versions supportées
 
-| Version | Support sécurité   |
-| ------- | ------------------ |
-| main    | :white_check_mark: |
-| autres  | :x:                |
-
-Seule la branche `main` fait l'objet d'un suivi de sécurité.
+Aucune. Le projet est terminé : il ne reçoit plus de mises à jour, y compris
+de sécurité.
 
 ## Signaler une vulnérabilité
 
-Si vous identifiez une faille de sécurité (authentification, chiffrement
-des échanges, exposition de données clients, séparation des SI vente /
-logistique, etc.) :
+Les signalements ne seront pas traités. Si vous réutilisez une partie de ce
+code, vous êtes responsable de son audit et de sa mise à jour.
 
-1. **Ne créez pas d'issue publique** décrivant la faille.
-2. Contactez directement un membre de l'équipe projet ou l'encadrant du
-   Lot A par un canal privé (e-mail, message direct).
-3. Décrivez le problème avec un maximum de détails : étapes de
-   reproduction, impact potentiel, éventuelle preuve de concept.
+## Mesures de sécurité mises en œuvre (pour mémoire)
 
-Un retour sera fait dans un délai raisonnable pour confirmer la prise en
-compte, évaluer l'impact et planifier un correctif.
+Le projet illustre les exigences de sécurité du cas d'étude :
 
-## Points de vigilance spécifiques au projet
+- deux espaces d'authentification cloisonnés (clients et collaborateurs),
+  mots de passe hachés, limitation des tentatives de connexion ;
+- sessions chiffrées, HTTPS forcé en production, en-têtes de sécurité ;
+- séparation des SI Vente et Logistique : échanges uniquement via une API
+  protégée par jeton (voir [docs/api-logistique.md](docs/api-logistique.md)).
 
-- Authentification obligatoire (clients et collaborateurs) et chiffrement
-  des échanges après authentification.
-- Séparation stricte des SI Vente et Logistique : aucune interconnexion
-  directe, seulement des échanges de données sécurisés.
-- Protection des données personnelles des fiches client (coordonnées,
-  historique d'achats, enfants, sports pratiqués…).
+Les comptes de démonstration (mot de passe `password`) n'existent que dans
+une base locale générée par les seeders.

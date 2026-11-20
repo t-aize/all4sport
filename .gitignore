@@ -27,3 +27,32 @@ yarn-error.log
 /.vscode
 /.zed
 /.mcp.json
+
+# Outils IA / agents (configuration locale, hors dépôt)
+/.claude
+/.ai
+/.cursor
+/.junie
+/.codex
+/.gemini
+/.github/copilot-instructions.md
+/CLAUDE.md
+/AGENTS.md
+/GEMINI.md
+/boost.json
+/opencode.json
+
+# Gestionnaires de paquets non utilisés (le projet utilise npm)
+/pnpm-lock.yaml
+/pnpm-workspace.yaml
+/yarn.lock
+/bun.lock*
+
+# Fichiers système et caches
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+/.phpstan.cache
+/coverage
+/tmp

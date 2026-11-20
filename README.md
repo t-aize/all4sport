@@ -4,6 +4,9 @@
 
 Refonte du système d'information de vente d'**ALL4SPORT** (appel d'offre **AO-03569 « Refonte du SI »**, lot A) : un **site marchand** et un **module de traitement des commandes**, interopérables avec le Lot B « Logistique » et cadrés avec le Lot C « Systèmes et réseaux ».
 
+> [!IMPORTANT]
+> **Projet pédagogique archivé.** Ce dépôt a été réalisé dans le cadre du **BTS SIO, option SLAM**, pour répondre à un cas d'étude. L'entreprise ALL4SPORT, l'appel d'offre, les magasins, les clients et toutes les données sont **fictifs**. Le projet est terminé et publié en lecture seule : **aucune évolution, maintenance, correction ni contribution** n'est prévue, et il n'est pas destiné à un usage en production.
+
 ## Fonctionnalités
 
 **Site marchand**
@@ -62,4 +65,8 @@ npm run check
 
 ## Équipe
 
-Projet réalisé par Taïze ([@t-aize](https://github.com/t-aize)) et Romain ([@romain-brl](https://github.com/romain-brl)).
+Projet réalisé par Taïze ([@t-aize](https://github.com/t-aize)) et Romain ([@romain-brl](https://github.com/romain-brl)) dans le cadre du BTS SIO (option SLAM).
+
+## Licence
+
+Code publié à titre de démonstration pédagogique, **tous droits réservés** : voir [LICENSE](LICENSE).
