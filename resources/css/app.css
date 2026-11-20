@@ -153,9 +153,41 @@
     body {
         @apply bg-background text-foreground;
     }
+    /* Curseur « main » sur tout ce qui est cliquable, interdit si désactivé. */
     button:not(:disabled),
-    [role='button']:not(:disabled) {
+    [role='button']:not([aria-disabled='true']),
+    [role='menuitem']:not([data-disabled]),
+    [role='menuitemcheckbox']:not([data-disabled]),
+    [role='menuitemradio']:not([data-disabled]),
+    [role='option']:not([data-disabled]),
+    [role='tab']:not([data-disabled]),
+    [role='checkbox']:not([data-disabled]),
+    [role='radio']:not([data-disabled]),
+    [role='switch']:not([data-disabled]),
+    [role='combobox']:not([data-disabled]),
+    select:not(:disabled),
+    summary,
+    input:is(
+            [type='checkbox'],
+            [type='radio'],
+            [type='file'],
+            [type='color'],
+            [type='range'],
+            [type='submit'],
+            [type='button'],
+            [type='reset']
+        ):not(:disabled),
+    input[type='file']:not(:disabled)::file-selector-button,
+    label:has(> input:is([type='checkbox'], [type='radio']):not(:disabled)),
+    label:has(> [role='checkbox']:not([data-disabled])) {
         cursor: pointer;
+    }
+    button:disabled,
+    select:disabled,
+    input:disabled,
+    textarea:disabled,
+    [aria-disabled='true'] {
+        cursor: not-allowed;
     }
     html {
         @apply font-sans;

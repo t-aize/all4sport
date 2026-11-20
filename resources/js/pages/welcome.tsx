@@ -177,7 +177,7 @@ export default function Welcome({
                 ].map(({ icone: Icone, titre, texte }) => (
                     <div
                         key={titre}
-                        className="bg-card hover:border-primary/40 flex gap-4 rounded-2xl border p-5 transition-colors"
+                        className="bg-card flex gap-4 rounded-2xl border p-5"
                     >
                         <span className="bg-primary/10 text-primary flex size-11 shrink-0 items-center justify-center rounded-xl">
                             <Icone className="size-5" />
@@ -281,7 +281,7 @@ export default function Welcome({
                     {magasins.map((magasin) => (
                         <div
                             key={magasin.id}
-                            className="bg-card hover:border-primary/40 group flex items-start gap-3 rounded-2xl border p-4 transition-colors"
+                            className="bg-card flex items-start gap-3 rounded-2xl border p-4"
                         >
                             <MapPin className="text-primary mt-0.5 size-5 shrink-0" />
                             <div>
