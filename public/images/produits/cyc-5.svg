@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#1e3a5f"/>
+    </linearGradient>
+    <radialGradient id="h" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#g)"/>
+  <circle cx="567" cy="529" r="76" fill="#fb923c" opacity="0.08"/><circle cx="696" cy="238" r="60" fill="#fb923c" opacity="0.08"/><circle cx="240" cy="144" r="66" fill="#fb923c" opacity="0.08"/><circle cx="83" cy="383" r="93" fill="#fb923c" opacity="0.08"/><circle cx="587" cy="133" r="71" fill="#fb923c" opacity="0.08"/><circle cx="487" cy="389" r="100" fill="#fb923c" opacity="0.08"/>
+  <path d="M-20 520 C 200 430, 420 470, 820 360 L 820 620 L -20 620 Z" fill="#fb923c" opacity="0.18"/>
+  <path d="M-20 560 C 240 480, 460 520, 820 420" stroke="#fb923c" stroke-width="10" fill="none" opacity="0.55"/>
+  <circle cx="400" cy="300" r="190" fill="url(#h)"/>
+  <text x="400" y="300" font-size="280" text-anchor="middle" dominant-baseline="central" transform="rotate(0 400 300)" font-family="Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif">🚴</text>
+  <text x="40" y="70" font-family="Inter, Arial, sans-serif" font-weight="900" font-style="italic" font-size="34" fill="#ffffff" opacity="0.9">ALL<tspan fill="#fb923c">4</tspan>SPORT</text>
+  <text x="40" y="560" font-family="Inter, Arial, sans-serif" font-weight="700" font-size="28" fill="#ffffff" opacity="0.85" letter-spacing="4">Cyclisme</text>
+</svg>

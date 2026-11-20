@@ -12,7 +12,9 @@ use App\Models\HistoriqueEtat;
 use App\Models\Magasin;
 use App\Models\Produit;
 use App\Models\Rayon;
+use Database\Seeders\CatalogueSeeder;
 use Database\Seeders\DatabaseSeeder;
+use Database\Seeders\ReseauSeeder;
 
 /*
  * Tests du seeder de démonstration. Les données sont générées au hasard : les
@@ -23,14 +25,14 @@ use Database\Seeders\DatabaseSeeder;
 it('creates the expected volume of demo data', function () {
     $this->seed(DatabaseSeeder::class);
 
-    expect(Fournisseur::count())->toBe(5)
-        ->and(Rayon::count())->toBe(10)
+    expect(Fournisseur::count())->toBe(count(CatalogueSeeder::FOURNISSEURS))
+        ->and(Rayon::count())->toBe(count(CatalogueSeeder::RAYONS))
         ->and(Entrepot::count())->toBe(3)
-        ->and(Magasin::count())->toBe(6)
-        ->and(Employe::count())->toBe(10)
-        ->and(Client::count())->toBe(30)
-        ->and(Produit::count())->toBe(60)
-        ->and(Commande::count())->toBe(100);
+        ->and(Magasin::count())->toBe(12)
+        ->and(Employe::count())->toBe(16)
+        ->and(Client::count())->toBe(DatabaseSeeder::NOMBRE_CLIENTS + 1)
+        ->and(Produit::count())->toBeGreaterThanOrEqual(100)
+        ->and(Commande::count())->toBe(DatabaseSeeder::NOMBRE_COMMANDES + 7);
 });
 
 it('creates at least one employee for each role', function (RoleEmploye $role) {
@@ -171,3 +173,35 @@ it('creates a demo account for each role, named after the role, with a known pas
         ->and($employe->role)->toBe($role)
         ->and(Hash::check('password', $employe->password))->toBeTrue();
 })->with(RoleEmploye::cases());
+
+it('creates the 3 warehouses and the 12 shops of the context file', function () {
+    $this->seed(DatabaseSeeder::class);
+
+    expect(Entrepot::pluck('ville')->sort()->values()->all())->toBe(['Le Havre', 'Lyon', 'Marseille'])
+        ->and(Magasin::pluck('ville')->sort()->values()->all())->toBe(collect(array_keys(ReseauSeeder::MAGASINS))->sort()->values()->all());
+});
+
+it('gives every product a reference built from the supplier and rayon codes', function () {
+    $this->seed(DatabaseSeeder::class);
+
+    Produit::with(['fournisseur', 'rayon'])->get()->each(fn (Produit $produit) => expect($produit->reference_produit)
+        ->toMatch('/^'.$produit->fournisseur->code_fournisseur.$produit->rayon->code_rayon.'\d{12}$/'));
+});
+
+it('keeps the current state of each order equal to its last recorded state', function () {
+    $this->seed(DatabaseSeeder::class);
+
+    Commande::with('historiqueEtats')->get()->each(fn (Commande $commande) => expect($commande->historiqueEtats->sortBy('id')->last()->etat)
+        ->toBe($commande->etat));
+});
+
+it('creates a demo client with orders in every state and a cart', function () {
+    $this->seed(DatabaseSeeder::class);
+
+    $client = Client::where('email', DatabaseSeeder::EMAIL_CLIENT_DEMO)->firstOrFail();
+
+    expect(Hash::check('password', $client->password))->toBeTrue()
+        ->and($client->magasin_id)->not->toBeNull()
+        ->and($client->commandes()->distinct()->pluck('etat')->count())->toBe(6)
+        ->and($client->paniers()->first()?->lignes()->count())->toBe(3);
+});

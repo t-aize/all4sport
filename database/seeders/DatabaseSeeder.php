@@ -9,270 +9,255 @@ use App\Models\Client;
 use App\Models\Commande;
 use App\Models\Employe;
 use App\Models\Enfant;
-use App\Models\Entrepot;
-use App\Models\Fournisseur;
 use App\Models\Magasin;
 use App\Models\Produit;
 use App\Models\Rayon;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
 
 /**
- * Peuple la base avec un jeu de données de démonstration cohérent pour
- * l'ensemble du modèle ALL4SPORT : catalogue (fournisseurs, rayons, produits,
- * photos), réseau logistique (entrepôts, magasins, stocks), acteurs (clients,
- * enfants, collaborateurs) et commandes avec leur historique d'état.
+ * Peuple la base avec un jeu de données de démonstration complet et cohérent :
+ * - réseau : 3 entrepôts et 12 magasins du dossier de contexte (ReseauSeeder) ;
+ * - catalogue : 14 rayons, 10 fournisseurs, ~110 produits avec photos et
+ *   stocks (CatalogueSeeder) ;
+ * - collaborateurs : un compte de démonstration par rôle + 12 autres ;
+ * - clients : un client de démonstration + 80 clients avec enfants, sports
+ *   pratiqués et magasin par défaut ;
+ * - commandes : ~260 commandes sur 12 mois, avec leur historique d'états ;
+ * - paniers en cours (PanierSeeder).
+ *
+ * Tous les mots de passe valent « password ». Voir docs/comptes.md.
  */
 class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
 
     /**
+     * Email du client de démonstration.
+     */
+    public const EMAIL_CLIENT_DEMO = 'client@all4sport.local';
+
+    /**
+     * Nombre de clients générés en plus du client de démonstration.
+     */
+    public const NOMBRE_CLIENTS = 80;
+
+    /**
+     * Nombre de commandes générées en plus de celles du client de démonstration.
+     */
+    public const NOMBRE_COMMANDES = 250;
+
+    /**
      * Peuple la base de données de l'application.
      */
     public function run(): void
     {
-        $fournisseurs = Fournisseur::factory(5)->create();
-        $rayons = Rayon::factory(10)->create();
-        $entrepots = Entrepot::factory(3)->create();
-        $magasins = $this->seedMagasins($entrepots);
+        $this->call([ReseauSeeder::class, CatalogueSeeder::class]);
+
+        $magasins = Magasin::query()->with('entrepot')->get();
+        $rayons = Rayon::query()->get();
+        $produits = Produit::query()->get();
         $employes = $this->seedEmployes();
-        $clients = $this->seedClients($rayons);
-        $produits = $this->seedProduits($fournisseurs, $rayons, $magasins);
+        $clients = $this->seedClients($rayons, $magasins);
 
-        $this->seedCommandes($clients, $produits, $magasins, $entrepots, $employes);
+        $this->seedCommandes($clients, $produits, $magasins, $employes);
+
+        $this->call(PanierSeeder::class);
     }
 
     /**
-     * Crée les magasins et les rattache chacun à un entrepôt existant
-     * (association DESSERVIR).
-     *
-     * @param  Collection<int, Entrepot>  $entrepots
-     * @return Collection<int, Magasin>
-     */
-    private function seedMagasins(Collection $entrepots): Collection
-    {
-        return collect(range(1, 6))->map(fn () => Magasin::factory()->create([
-            'entrepot_id' => $entrepots->random()->id,
-        ]));
-    }
-
-    /**
-     * Crée les collaborateurs en garantissant au moins un représentant de
-     * chaque rôle, afin que l'historique des commandes puisse toujours
-     * trouver un responsable pour chaque état (association ENREGISTRER).
-     *
-     * Ces comptes de démonstration se connectent au back-office avec un
-     * identifiant égal au nom technique du rôle (« operateur », « vendeur »,
-     * « livreur » ou « service_client ») et le mot de passe « password ».
+     * Crée les collaborateurs : un compte de démonstration par rôle (identifiant
+     * = nom technique du rôle, mot de passe « password ») et 12 autres
+     * collaborateurs répartis entre les rôles.
      *
      * @return Collection<int, Employe>
      */
     private function seedEmployes(): Collection
     {
-        $unParRole = collect(RoleEmploye::cases())
-            ->map(fn (RoleEmploye $role) => Employe::factory()->create([
-                'identifiant_connexion' => $role->value,
-                'role' => $role,
-            ]));
+        $comptesDemo = [
+            RoleEmploye::Operateur->value => ['Mercier', 'Julien'],
+            RoleEmploye::Vendeur->value => ['Lefebvre', 'Sarah'],
+            RoleEmploye::Livreur->value => ['Garnier', 'Mehdi'],
+            RoleEmploye::ServiceClient->value => ['Rousseau', 'Inès'],
+        ];
 
-        return $unParRole->merge(Employe::factory(6)->create());
+        $unParRole = collect(RoleEmploye::cases())->map(fn (RoleEmploye $role) => Employe::factory()->create([
+            'identifiant_connexion' => $role->value,
+            'nom' => $comptesDemo[$role->value][0],
+            'prenom' => $comptesDemo[$role->value][1],
+            'role' => $role,
+        ]));
+
+        $autres = collect(range(1, 12))->map(fn (int $position) => Employe::factory()->create([
+            'role' => RoleEmploye::cases()[$position % 4],
+        ]));
+
+        return $unParRole->merge($autres);
     }
 
     /**
-     * Crée les clients, leurs enfants (association AVOIR) et les sports
-     * qu'ils pratiquent (association PRATIQUER).
+     * Crée le client de démonstration et les autres clients, avec leurs
+     * enfants (association AVOIR), leurs sports (PRATIQUER) et leur magasin
+     * par défaut.
      *
      * @param  Collection<int, Rayon>  $rayons
+     * @param  Collection<int, Magasin>  $magasins
      * @return Collection<int, Client>
      */
-    private function seedClients(Collection $rayons): Collection
+    private function seedClients(Collection $rayons, Collection $magasins): Collection
     {
-        $clients = Client::factory(30)->create();
+        $lille = $magasins->firstWhere('ville', 'Lille') ?? $magasins->first();
 
-        $clients->each(function (Client $client) use ($rayons): void {
-            $client->rayons()->attach(
-                $rayons->random(random_int(1, 3))->pluck('id')
-            );
+        $demo = Client::factory()->create([
+            'nom' => 'Martin',
+            'prenom' => 'Camille',
+            'email' => self::EMAIL_CLIENT_DEMO,
+            'telephone' => '06 12 34 56 78',
+            'adresse' => '42 rue Esquermoise',
+            'code_postal' => '59000',
+            'ville' => 'Lille',
+            'date_naissance' => '1992-04-18',
+            'magasin_id' => $lille->id,
+        ]);
+        $demo->rayons()->attach($rayons->whereIn('nom_rayon', ['Running', 'Natation', 'Randonnée'])->pluck('id'));
+        Enfant::factory()->for($demo)->create(['date_naissance' => now()->subYears(9)->subMonths(3)]);
+        Enfant::factory()->for($demo)->create(['date_naissance' => now()->subYears(6)->subMonths(7)]);
+
+        $clients = Client::factory(self::NOMBRE_CLIENTS)->create()->each(function (Client $client) use ($rayons, $magasins): void {
+            $client->update(['magasin_id' => random_int(0, 100) < 80 ? $magasins->random()->id : null]);
+            $client->rayons()->attach($rayons->random(random_int(1, 3))->pluck('id'));
 
             if (random_int(0, 100) < 40) {
-                Enfant::factory(random_int(1, 3))->create([
-                    'client_id' => $client->id,
-                ]);
+                Enfant::factory(random_int(1, 3))->for($client)->create();
             }
         });
 
-        return $clients;
+        return $clients->prepend($demo);
     }
 
     /**
-     * Crée les produits, leurs photos (association ILLUSTRER) et leur
-     * répartition dans les stocks magasin (association STOCKER).
-     *
-     * @param  Collection<int, Fournisseur>  $fournisseurs
-     * @param  Collection<int, Rayon>  $rayons
-     * @param  Collection<int, Magasin>  $magasins
-     * @return Collection<int, Produit>
-     */
-    private function seedProduits(Collection $fournisseurs, Collection $rayons, Collection $magasins): Collection
-    {
-        $produits = collect(range(1, 60))->map(fn () => Produit::factory()->create([
-            'fournisseur_id' => $fournisseurs->random()->id,
-            'rayon_id' => $rayons->random()->id,
-        ]));
-
-        $produits->each(function (Produit $produit) use ($magasins): void {
-            $produit->photos()->createMany(
-                collect(range(1, random_int(1, 5)))->map(fn (int $position) => [
-                    'url_photo' => "https://picsum.photos/seed/{$produit->reference_produit}-{$position}/640/480",
-                ])
-            );
-
-            $magasinsChoisis = $magasins->random(random_int(1, max(1, min(4, $magasins->count()))));
-            $produit->magasins()->attach(
-                $magasinsChoisis->mapWithKeys(fn (Magasin $magasin) => [
-                    $magasin->id => ['quantite_stock_magasin' => random_int(0, 50)],
-                ])
-            );
-        });
-
-        return $produits;
-    }
-
-    /**
-     * Crée les commandes, leurs lignes de commande (association CONTENIR) et
-     * leur historique d'état (associations SUIVRE et ENREGISTRER), en
-     * respectant la cohérence avec le mode de livraison choisi.
+     * Crée les commandes et leur historique. Le client de démonstration reçoit
+     * une commande dans chaque état pour illustrer le suivi.
      *
      * @param  Collection<int, Client>  $clients
      * @param  Collection<int, Produit>  $produits
      * @param  Collection<int, Magasin>  $magasins
-     * @param  Collection<int, Entrepot>  $entrepots
      * @param  Collection<int, Employe>  $employes
      */
-    private function seedCommandes(Collection $clients, Collection $produits, Collection $magasins, Collection $entrepots, Collection $employes): void
+    private function seedCommandes(Collection $clients, Collection $produits, Collection $magasins, Collection $employes): void
     {
-        foreach (range(1, 100) as $ignored) {
-            $client = $clients->random();
-            $modeLivraison = fake()->randomElement(ModeLivraison::cases());
-            $fraisLivraison = $modeLivraison === ModeLivraison::LivraisonDomicile ? 10 : 0;
+        /** @var Client $demo */
+        $demo = $clients->first();
+        $scenarios = [
+            [EtatCommande::Transmise, ModeLivraison::LivraisonDomicile, 1],
+            [EtatCommande::Validee, ModeLivraison::RetraitMagasin, 4],
+            [EtatCommande::EnPreparation, ModeLivraison::LivraisonDomicile, 8],
+            [EtatCommande::Expediee, ModeLivraison::RetraitMagasin, 15],
+            [EtatCommande::Livree, ModeLivraison::LivraisonDomicile, 45],
+            [EtatCommande::Retiree, ModeLivraison::RetraitMagasin, 120],
+            [EtatCommande::Livree, ModeLivraison::LivraisonDomicile, 240],
+        ];
 
-            $commande = Commande::factory()->create([
-                'mode_livraison' => $modeLivraison,
-                'adresse_livraison' => $modeLivraison === ModeLivraison::LivraisonDomicile
-                    ? fake('fr_FR')->streetAddress()
-                    : null,
-                'frais_livraison' => $fraisLivraison,
-                'montant_total' => 0,
-                'client_id' => $client->id,
-                'employe_id' => null,
-                'magasin_id' => $modeLivraison === ModeLivraison::RetraitMagasin ? $magasins->random()->id : null,
-                'entrepot_id' => $modeLivraison === ModeLivraison::LivraisonDomicile ? $entrepots->random()->id : null,
-            ]);
-
-            $sousTotal = $this->attacherLignesDeCommande($commande, $produits);
-            $commande->update(['montant_total' => $sousTotal + $fraisLivraison]);
-
-            $this->creerHistoriqueEtats($commande, $employes);
+        foreach ($scenarios as [$etatFinal, $mode, $joursAvant]) {
+            $this->creerCommande($demo, $mode, $etatFinal, now()->subDays($joursAvant)->toImmutable(), $produits, $magasins, $employes);
         }
+
+        foreach (range(1, self::NOMBRE_COMMANDES) as $position) {
+            $date = CarbonImmutable::now()->subDays(random_int(0, 365))->setTime(random_int(8, 21), random_int(0, 59));
+            // Les commandes récentes sont encore en cours ; les anciennes sont terminées.
+            $etatFinal = $date->diffInDays(now()) > 20
+                ? fake()->randomElement([EtatCommande::Livree, EtatCommande::Retiree])
+                : fake()->randomElement(EtatCommande::cases());
+
+            $this->creerCommande(
+                $clients->random(),
+                fake()->randomElement(ModeLivraison::cases()),
+                $etatFinal,
+                $date,
+                $produits,
+                $magasins,
+                $employes,
+            );
+        }
+
+        $clients->each(function (Client $client): void {
+            $dernier = $client->commandes()->max('date_commande');
+
+            $client->forceFill(['date_dernier_achat' => $dernier])->save();
+        });
     }
 
     /**
-     * Attache un panier de 1 à 5 produits à la commande (association CONTENIR)
-     * et retourne le sous-total de la commande.
+     * Crée une commande cohérente : lignes, total, lieu d'expédition et
+     * historique des états jusqu'à l'état final (adapté au mode de livraison).
      *
      * @param  Collection<int, Produit>  $produits
+     * @param  Collection<int, Magasin>  $magasins
+     * @param  Collection<int, Employe>  $employes
      */
-    private function attacherLignesDeCommande(Commande $commande, Collection $produits): float
-    {
-        $lignes = $produits->random(random_int(1, 5));
+    private function creerCommande(
+        Client $client,
+        ModeLivraison $mode,
+        EtatCommande $etatFinal,
+        CarbonImmutable $date,
+        Collection $produits,
+        Collection $magasins,
+        Collection $employes,
+    ): Commande {
+        $magasinClient = $magasins->firstWhere('id', $client->magasin_id) ?? $magasins->random();
+        $parcours = EtatCommande::parcours($mode);
+        $etatFinal = match (true) {
+            $etatFinal === EtatCommande::Livree && $mode === ModeLivraison::RetraitMagasin => EtatCommande::Retiree,
+            $etatFinal === EtatCommande::Retiree && $mode === ModeLivraison::LivraisonDomicile => EtatCommande::Livree,
+            default => $etatFinal,
+        };
+
+        $commande = Commande::query()->create([
+            'date_commande' => $date->toDateString(),
+            'mode_livraison' => $mode,
+            'adresse_livraison' => $mode === ModeLivraison::LivraisonDomicile ? $client->adresseComplete() : null,
+            'frais_livraison' => $mode->frais(),
+            'montant_total' => 0,
+            'etat' => $etatFinal,
+            'client_id' => $client->id,
+            'magasin_id' => $mode === ModeLivraison::RetraitMagasin ? $magasinClient->id : null,
+            'entrepot_id' => $mode === ModeLivraison::LivraisonDomicile ? $magasinClient->entrepot_id : null,
+        ]);
+
         $sousTotal = 0.0;
 
-        foreach ($lignes as $produit) {
-            $quantite = random_int(1, 3);
-
+        foreach ($produits->random(random_int(1, 4)) as $produit) {
+            $quantite = fake()->randomElement([1, 1, 1, 2, 2, 3]);
             $commande->produits()->attach($produit->reference_produit, [
                 'quantite_commandee' => $quantite,
                 'prix_unitaire_vente' => $produit->prix_vente,
             ]);
-
             $sousTotal += round($quantite * (float) $produit->prix_vente, 2);
         }
 
-        return round($sousTotal, 2);
-    }
+        $commande->update(['montant_total' => round($sousTotal + $mode->frais(), 2)]);
 
-    /**
-     * Construit l'historique d'état de la commande, du dépôt jusqu'à un état
-     * final tiré aléatoirement, en confiant chaque état au collaborateur dont
-     * le rôle en est responsable (association ENREGISTRER).
-     *
-     * @param  Collection<int, Employe>  $employes
-     */
-    private function creerHistoriqueEtats(Commande $commande, Collection $employes): void
-    {
-        $etatFinal = fake()->randomElement(EtatCommande::cases());
-        $parcours = $this->parcoursJusqua($commande->mode_livraison, $etatFinal);
+        $dateEtat = $date;
+        $dernierEmploye = null;
 
-        $date = Carbon::instance($commande->date_commande)->copy();
-
-        foreach ($parcours as $etat) {
-            $date = $date->copy()->addHours(random_int(2, 48));
+        foreach (array_slice($parcours, 0, array_search($etatFinal, $parcours, true) + 1) as $etat) {
+            $role = RoleEmploye::responsableDe($etat);
+            $employe = $role ? $employes->where('role', $role)->random() : null;
+            $dernierEmploye = $employe ?? $dernierEmploye;
 
             $commande->historiqueEtats()->create([
                 'etat' => $etat,
-                'date_etat' => $date,
-                'employe_id' => $this->employeResponsable($etat, $employes)?->id,
+                'date_etat' => $dateEtat,
+                'employe_id' => $employe?->id,
             ]);
-        }
-    }
 
-    /**
-     * Construit la liste ordonnée des états traversés par une commande, en
-     * s'arrêtant à l'état final demandé et en tenant compte du mode de
-     * livraison (une commande retirée en magasin ne peut pas être "livrée",
-     * une commande livrée à domicile ne peut pas être "retirée").
-     *
-     * @return array<int, EtatCommande>
-     */
-    private function parcoursJusqua(ModeLivraison $modeLivraison, EtatCommande $etatFinal): array
-    {
-        $etatFinalPourDenouement = match (true) {
-            $etatFinal === EtatCommande::Livree && $modeLivraison === ModeLivraison::RetraitMagasin => EtatCommande::Retiree,
-            $etatFinal === EtatCommande::Retiree && $modeLivraison === ModeLivraison::LivraisonDomicile => EtatCommande::Livree,
-            default => $etatFinal,
-        };
-
-        $ordre = [
-            EtatCommande::Transmise,
-            EtatCommande::Validee,
-            EtatCommande::EnPreparation,
-            EtatCommande::Expediee,
-            $modeLivraison === ModeLivraison::RetraitMagasin ? EtatCommande::Retiree : EtatCommande::Livree,
-        ];
-
-        $position = array_search($etatFinalPourDenouement, $ordre, strict: true);
-
-        return array_slice($ordre, 0, ($position === false ? 0 : $position) + 1);
-    }
-
-    /**
-     * Détermine le rôle de collaborateur responsable d'un état donné, et en
-     * retourne un au hasard. L'état "transmise" est déclenché par le paiement
-     * du client, sans intervention d'un collaborateur.
-     *
-     * @param  Collection<int, Employe>  $employes
-     */
-    private function employeResponsable(EtatCommande $etat, Collection $employes): ?Employe
-    {
-        $role = RoleEmploye::responsableDe($etat);
-
-        if ($role === null) {
-            return null;
+            $dateEtat = $dateEtat->addHours(random_int(2, 30));
         }
 
-        return $employes->where('role', $role)->random();
+        $commande->update(['employe_id' => $dernierEmploye?->id]);
+
+        return $commande;
     }
 }
