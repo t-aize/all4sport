@@ -5,7 +5,7 @@ Mise en production progressive des deux modules du Lot A (méthodologie « livra
 ## 1. Prérequis serveur
 
 - PHP 8.5 avec les extensions `pdo_mysql`, `mbstring`, `openssl`, `intl`, `gd`, `fileinfo`, `bcmath`
-- Composer 2, Node.js 22+ (uniquement pour compiler les assets)
+- Composer 2, Node.js 22.18+ ou 24 LTS (uniquement pour compiler les assets)
 - MySQL 8 / MariaDB 11, Nginx + PHP-FPM, certificat TLS
 - Voir le dimensionnement dans [cahier-des-charges-infrastructure.md](cahier-des-charges-infrastructure.md)
 

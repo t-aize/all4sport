@@ -2,7 +2,7 @@
 
 ## Pile logicielle
 
-Laravel 13 (PHP 8.5) · Inertia 3 + React 19 · Tailwind CSS 4 + shadcn/ui (Base UI) · Wayfinder (routes typées) · Pest 4 · Pint · PHPStan · Vite+.
+Laravel 13 (PHP 8.5) · Inertia 3 + React 19 · Tailwind CSS 4 + shadcn/ui (Base UI) · Wayfinder (routes typées) · Pest 5 · Pint · PHPStan · Vite+.
 
 ## Organisation du code
 
