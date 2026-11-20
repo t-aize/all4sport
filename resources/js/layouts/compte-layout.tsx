@@ -52,7 +52,7 @@ export default function CompteLayout({
                     src="/images/all4sport-logo.png"
                     alt=""
                     aria-hidden
-                    className="animate-flottement absolute -right-6 -bottom-10 w-48 opacity-30 sm:w-64"
+                    className="absolute -right-6 -bottom-10 w-48 opacity-30 sm:w-64"
                 />
             </div>
 

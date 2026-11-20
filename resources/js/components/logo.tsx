@@ -18,7 +18,7 @@ export function Logo({
                 src="/images/all4sport-logo.png"
                 alt=""
                 aria-hidden
-                className="size-10 shrink-0 object-contain transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-12"
+                className="size-10 shrink-0 object-contain"
             />
             <span
                 className={`text-lg font-black tracking-tight italic ${inverse ? 'text-white' : 'text-navy dark:text-white'}`}

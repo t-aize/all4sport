@@ -123,35 +123,32 @@ export default function Dashboard({
             </div>
 
             <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-5">
-                {cartes.map(
-                    ({ libelle, valeur, icone: Icone, accent }, position) => (
-                        <div
-                            key={libelle}
-                            className={`animate-apparition rounded-2xl border p-4 transition-transform hover:-translate-y-0.5 ${
-                                accent
-                                    ? 'bg-primary text-primary-foreground shadow-primary/30 border-transparent shadow-lg'
-                                    : 'bg-card'
-                            }`}
-                            style={{ animationDelay: `${position * 60}ms` }}
+                {cartes.map(({ libelle, valeur, icone: Icone, accent }) => (
+                    <div
+                        key={libelle}
+                        className={`rounded-2xl border p-4 ${
+                            accent
+                                ? 'bg-primary text-primary-foreground col-span-2 border-transparent lg:col-span-1'
+                                : 'bg-card'
+                        }`}
+                    >
+                        <Icone
+                            className={`mb-3 size-5 ${accent ? '' : 'text-primary'}`}
+                        />
+                        <p
+                            className={`text-xs ${accent ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}
                         >
-                            <Icone
-                                className={`mb-3 size-5 ${accent ? '' : 'text-primary'}`}
-                            />
-                            <p
-                                className={`text-xs ${accent ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}
-                            >
-                                {libelle}
-                            </p>
-                            <p className="text-2xl font-bold tracking-tight">
-                                {valeur}
-                            </p>
-                        </div>
-                    ),
-                )}
+                            {libelle}
+                        </p>
+                        <p className="text-2xl font-bold tracking-tight">
+                            {valeur}
+                        </p>
+                    </div>
+                ))}
             </div>
 
-            <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
-                <section className="bg-card rounded-3xl border p-6">
+            <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
+                <section className="bg-card min-w-0 rounded-2xl border p-4 sm:rounded-3xl sm:p-6">
                     <div className="mb-4 flex items-center justify-between">
                         <h2 className="font-semibold">Commandes à traiter</h2>
                         <Link
@@ -171,7 +168,7 @@ export default function Dashboard({
                                 <li key={commande.id}>
                                     <Link
                                         href={commandeShow(commande.id)}
-                                        className="group hover:bg-muted/50 -mx-2 flex flex-wrap items-center gap-3 rounded-xl px-2 py-3 transition-colors"
+                                        className="hover:bg-muted/50 -mx-2 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl px-2 py-3 transition-colors"
                                     >
                                         <span className="font-mono text-sm font-semibold">
                                             {commande.numero}
@@ -180,15 +177,14 @@ export default function Dashboard({
                                             etat={commande.etat}
                                             libelle={commande.etatLibelle}
                                         />
-                                        <span className="text-muted-foreground flex-1 truncate text-sm">
+                                        <span className="ml-auto font-semibold sm:order-last">
+                                            {formatPrix(commande.montantTotal)}
+                                        </span>
+                                        <span className="text-muted-foreground w-full truncate text-xs sm:w-auto sm:flex-1 sm:text-sm">
                                             {commande.client} ·{' '}
                                             {commande.modeLivraison} ·{' '}
                                             {formatDate(commande.date)}
                                         </span>
-                                        <span className="font-semibold">
-                                            {formatPrix(commande.montantTotal)}
-                                        </span>
-                                        <ArrowRight className="text-muted-foreground size-4 transition-transform group-hover:translate-x-1" />
                                     </Link>
                                 </li>
                             ))}
@@ -196,7 +192,7 @@ export default function Dashboard({
                     )}
                 </section>
 
-                <section className="bg-card rounded-3xl border p-6">
+                <section className="bg-card min-w-0 rounded-2xl border p-4 sm:rounded-3xl sm:p-6">
                     <h2 className="mb-4 font-semibold">Commandes par état</h2>
                     <ul className="flex flex-col gap-3">
                         {commandesParEtat.map((etat) => (
@@ -220,31 +216,33 @@ export default function Dashboard({
                     </ul>
                 </section>
 
-                <section className="bg-card rounded-3xl border p-6">
+                <section className="bg-card min-w-0 rounded-2xl border p-4 sm:rounded-3xl sm:p-6">
                     <h2 className="mb-1 font-semibold">
                         Ventes des 6 derniers mois
                     </h2>
                     <p className="text-muted-foreground mb-6 text-xs">
                         Chiffre d'affaires TTC par mois
                     </p>
-                    <div className="flex h-48 items-end gap-3">
-                        {ventesMensuelles.map((mois, position) => (
+                    <div className="flex h-48 items-end gap-1.5 sm:gap-3">
+                        {ventesMensuelles.map((mois) => (
                             <div
                                 key={mois.mois}
                                 className="group flex flex-1 flex-col items-center gap-2"
                             >
-                                <span className="text-muted-foreground text-[10px] opacity-0 transition-opacity group-hover:opacity-100">
-                                    {formatPrix(mois.total)}
+                                <span className="text-muted-foreground text-[9px] whitespace-nowrap sm:text-[10px]">
+                                    {Math.round(
+                                        Number(mois.total),
+                                    ).toLocaleString('fr-FR')}{' '}
+                                    €
                                 </span>
                                 <div
-                                    className="from-primary to-primary/60 animate-apparition w-full rounded-t-lg bg-linear-to-t transition-all group-hover:opacity-80"
+                                    className="from-primary to-primary/60 w-full rounded-t-lg bg-linear-to-t"
                                     style={{
                                         height: `${Math.max(4, (Number(mois.total) / venteMax) * 140)}px`,
-                                        animationDelay: `${position * 80}ms`,
                                     }}
                                     title={`${mois.commandes} commande(s)`}
                                 />
-                                <span className="text-muted-foreground text-xs capitalize">
+                                <span className="text-muted-foreground text-center text-[10px] leading-tight sm:text-xs">
                                     {mois.mois}
                                 </span>
                             </div>
@@ -252,7 +250,7 @@ export default function Dashboard({
                     </div>
                 </section>
 
-                <section className="bg-card rounded-3xl border p-6">
+                <section className="bg-card min-w-0 rounded-2xl border p-4 sm:rounded-3xl sm:p-6">
                     <h2 className="mb-4 font-semibold">Meilleurs rayons</h2>
                     <ol className="flex flex-col gap-3">
                         {meilleursRayons.map((rayon, position) => (
@@ -285,7 +283,7 @@ export default function Dashboard({
                 </section>
 
                 {stocksFaibles.length > 0 && (
-                    <section className="bg-card rounded-3xl border p-6 lg:col-span-2">
+                    <section className="bg-card min-w-0 rounded-2xl border p-4 sm:rounded-3xl sm:p-6 lg:col-span-2">
                         <h2 className="mb-4 flex items-center gap-2 font-semibold">
                             <TriangleAlert className="size-5 text-amber-500" />{' '}
                             Stock Internet faible

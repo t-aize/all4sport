@@ -10,11 +10,10 @@ import type { ProduitCarte } from '@/types/catalogue';
  * description, prix et disponibilité en ligne.
  *
  * @param produit Le produit à présenter.
- * @param position Position dans la grille, pour décaler l'animation d'apparition.
+ * @param position Position dans la grille (conservée pour compatibilité).
  */
 export function ProduitCard({
     produit,
-    position = 0,
 }: {
     produit: ProduitCarte;
     position?: number;
@@ -25,8 +24,7 @@ export function ProduitCard({
     return (
         <Link
             href={show(produit.reference)}
-            className="group bg-card animate-apparition hover:shadow-primary/10 hover:border-primary/40 relative flex h-full flex-col overflow-hidden rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-            style={{ animationDelay: `${Math.min(position, 12) * 50}ms` }}
+            className="group bg-card hover:border-primary/40 relative flex h-full flex-col overflow-hidden rounded-2xl border transition-colors"
         >
             <div className="bg-muted relative aspect-4/3 overflow-hidden">
                 {produit.photo ? (
@@ -34,7 +32,7 @@ export function ProduitCard({
                         src={produit.photo}
                         alt={produit.description}
                         loading="lazy"
-                        className="size-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        className="size-full object-cover"
                         onError={(evenement) => {
                             evenement.currentTarget.style.display = 'none';
                         }}
@@ -63,7 +61,7 @@ export function ProduitCard({
                     <p className="text-lg font-bold tracking-tight">
                         {formatPrix(produit.prixVente)}
                     </p>
-                    <span className="text-primary translate-x-1 text-xs font-semibold opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
+                    <span className="text-primary text-xs font-semibold opacity-0 transition-opacity group-hover:opacity-100">
                         Voir →
                     </span>
                 </div>

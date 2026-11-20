@@ -31,7 +31,7 @@ export default function MaCommande({
             </Link>
 
             {confirmation && (
-                <div className="animate-in fade-in zoom-in-95 mb-6 flex items-center gap-4 rounded-3xl border border-emerald-500/30 bg-emerald-500/10 p-5 duration-500">
+                <div className="mb-6 flex items-center gap-4 rounded-3xl border border-emerald-500/30 bg-emerald-500/10 p-5 duration-500">
                     <PartyPopper className="size-10 shrink-0 text-emerald-600" />
                     <div>
                         <p className="text-lg font-semibold">

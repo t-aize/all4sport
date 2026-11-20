@@ -80,7 +80,10 @@ export default function ProduitsIndex({
                     )}
 
                     <div className="flex flex-wrap items-center justify-between gap-3">
-                        <Form {...index.form()} className="flex flex-1 gap-2">
+                        <Form
+                            {...index.form()}
+                            className="flex w-full flex-1 gap-2 sm:w-auto"
+                        >
                             <Input
                                 name="recherche"
                                 defaultValue={recherche}
@@ -94,6 +97,7 @@ export default function ProduitsIndex({
                         <Button
                             render={<Link href={create()} />}
                             nativeButton={false}
+                            className="w-full sm:w-auto"
                         >
                             Nouveau produit
                         </Button>
@@ -104,101 +108,138 @@ export default function ProduitsIndex({
                             Aucun produit.
                         </p>
                     ) : (
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-left text-sm">
-                                <thead className="text-muted-foreground border-b text-xs uppercase">
-                                    <tr>
-                                        <th className="py-2 pr-3">Référence</th>
-                                        <th className="py-2 pr-3">
-                                            Description
-                                        </th>
-                                        <th className="py-2 pr-3">Rayon</th>
-                                        <th className="py-2 pr-3">
-                                            Fournisseur
-                                        </th>
-                                        <th className="py-2 pr-3 text-right">
-                                            Prix
-                                        </th>
-                                        <th className="py-2 pr-3 text-right">
-                                            Stock web
-                                        </th>
-                                        <th className="py-2 pr-3 text-right">
-                                            Photos
-                                        </th>
-                                        <th className="py-2" />
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {produits.data.map((produit) => (
-                                        <tr
-                                            key={produit.reference}
-                                            className="border-b last:border-0"
+                        <>
+                            {/* Mobile : une carte par produit. */}
+                            <ul className="divide-y rounded-xl border md:hidden">
+                                {produits.data.map((produit) => (
+                                    <li key={produit.reference}>
+                                        <Link
+                                            href={edit(produit.reference)}
+                                            className="active:bg-muted/60 flex flex-col gap-1 p-3"
                                         >
-                                            <td className="py-2 pr-3 font-mono text-xs">
-                                                {produit.reference}
-                                            </td>
-                                            <td className="max-w-xs truncate py-2 pr-3">
+                                            <span className="line-clamp-2 text-sm font-medium">
                                                 {produit.description}
-                                            </td>
-                                            <td className="py-2 pr-3">
-                                                {produit.rayon}
-                                            </td>
-                                            <td className="py-2 pr-3">
-                                                {produit.fournisseur}
-                                            </td>
-                                            <td className="py-2 pr-3 text-right">
-                                                {produit.prixVente} €
-                                            </td>
-                                            <td className="py-2 pr-3 text-right">
-                                                {produit.stockInternet}
-                                            </td>
-                                            <td className="py-2 pr-3 text-right">
-                                                {produit.nombrePhotos}
-                                            </td>
-                                            <td className="flex justify-end gap-2 py-2">
-                                                <Button
-                                                    render={
-                                                        <Link
-                                                            href={edit(
-                                                                produit.reference,
-                                                            )}
-                                                        />
-                                                    }
-                                                    nativeButton={false}
-                                                    variant="outline"
-                                                    size="sm"
-                                                >
-                                                    Modifier
-                                                </Button>
-                                                <Form
-                                                    {...destroy.form(
-                                                        produit.reference,
-                                                    )}
-                                                    onBefore={() =>
-                                                        window.confirm(
-                                                            'Supprimer ce produit, ses photos et ses stocks ?',
-                                                        )
-                                                    }
-                                                >
-                                                    {({ processing }) => (
-                                                        <Button
-                                                            type="submit"
-                                                            variant="destructive"
-                                                            size="sm"
-                                                            disabled={
-                                                                processing
-                                                            }
-                                                        >
-                                                            Supprimer
-                                                        </Button>
-                                                    )}
-                                                </Form>
-                                            </td>
+                                            </span>
+                                            <span className="text-muted-foreground font-mono text-[11px]">
+                                                {produit.reference}
+                                            </span>
+                                            <span className="text-muted-foreground flex flex-wrap justify-between gap-x-3 text-xs">
+                                                <span>
+                                                    {produit.rayon} ·{' '}
+                                                    {produit.fournisseur}
+                                                </span>
+                                                <span>
+                                                    <span className="text-foreground font-semibold">
+                                                        {produit.prixVente} €
+                                                    </span>{' '}
+                                                    · stock{' '}
+                                                    {produit.stockInternet} ·{' '}
+                                                    {produit.nombrePhotos}{' '}
+                                                    photo(s)
+                                                </span>
+                                            </span>
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                            <div className="hidden overflow-x-auto md:block">
+                                <table className="w-full text-left text-sm">
+                                    <thead className="text-muted-foreground border-b text-xs uppercase">
+                                        <tr>
+                                            <th className="py-2 pr-3">
+                                                Référence
+                                            </th>
+                                            <th className="py-2 pr-3">
+                                                Description
+                                            </th>
+                                            <th className="py-2 pr-3">Rayon</th>
+                                            <th className="py-2 pr-3">
+                                                Fournisseur
+                                            </th>
+                                            <th className="py-2 pr-3 text-right">
+                                                Prix
+                                            </th>
+                                            <th className="py-2 pr-3 text-right">
+                                                Stock web
+                                            </th>
+                                            <th className="py-2 pr-3 text-right">
+                                                Photos
+                                            </th>
+                                            <th className="py-2" />
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                                    </thead>
+                                    <tbody>
+                                        {produits.data.map((produit) => (
+                                            <tr
+                                                key={produit.reference}
+                                                className="border-b last:border-0"
+                                            >
+                                                <td className="py-2 pr-3 font-mono text-xs">
+                                                    {produit.reference}
+                                                </td>
+                                                <td className="max-w-xs truncate py-2 pr-3">
+                                                    {produit.description}
+                                                </td>
+                                                <td className="py-2 pr-3">
+                                                    {produit.rayon}
+                                                </td>
+                                                <td className="py-2 pr-3">
+                                                    {produit.fournisseur}
+                                                </td>
+                                                <td className="py-2 pr-3 text-right">
+                                                    {produit.prixVente} €
+                                                </td>
+                                                <td className="py-2 pr-3 text-right">
+                                                    {produit.stockInternet}
+                                                </td>
+                                                <td className="py-2 pr-3 text-right">
+                                                    {produit.nombrePhotos}
+                                                </td>
+                                                <td className="flex justify-end gap-2 py-2">
+                                                    <Button
+                                                        render={
+                                                            <Link
+                                                                href={edit(
+                                                                    produit.reference,
+                                                                )}
+                                                            />
+                                                        }
+                                                        nativeButton={false}
+                                                        variant="outline"
+                                                        size="sm"
+                                                    >
+                                                        Modifier
+                                                    </Button>
+                                                    <Form
+                                                        {...destroy.form(
+                                                            produit.reference,
+                                                        )}
+                                                        onBefore={() =>
+                                                            window.confirm(
+                                                                'Supprimer ce produit, ses photos et ses stocks ?',
+                                                            )
+                                                        }
+                                                    >
+                                                        {({ processing }) => (
+                                                            <Button
+                                                                type="submit"
+                                                                variant="destructive"
+                                                                size="sm"
+                                                                disabled={
+                                                                    processing
+                                                                }
+                                                            >
+                                                                Supprimer
+                                                            </Button>
+                                                        )}
+                                                    </Form>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </>
                     )}
 
                     {produits.links.length > 3 && (

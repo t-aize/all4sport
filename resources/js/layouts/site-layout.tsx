@@ -11,13 +11,7 @@ import {
     Truck,
     User,
 } from 'lucide-react';
-import {
-    type FormEvent,
-    type ReactNode,
-    useEffect,
-    useRef,
-    useState,
-} from 'react';
+import { type FormEvent, type ReactNode, useEffect, useState } from 'react';
 
 import { destroy } from '@/actions/App/Http/Controllers/Auth/AuthenticatedSessionController';
 import { Logo } from '@/components/logo';
@@ -71,8 +65,6 @@ export default function SiteLayout({
     }>().props;
     const [recherche, setRecherche] = useState('');
     const [defile, setDefile] = useState(false);
-    const [pulsation, setPulsation] = useState(false);
-    const nombrePrecedent = useRef(nombreArticlesPanier);
 
     // Ombre sous l'en-tête dès que la page défile.
     useEffect(() => {
@@ -82,19 +74,6 @@ export default function SiteLayout({
 
         return () => window.removeEventListener('scroll', surDefilement);
     }, []);
-
-    // Petite animation du panier quand un article y est ajouté.
-    useEffect(() => {
-        if (nombreArticlesPanier > nombrePrecedent.current) {
-            setPulsation(true);
-            const minuteur = window.setTimeout(() => setPulsation(false), 450);
-            nombrePrecedent.current = nombreArticlesPanier;
-
-            return () => window.clearTimeout(minuteur);
-        }
-
-        nombrePrecedent.current = nombreArticlesPanier;
-    }, [nombreArticlesPanier]);
 
     const rechercher = (evenement: FormEvent) => {
         evenement.preventDefault();
@@ -186,7 +165,7 @@ export default function SiteLayout({
                             <Link
                                 key={lien.libelle}
                                 href={lien.href}
-                                className="text-muted-foreground hover:text-foreground after:bg-primary relative rounded-md px-3 py-2 text-sm font-medium transition-colors after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:transition-transform hover:after:scale-x-100"
+                                className="text-muted-foreground hover:text-foreground rounded-md px-3 py-2 text-sm font-medium transition-colors"
                             >
                                 {lien.libelle}
                             </Link>
@@ -216,13 +195,11 @@ export default function SiteLayout({
                             className="hover:bg-muted relative rounded-full p-2.5 transition-colors"
                             aria-label={`Panier : ${nombreArticlesPanier} article(s)`}
                         >
-                            <ShoppingBag
-                                className={`size-5 ${pulsation ? 'animate-pulsation' : ''}`}
-                            />
+                            <ShoppingBag className="size-5" />
                             {nombreArticlesPanier > 0 && (
                                 <span
                                     key={nombreArticlesPanier}
-                                    className="bg-primary text-primary-foreground animate-in zoom-in absolute -top-0.5 -right-0.5 flex min-w-5 items-center justify-center rounded-full px-1 text-[11px] font-bold"
+                                    className="bg-primary text-primary-foreground absolute -top-0.5 -right-0.5 flex min-w-5 items-center justify-center rounded-full px-1 text-[11px] font-bold"
                                 >
                                     {nombreArticlesPanier}
                                 </span>

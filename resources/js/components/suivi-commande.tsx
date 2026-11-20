@@ -25,8 +25,7 @@ export function SuiviCommande({ etapes }: { etapes: EtapeSuivi[] }) {
                 return (
                     <li
                         key={etape.etat}
-                        className="animate-apparition relative flex items-center gap-3 sm:flex-col sm:text-center"
-                        style={{ animationDelay: `${position * 90}ms` }}
+                        className="relative flex items-center gap-3 sm:flex-col sm:text-center"
                     >
                         {position < etapes.length - 1 && (
                             <span

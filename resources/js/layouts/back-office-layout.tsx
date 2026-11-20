@@ -85,6 +85,25 @@ export default function BackOfficeLayout({
             ? page.url === href
             : page.url.startsWith(href);
 
+    // Nom, rôle et déconnexion du collaborateur (barre latérale et menu mobile).
+    const carteCollaborateur = (
+        <div className="mt-auto rounded-2xl bg-white/5 p-4 text-white">
+            <p className="text-sm font-semibold">
+                {auth.employe?.prenom} {auth.employe?.nom}
+            </p>
+            <p className="text-primary text-xs font-medium">
+                {roleLibelle ?? auth.roleLibelle}
+            </p>
+            <button
+                type="button"
+                onClick={() => router.post(destroy.url())}
+                className="mt-3 flex items-center gap-2 text-xs text-white/60 hover:text-white"
+            >
+                <LogOut className="size-3.5" /> Se déconnecter
+            </button>
+        </div>
+    );
+
     const navigation = (
         <nav className="flex flex-col gap-1">
             {liens.map(({ libelle, href, icone: Icone }) => (
@@ -93,7 +112,7 @@ export default function BackOfficeLayout({
                     href={href}
                     className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${
                         estActif(href)
-                            ? 'bg-primary text-primary-foreground shadow-primary/30 shadow-md'
+                            ? 'bg-primary text-primary-foreground'
                             : 'text-white/70 hover:bg-white/10 hover:text-white'
                     }`}
                 >
@@ -121,21 +140,7 @@ export default function BackOfficeLayout({
                     </p>
                 </div>
                 {navigation}
-                <div className="mt-auto rounded-2xl bg-white/5 p-4 text-white">
-                    <p className="text-sm font-semibold">
-                        {auth.employe?.prenom} {auth.employe?.nom}
-                    </p>
-                    <p className="text-primary text-xs font-medium">
-                        {roleLibelle ?? auth.roleLibelle}
-                    </p>
-                    <button
-                        type="button"
-                        onClick={() => router.post(destroy.url())}
-                        className="mt-3 flex items-center gap-2 text-xs text-white/60 hover:text-white"
-                    >
-                        <LogOut className="size-3.5" /> Se déconnecter
-                    </button>
-                </div>
+                {carteCollaborateur}
             </aside>
 
             <div className="lg:pl-64">
@@ -155,12 +160,13 @@ export default function BackOfficeLayout({
                         </SheetTrigger>
                         <SheetContent
                             side="left"
-                            className="bg-navy w-72 border-none p-5"
+                            className="bg-navy flex w-72 flex-col overflow-y-auto border-none p-5"
                         >
                             <SheetTitle>
                                 <Logo inverse />
                             </SheetTitle>
                             <div className="mt-6">{navigation}</div>
+                            {carteCollaborateur}
                         </SheetContent>
                     </Sheet>
                     <h1 className="truncate text-lg font-semibold">{title}</h1>
@@ -171,9 +177,7 @@ export default function BackOfficeLayout({
                         </span>
                     </div>
                 </header>
-                <main className="animate-apparition mx-auto max-w-7xl p-4 sm:p-8">
-                    {children}
-                </main>
+                <main className="mx-auto max-w-7xl p-4 sm:p-8">{children}</main>
             </div>
             <MessageFlash />
         </div>

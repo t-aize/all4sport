@@ -42,7 +42,7 @@ export default function AuthLayout({
                     src="/images/all4sport-logo.png"
                     alt=""
                     aria-hidden
-                    className="animate-flottement mx-auto w-3/4 max-w-md drop-shadow-2xl"
+                    className="mx-auto w-3/4 max-w-md drop-shadow-2xl"
                 />
                 <div className="flex flex-col gap-3 text-sm text-white/80">
                     <p className="text-2xl font-bold text-white">

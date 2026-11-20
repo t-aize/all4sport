@@ -12,13 +12,46 @@ import type { CommandeDetail } from '@/types/catalogue';
  */
 export function DetailCommande({ commande }: { commande: CommandeDetail }) {
     return (
-        <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
-            <section className="bg-card overflow-hidden rounded-3xl border">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
+            <section className="bg-card min-w-0 overflow-hidden rounded-2xl border sm:rounded-3xl">
                 <h2 className="flex items-center gap-2 border-b p-5 font-semibold">
                     <Package className="text-primary size-5" /> Produits
                     commandés
                 </h2>
-                <div className="overflow-x-auto">
+                {/* Mobile : une ligne compacte par produit. */}
+                <ul className="divide-y sm:hidden">
+                    {commande.lignes.map((ligne) => (
+                        <li
+                            key={ligne.reference}
+                            className="flex items-center gap-3 p-4 text-sm"
+                        >
+                            <span className="bg-muted flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-lg">
+                                {ligne.photo ? (
+                                    <img
+                                        src={ligne.photo}
+                                        alt=""
+                                        className="size-full object-cover"
+                                    />
+                                ) : (
+                                    <ImageOff className="text-muted-foreground size-4" />
+                                )}
+                            </span>
+                            <span className="min-w-0 flex-1">
+                                <span className="line-clamp-2 font-medium">
+                                    {ligne.description}
+                                </span>
+                                <span className="text-muted-foreground text-xs">
+                                    {ligne.quantite} ×{' '}
+                                    {formatPrix(ligne.prixUnitaire)}
+                                </span>
+                            </span>
+                            <span className="shrink-0 font-semibold">
+                                {formatPrix(ligne.sousTotal)}
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+                <div className="hidden overflow-x-auto sm:block">
                     <table className="w-full text-sm">
                         <thead className="bg-muted/50 text-muted-foreground text-xs uppercase">
                             <tr>

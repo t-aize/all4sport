@@ -117,7 +117,7 @@ export default function CatalogueShow({
                                 key={photoActive}
                                 src={produit.photos[photoActive]}
                                 alt={`${produit.description} (photo ${photoActive + 1})`}
-                                className="animate-in fade-in zoom-in-95 size-full object-cover duration-500"
+                                className="size-full object-cover"
                             />
                         )}
                     </div>
@@ -146,10 +146,7 @@ export default function CatalogueShow({
                     )}
                 </div>
 
-                <div
-                    className="animate-apparition flex flex-col gap-6"
-                    style={{ animationDelay: '120ms' }}
-                >
+                <div className="animate-apparition flex flex-col gap-6">
                     <div className="flex flex-col gap-2">
                         <div className="flex flex-wrap items-center gap-2">
                             <span className="bg-primary/10 text-primary rounded-full px-3 py-1 text-xs font-semibold uppercase">
@@ -243,8 +240,7 @@ export default function CatalogueShow({
                                     >
                                         {recentlySuccessful ? (
                                             <>
-                                                <Check className="animate-in zoom-in" />{' '}
-                                                Ajouté !
+                                                <Check /> Ajouté !
                                             </>
                                         ) : (
                                             <>

@@ -163,64 +163,21 @@
 }
 
 /*
- * Animations du site (apparition au défilement, flottement du logo, reflet
- * des cartes). Elles sont désactivées si l'utilisateur a demandé à réduire
- * les animations dans son système (accessibilité).
+ * Animation d'apparition légère (fondu court) et motifs de fond. Les
+ * animations sont coupées si l'utilisateur demande à les réduire dans son
+ * système (accessibilité).
  */
 @keyframes apparition {
     from {
         opacity: 0;
-        transform: translateY(16px);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes flottement {
-    0%,
-    100% {
-        transform: translateY(0) rotate(0deg);
-    }
-    50% {
-        transform: translateY(-10px) rotate(-3deg);
-    }
-}
-
-@keyframes defilement {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(-50%);
-    }
-}
-
-@keyframes pulsation {
-    0%,
-    100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.18);
     }
 }
 
 @utility animate-apparition {
-    animation: apparition 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@utility animate-flottement {
-    animation: flottement 6s ease-in-out infinite;
-}
-
-@utility animate-defilement {
-    animation: defilement 40s linear infinite;
-}
-
-@utility animate-pulsation {
-    animation: pulsation 0.4s ease-out;
+    animation: apparition 0.25s ease-out both;
 }
 
 @utility fond-sport {

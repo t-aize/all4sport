@@ -47,12 +47,11 @@ export default function MesCommandes({
                 </div>
             ) : (
                 <ul className="flex flex-col gap-3">
-                    {commandes.data.map((commande, position) => (
+                    {commandes.data.map((commande) => (
                         <li key={commande.id}>
                             <Link
                                 href={show(commande.id)}
-                                className="group bg-card animate-apparition hover:border-primary/40 flex flex-wrap items-center gap-4 rounded-2xl border p-4 transition-all hover:shadow-md sm:p-5"
-                                style={{ animationDelay: `${position * 50}ms` }}
+                                className="group bg-card hover:border-primary/40 flex flex-wrap items-center gap-4 rounded-2xl border p-4 transition-all hover:shadow-md sm:p-5"
                             >
                                 <div className="min-w-32">
                                     <p className="font-mono text-sm font-semibold">
@@ -76,7 +75,7 @@ export default function MesCommandes({
                                 <p className="ml-auto text-lg font-bold">
                                     {formatPrix(commande.montantTotal)}
                                 </p>
-                                <ChevronRight className="text-muted-foreground size-5 transition-transform group-hover:translate-x-1" />
+                                <ChevronRight className="text-muted-foreground size-5" />
                             </Link>
                         </li>
                     ))}

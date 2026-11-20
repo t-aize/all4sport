@@ -108,29 +108,20 @@ export default function Welcome({
                             <Sparkles className="size-3.5" /> Nouvelle
                             collection disponible
                         </span>
-                        <h1
-                            className="animate-apparition text-4xl leading-[1.05] font-black tracking-tight sm:text-5xl lg:text-6xl"
-                            style={{ animationDelay: '80ms' }}
-                        >
+                        <h1 className="animate-apparition text-4xl leading-[1.05] font-black tracking-tight sm:text-5xl lg:text-6xl">
                             Le sport,{' '}
                             <span className="from-primary bg-linear-to-r to-orange-400 bg-clip-text text-transparent">
                                 à votre rythme
                             </span>
                             .
                         </h1>
-                        <p
-                            className="animate-apparition text-muted-foreground max-w-lg text-lg"
-                            style={{ animationDelay: '160ms' }}
-                        >
+                        <p className="animate-apparition text-muted-foreground max-w-lg text-lg">
                             Équipements pour sportifs amateurs et passionnés :
                             {` ${chiffres.produits} articles`} dans{' '}
                             {chiffres.rayons} sports, disponibles en ligne et
                             dans nos {chiffres.magasins} magasins.
                         </p>
-                        <div
-                            className="animate-apparition flex flex-wrap gap-3"
-                            style={{ animationDelay: '240ms' }}
-                        >
+                        <div className="animate-apparition flex flex-wrap gap-3">
                             <Button
                                 render={<Link href={catalogue()} />}
                                 nativeButton={false}
@@ -138,7 +129,7 @@ export default function Welcome({
                                 className="group h-12 rounded-full px-6 text-base"
                             >
                                 Découvrir le catalogue
-                                <ArrowRight className="transition-transform group-hover:translate-x-1" />
+                                <ArrowRight />
                             </Button>
                             <Button
                                 render={<a href="#magasins" />}
@@ -159,7 +150,7 @@ export default function Welcome({
                         <img
                             src="/images/all4sport-logo.png"
                             alt="Emblème ALL4SPORT"
-                            className="animate-flottement relative w-72 drop-shadow-2xl md:w-full md:max-w-md"
+                            className="relative w-72 drop-shadow-xl md:w-full md:max-w-md"
                         />
                     </div>
                 </div>
@@ -183,11 +174,10 @@ export default function Welcome({
                         titre: 'Suivi en temps réel',
                         texte: 'Transmise, validée, en préparation, expédiée… suivez chaque étape.',
                     },
-                ].map(({ icone: Icone, titre, texte }, position) => (
+                ].map(({ icone: Icone, titre, texte }) => (
                     <div
                         key={titre}
-                        className="animate-apparition bg-card hover:border-primary/40 flex gap-4 rounded-2xl border p-5 transition-colors"
-                        style={{ animationDelay: `${position * 100}ms` }}
+                        className="bg-card hover:border-primary/40 flex gap-4 rounded-2xl border p-5 transition-colors"
                     >
                         <span className="bg-primary/10 text-primary flex size-11 shrink-0 items-center justify-center rounded-xl">
                             <Icone className="size-5" />
@@ -215,23 +205,22 @@ export default function Welcome({
                     </div>
                 </div>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-                    {rayons.map((rayon, position) => {
+                    {rayons.map((rayon) => {
                         const Icone = iconeRayon(rayon.nom);
 
                         return (
                             <Link
                                 key={rayon.id}
                                 href={catalogue({ query: { rayon: rayon.id } })}
-                                className="group animate-apparition bg-card hover:bg-navy hover:text-navy-foreground flex flex-col items-center gap-2 rounded-2xl border p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
-                                style={{ animationDelay: `${position * 40}ms` }}
+                                className="group bg-card hover:border-primary/40 flex flex-col items-center gap-2 rounded-2xl border p-5 text-center transition-colors"
                             >
-                                <span className="bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground flex size-12 items-center justify-center rounded-full transition-all duration-300 group-hover:rotate-12">
+                                <span className="bg-primary/10 text-primary flex size-12 items-center justify-center rounded-full">
                                     <Icone className="size-6" />
                                 </span>
                                 <span className="text-sm font-semibold">
                                     {rayon.nom}
                                 </span>
-                                <span className="text-muted-foreground text-xs group-hover:text-white/70">
+                                <span className="text-muted-foreground text-xs">
                                     {rayon.nombreProduits} articles
                                 </span>
                             </Link>
@@ -271,24 +260,6 @@ export default function Welcome({
                 </section>
             )}
 
-            {/* Bandeau défilant des rayons */}
-            <section
-                className="bg-primary text-primary-foreground my-10 overflow-hidden py-4"
-                aria-hidden
-            >
-                <div className="animate-defilement flex w-max gap-10 text-2xl font-black tracking-tight whitespace-nowrap uppercase italic">
-                    {[...rayons, ...rayons].map((rayon, position) => (
-                        <span
-                            key={`${rayon.id}-${position}`}
-                            className="flex items-center gap-10"
-                        >
-                            {rayon.nom}
-                            <span className="text-navy">●</span>
-                        </span>
-                    ))}
-                </div>
-            </section>
-
             {/* Magasins */}
             <section
                 id="magasins"
@@ -307,13 +278,12 @@ export default function Welcome({
                     </p>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                    {magasins.map((magasin, position) => (
+                    {magasins.map((magasin) => (
                         <div
                             key={magasin.id}
-                            className="animate-apparition bg-card hover:border-primary/40 group flex items-start gap-3 rounded-2xl border p-4 transition-colors"
-                            style={{ animationDelay: `${position * 40}ms` }}
+                            className="bg-card hover:border-primary/40 group flex items-start gap-3 rounded-2xl border p-4 transition-colors"
                         >
-                            <MapPin className="text-primary mt-0.5 size-5 shrink-0 transition-transform group-hover:-translate-y-0.5" />
+                            <MapPin className="text-primary mt-0.5 size-5 shrink-0" />
                             <div>
                                 <p className="font-semibold">{magasin.ville}</p>
                                 <p className="text-muted-foreground text-sm">

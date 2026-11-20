@@ -53,7 +53,11 @@ export default function FournisseursIndex({
                     nativeButton={false}
                     size="sm"
                 >
-                    <Plus /> Nouveau fournisseur
+                    <Plus />
+                    <span className="hidden sm:inline">
+                        Nouveau fournisseur
+                    </span>
+                    <span className="sm:hidden">Nouveau</span>
                 </Button>
             }
         >

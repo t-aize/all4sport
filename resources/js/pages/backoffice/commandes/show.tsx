@@ -71,7 +71,7 @@ export default function CommandeShow({
                 />
             </div>
 
-            <section className="bg-card mb-6 rounded-3xl border p-6">
+            <section className="bg-card mb-6 min-w-0 rounded-2xl border p-4 sm:rounded-3xl sm:p-6">
                 <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
                     <h3 className="font-semibold">Suivi</h3>
                     {etatSuivant ? (
@@ -79,6 +79,7 @@ export default function CommandeShow({
                             <Form
                                 {...changerEtat.form(commande.id)}
                                 options={{ preserveScroll: true }}
+                                className="w-full sm:w-auto"
                             >
                                 {({ processing }) => (
                                     <>
@@ -91,7 +92,7 @@ export default function CommandeShow({
                                             type="submit"
                                             size="lg"
                                             disabled={processing}
-                                            className="shadow-primary/30 rounded-xl shadow-lg"
+                                            className="w-full rounded-xl sm:w-auto"
                                         >
                                             {processing
                                                 ? 'Enregistrement…'
@@ -116,8 +117,8 @@ export default function CommandeShow({
                 <SuiviCommande etapes={commande.suivi} />
             </section>
 
-            <div className="mb-6 grid gap-6 lg:grid-cols-2">
-                <section className="bg-card rounded-3xl border p-6">
+            <div className="mb-6 grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2">
+                <section className="bg-card min-w-0 rounded-2xl border p-4 sm:rounded-3xl sm:p-6">
                     <h3 className="mb-4 flex items-center gap-2 font-semibold">
                         <UserRound className="text-primary size-5" /> Client
                     </h3>
@@ -125,9 +126,9 @@ export default function CommandeShow({
                     <p className="text-muted-foreground mb-3 font-mono text-xs">
                         {commande.client.codeCli}
                     </p>
-                    <ul className="flex flex-col gap-2 text-sm">
+                    <ul className="flex flex-col gap-2 text-sm break-all">
                         <li className="flex items-center gap-2">
-                            <Mail className="text-muted-foreground size-4" />{' '}
+                            <Mail className="text-muted-foreground size-4 shrink-0" />{' '}
                             {commande.client.email}
                         </li>
                         <li className="flex items-center gap-2">
@@ -135,12 +136,12 @@ export default function CommandeShow({
                             {commande.client.telephone ?? '—'}
                         </li>
                         <li className="flex items-center gap-2">
-                            <MapPin className="text-muted-foreground size-4" />{' '}
+                            <MapPin className="text-muted-foreground size-4 shrink-0" />{' '}
                             {commande.client.adresse}
                         </li>
                     </ul>
                 </section>
-                <section className="bg-card rounded-3xl border p-6">
+                <section className="bg-card min-w-0 rounded-2xl border p-4 sm:rounded-3xl sm:p-6">
                     <h3 className="mb-4 flex items-center gap-2 font-semibold">
                         <History className="text-primary size-5" /> Historique
                         des états

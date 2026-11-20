@@ -116,11 +116,10 @@ export default function PanierIndex({
             ) : (
                 <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
                     <ul className="flex flex-col gap-3">
-                        {panier.lignes.map((ligne, position) => (
+                        {panier.lignes.map((ligne) => (
                             <li
                                 key={ligne.reference}
-                                className="animate-apparition bg-card flex gap-4 rounded-2xl border p-3 sm:p-4"
-                                style={{ animationDelay: `${position * 60}ms` }}
+                                className="bg-card flex gap-4 rounded-2xl border p-3 sm:p-4"
                             >
                                 <Link
                                     href={show(ligne.reference)}
@@ -130,7 +129,7 @@ export default function PanierIndex({
                                         <img
                                             src={ligne.photo}
                                             alt={ligne.description}
-                                            className="size-full object-cover transition-transform hover:scale-110"
+                                            className="size-full object-cover"
                                         />
                                     ) : (
                                         <ImageOff className="text-muted-foreground m-auto mt-9 size-6" />
@@ -277,7 +276,7 @@ export default function PanierIndex({
                             {auth.user
                                 ? 'Valider mon panier'
                                 : 'Se connecter pour valider'}
-                            <ArrowRight className="transition-transform group-hover:translate-x-1" />
+                            <ArrowRight />
                         </Button>
                         {!auth.user && (
                             <p className="text-muted-foreground mt-3 text-center text-xs">

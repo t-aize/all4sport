@@ -55,7 +55,6 @@ function Bloc({
     titre,
     description,
     children,
-    delai = 0,
 }: {
     icone: typeof UserRound;
     titre: string;
@@ -64,10 +63,7 @@ function Bloc({
     delai?: number;
 }) {
     return (
-        <section
-            className="bg-card animate-apparition rounded-3xl border p-6"
-            style={{ animationDelay: `${delai}ms` }}
-        >
+        <section className="bg-card rounded-3xl border p-6">
             <div className="mb-5 flex items-start gap-3">
                 <span className="bg-primary/10 text-primary flex size-10 shrink-0 items-center justify-center rounded-xl">
                     <Icone className="size-5" />
@@ -116,11 +112,10 @@ export default function Profil({
                         libelle: 'Dernier achat',
                         valeur: formatDate(client.dateDernierAchat),
                     },
-                ].map((statistique, position) => (
+                ].map((statistique) => (
                     <div
                         key={statistique.libelle}
-                        className="bg-card animate-apparition rounded-2xl border p-4"
-                        style={{ animationDelay: `${position * 60}ms` }}
+                        className="bg-card rounded-2xl border p-4"
                     >
                         <p className="text-muted-foreground text-xs">
                             {statistique.libelle}
