@@ -56,10 +56,9 @@ export default function ProduitsIndex({
         total: number;
     };
 }) {
-    // `status` (message de confirmation) est partagé par HandleInertiaRequests ;
+    // Le message de confirmation (`status`) est affiché par MessageFlash ;
     // `errors.produit` vient du refus de supprimer un produit déjà commandé.
-    const { status, errors } = usePage<{
-        status?: string | null;
+    const { errors } = usePage<{
         errors: Record<string, string>;
     }>().props;
 
@@ -74,11 +73,6 @@ export default function ProduitsIndex({
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="flex flex-col gap-4">
-                    {status && (
-                        <p className="text-primary text-sm font-medium">
-                            {status}
-                        </p>
-                    )}
                     {errors.produit && (
                         <p className="text-destructive text-sm font-medium">
                             {errors.produit}

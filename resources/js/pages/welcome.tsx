@@ -1,66 +1,334 @@
-import { Form, Head, Link, usePage } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
+import {
+    ArrowRight,
+    Bike,
+    Volleyball,
+    Dumbbell,
+    Footprints,
+    MapPin,
+    Mountain,
+    PackageCheck,
+    Snowflake,
+    Sparkles,
+    Store,
+    Trophy,
+    Truck,
+    Waves,
+} from 'lucide-react';
 
-import { destroy } from '@/actions/App/Http/Controllers/Auth/AuthenticatedSessionController';
+import { ProduitCard } from '@/components/produit-card';
 import { Button } from '@/components/ui/button';
-import { login, register } from '@/routes';
-import type { Auth } from '@/types';
+import SiteLayout from '@/layouts/site-layout';
+import { index as catalogue } from '@/routes/catalogue';
+import type { ProduitCarte } from '@/types/catalogue';
+
+type Rayon = {
+    id: number;
+    nom: string;
+    code: string;
+    nombreProduits: number;
+};
+
+type Magasin = {
+    id: number;
+    ville: string;
+    adresse: string;
+    entrepot: string | null;
+};
 
 /**
- * Page d'accueil (route « home », déclarée dans routes/web.php).
- *
- * Affiche un bouton de déconnexion si un client est connecté, ou les boutons
- * « Connexion » et « Inscription » dans le cas contraire.
+ * Icône associée à un rayon d'après son nom (icône générique sinon).
  */
-export default function Welcome() {
-    // `usePage().props` contient les données partagées par le middleware
-    // HandleInertiaRequests, dont `auth.user` (le client connecté ou null).
-    const { auth } = usePage<{ auth: Auth }>().props;
+function iconeRayon(nom: string) {
+    const n = nom.toLowerCase();
 
+    if (n.includes('cycl') || n.includes('vélo')) {
+        return Bike;
+    }
+
+    if (n.includes('natation') || n.includes('surf')) {
+        return Waves;
+    }
+
+    if (n.includes('ski')) {
+        return Snowflake;
+    }
+
+    if (n.includes('rando') || n.includes('escalade')) {
+        return Mountain;
+    }
+
+    if (n.includes('running') || n.includes('athl')) {
+        return Footprints;
+    }
+
+    if (n.includes('fitness') || n.includes('musculation')) {
+        return Dumbbell;
+    }
+
+    if (
+        n.includes('basket') ||
+        n.includes('foot') ||
+        n.includes('hand') ||
+        n.includes('volley') ||
+        n.includes('rugby')
+    ) {
+        return Volleyball;
+    }
+
+    return Trophy;
+}
+
+/**
+ * Page d'accueil du site marchand : bandeau principal, avantages, rayons
+ * (sports), nouveautés et réseau de magasins.
+ */
+export default function Welcome({
+    rayons,
+    nouveautes,
+    magasins,
+    chiffres,
+}: {
+    rayons: Rayon[];
+    nouveautes: ProduitCarte[];
+    magasins: Magasin[];
+    chiffres: { produits: number; rayons: number; magasins: number };
+}) {
     return (
-        <>
-            <Head title="Welcome" />
-            <div className="bg-background text-foreground flex min-h-screen flex-col items-center justify-center gap-4">
-                <h1 className="text-2xl font-medium">Hello World</h1>
-                {auth.user ? (
-                    <div className="flex items-center gap-3">
-                        <span className="text-muted-foreground text-sm">
-                            Connecté en tant que {auth.user.prenom}
+        <SiteLayout title="Accueil" pleineLargeur>
+            {/* Bandeau principal */}
+            <section className="fond-sport relative overflow-hidden border-b">
+                <div
+                    className="grille-points absolute inset-0 opacity-60"
+                    aria-hidden
+                />
+                <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 py-16 md:grid-cols-2 md:py-24">
+                    <div className="flex flex-col gap-6">
+                        <span className="animate-apparition bg-primary/10 text-primary inline-flex w-fit items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold">
+                            <Sparkles className="size-3.5" /> Nouvelle
+                            collection disponible
                         </span>
-                        {/* `destroy.form()` est généré par Wayfinder à partir du
-                            contrôleur PHP : l'URL et la méthode HTTP (POST) ne
-                            sont donc jamais écrites à la main. */}
-                        <Form {...destroy.form()}>
-                            {({ processing }) => (
-                                <Button
-                                    type="submit"
-                                    variant="outline"
-                                    disabled={processing}
-                                >
-                                    Se déconnecter
-                                </Button>
-                            )}
-                        </Form>
-                    </div>
-                ) : (
-                    <div className="flex items-center gap-3">
-                        {/* `login()` et `register()` renvoient l'URL des routes
-                            nommées « login » et « register » de Laravel. */}
-                        <Button
-                            render={<Link href={login()} />}
-                            nativeButton={false}
-                            variant="outline"
+                        <h1
+                            className="animate-apparition text-4xl leading-[1.05] font-black tracking-tight sm:text-5xl lg:text-6xl"
+                            style={{ animationDelay: '80ms' }}
                         >
-                            Connexion
-                        </Button>
-                        <Button
-                            render={<Link href={register()} />}
-                            nativeButton={false}
+                            Le sport,{' '}
+                            <span className="from-primary bg-linear-to-r to-orange-400 bg-clip-text text-transparent">
+                                à votre rythme
+                            </span>
+                            .
+                        </h1>
+                        <p
+                            className="animate-apparition text-muted-foreground max-w-lg text-lg"
+                            style={{ animationDelay: '160ms' }}
                         >
-                            Inscription
-                        </Button>
+                            Équipements pour sportifs amateurs et passionnés :
+                            {` ${chiffres.produits} articles`} dans{' '}
+                            {chiffres.rayons} sports, disponibles en ligne et
+                            dans nos {chiffres.magasins} magasins.
+                        </p>
+                        <div
+                            className="animate-apparition flex flex-wrap gap-3"
+                            style={{ animationDelay: '240ms' }}
+                        >
+                            <Button
+                                render={<Link href={catalogue()} />}
+                                nativeButton={false}
+                                size="lg"
+                                className="group h-12 rounded-full px-6 text-base"
+                            >
+                                Découvrir le catalogue
+                                <ArrowRight className="transition-transform group-hover:translate-x-1" />
+                            </Button>
+                            <Button
+                                render={<a href="#magasins" />}
+                                nativeButton={false}
+                                size="lg"
+                                variant="outline"
+                                className="h-12 rounded-full px-6 text-base"
+                            >
+                                <MapPin /> Trouver un magasin
+                            </Button>
+                        </div>
                     </div>
-                )}
-            </div>
-        </>
+                    <div className="relative flex justify-center">
+                        <div
+                            className="bg-primary/20 absolute size-72 rounded-full blur-3xl md:size-96"
+                            aria-hidden
+                        />
+                        <img
+                            src="/images/all4sport-logo.png"
+                            alt="Emblème ALL4SPORT"
+                            className="animate-flottement relative w-72 drop-shadow-2xl md:w-full md:max-w-md"
+                        />
+                    </div>
+                </div>
+            </section>
+
+            {/* Avantages */}
+            <section className="mx-auto grid max-w-7xl gap-4 px-4 py-10 sm:grid-cols-3">
+                {[
+                    {
+                        icone: Store,
+                        titre: 'Retrait magasin gratuit',
+                        texte: 'Choisissez votre magasin par défaut et récupérez vos articles sans frais.',
+                    },
+                    {
+                        icone: Truck,
+                        titre: 'Livraison à domicile',
+                        texte: 'Un forfait unique de 10 € par commande, expédiée depuis nos entrepôts.',
+                    },
+                    {
+                        icone: PackageCheck,
+                        titre: 'Suivi en temps réel',
+                        texte: 'Transmise, validée, en préparation, expédiée… suivez chaque étape.',
+                    },
+                ].map(({ icone: Icone, titre, texte }, position) => (
+                    <div
+                        key={titre}
+                        className="animate-apparition bg-card hover:border-primary/40 flex gap-4 rounded-2xl border p-5 transition-colors"
+                        style={{ animationDelay: `${position * 100}ms` }}
+                    >
+                        <span className="bg-primary/10 text-primary flex size-11 shrink-0 items-center justify-center rounded-xl">
+                            <Icone className="size-5" />
+                        </span>
+                        <div>
+                            <p className="font-semibold">{titre}</p>
+                            <p className="text-muted-foreground text-sm">
+                                {texte}
+                            </p>
+                        </div>
+                    </div>
+                ))}
+            </section>
+
+            {/* Rayons */}
+            <section className="mx-auto max-w-7xl px-4 py-10">
+                <div className="mb-6 flex items-end justify-between gap-4">
+                    <div>
+                        <p className="text-primary text-sm font-semibold uppercase">
+                            Nos rayons
+                        </p>
+                        <h2 className="text-3xl font-bold tracking-tight">
+                            Tous les sports, un seul magasin
+                        </h2>
+                    </div>
+                </div>
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+                    {rayons.map((rayon, position) => {
+                        const Icone = iconeRayon(rayon.nom);
+
+                        return (
+                            <Link
+                                key={rayon.id}
+                                href={catalogue({ query: { rayon: rayon.id } })}
+                                className="group animate-apparition bg-card hover:bg-navy hover:text-navy-foreground flex flex-col items-center gap-2 rounded-2xl border p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                                style={{ animationDelay: `${position * 40}ms` }}
+                            >
+                                <span className="bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground flex size-12 items-center justify-center rounded-full transition-all duration-300 group-hover:rotate-12">
+                                    <Icone className="size-6" />
+                                </span>
+                                <span className="text-sm font-semibold">
+                                    {rayon.nom}
+                                </span>
+                                <span className="text-muted-foreground text-xs group-hover:text-white/70">
+                                    {rayon.nombreProduits} articles
+                                </span>
+                            </Link>
+                        );
+                    })}
+                </div>
+            </section>
+
+            {/* Nouveautés */}
+            {nouveautes.length > 0 && (
+                <section className="mx-auto max-w-7xl px-4 py-10">
+                    <div className="mb-6 flex items-end justify-between gap-4">
+                        <div>
+                            <p className="text-primary text-sm font-semibold uppercase">
+                                Nouveautés
+                            </p>
+                            <h2 className="text-3xl font-bold tracking-tight">
+                                Fraîchement arrivés
+                            </h2>
+                        </div>
+                        <Link
+                            href={catalogue()}
+                            className="text-primary hidden text-sm font-semibold hover:underline sm:block"
+                        >
+                            Tout voir →
+                        </Link>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                        {nouveautes.map((produit, position) => (
+                            <ProduitCard
+                                key={produit.reference}
+                                produit={produit}
+                                position={position}
+                            />
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* Bandeau défilant des rayons */}
+            <section
+                className="bg-primary text-primary-foreground my-10 overflow-hidden py-4"
+                aria-hidden
+            >
+                <div className="animate-defilement flex w-max gap-10 text-2xl font-black tracking-tight whitespace-nowrap uppercase italic">
+                    {[...rayons, ...rayons].map((rayon, position) => (
+                        <span
+                            key={`${rayon.id}-${position}`}
+                            className="flex items-center gap-10"
+                        >
+                            {rayon.nom}
+                            <span className="text-navy">●</span>
+                        </span>
+                    ))}
+                </div>
+            </section>
+
+            {/* Magasins */}
+            <section
+                id="magasins"
+                className="mx-auto max-w-7xl scroll-mt-24 px-4 py-10"
+            >
+                <div className="mb-6">
+                    <p className="text-primary text-sm font-semibold uppercase">
+                        Nos magasins
+                    </p>
+                    <h2 className="text-3xl font-bold tracking-tight">
+                        {magasins.length} magasins partout en France
+                    </h2>
+                    <p className="text-muted-foreground mt-1">
+                        Chaque magasin est approvisionné par l'entrepôt de sa
+                        zone d'expédition.
+                    </p>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                    {magasins.map((magasin, position) => (
+                        <div
+                            key={magasin.id}
+                            className="animate-apparition bg-card hover:border-primary/40 group flex items-start gap-3 rounded-2xl border p-4 transition-colors"
+                            style={{ animationDelay: `${position * 40}ms` }}
+                        >
+                            <MapPin className="text-primary mt-0.5 size-5 shrink-0 transition-transform group-hover:-translate-y-0.5" />
+                            <div>
+                                <p className="font-semibold">{magasin.ville}</p>
+                                <p className="text-muted-foreground text-sm">
+                                    {magasin.adresse}
+                                </p>
+                                {magasin.entrepot && (
+                                    <p className="text-muted-foreground mt-1 text-xs">
+                                        Entrepôt : {magasin.entrepot}
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+        </SiteLayout>
     );
 }

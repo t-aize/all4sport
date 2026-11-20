@@ -24,17 +24,33 @@ class CatalogueController extends Controller
     private const PRODUITS_PAR_PAGE = 12;
 
     /**
+     * Les ordres de tri proposés (par défaut : par rayon).
+     *
+     * @var list<string>
+     */
+    private const TRIS = ['rayon', 'prix_croissant', 'prix_decroissant', 'nouveautes'];
+
+    /**
      * Affiche les produits triés par rayon. Le paramètre d'URL `rayon`
      * (identifiant) restreint la liste à un seul rayon.
      */
     public function index(Request $request): Response
     {
         $rayonId = $request->integer('rayon') ?: null;
+        $recherche = mb_substr(trim((string) $request->query('recherche', '')), 0, 60);
+        $tri = in_array($request->query('tri'), self::TRIS, true) ? (string) $request->query('tri') : 'rayon';
 
         $produits = Produit::query()
             ->with(['rayon', 'photos'])
             ->join('rayons', 'rayons.id', '=', 'produits.rayon_id')
             ->when($rayonId, fn ($requete) => $requete->where('produits.rayon_id', $rayonId))
+            ->when($recherche !== '', fn ($requete) => $requete->where(fn ($condition) => $condition
+                ->where('produits.description_produit', 'like', "%{$recherche}%")
+                ->orWhere('produits.reference_produit', 'like', "%{$recherche}%")
+                ->orWhere('rayons.nom_rayon', 'like', "%{$recherche}%")))
+            ->when($tri === 'prix_croissant', fn ($requete) => $requete->orderBy('produits.prix_vente'))
+            ->when($tri === 'prix_decroissant', fn ($requete) => $requete->orderByDesc('produits.prix_vente'))
+            ->when($tri === 'nouveautes', fn ($requete) => $requete->orderByDesc('produits.created_at'))
             ->orderBy('rayons.nom_rayon')
             ->orderBy('produits.reference_produit')
             ->select('produits.*')
@@ -46,6 +62,7 @@ class CatalogueController extends Controller
                 'prixVente' => $produit->prix_vente,
                 'rayon' => $produit->rayon?->nom_rayon,
                 'photo' => $produit->photos->first()?->url_photo,
+                'stockInternet' => $produit->quantite_stock_internet,
             ]);
 
         return Inertia::render('catalogue/index', [
@@ -54,6 +71,8 @@ class CatalogueController extends Controller
                 ->get(['id', 'nom_rayon'])
                 ->map(fn (Rayon $rayon): array => ['id' => $rayon->id, 'nom' => $rayon->nom_rayon]),
             'rayonActif' => $rayonId,
+            'recherche' => $recherche,
+            'tri' => $tri,
             'produits' => $produits,
         ]);
     }
@@ -64,7 +83,7 @@ class CatalogueController extends Controller
      */
     public function show(Produit $produit): Response
     {
-        $produit->load(['rayon', 'photos']);
+        $produit->load(['rayon', 'photos', 'fournisseur']);
 
         return Inertia::render('catalogue/show', [
             'produit' => [
@@ -75,6 +94,8 @@ class CatalogueController extends Controller
                 'rayonId' => $produit->rayon_id,
                 'photos' => $produit->photos->pluck('url_photo')->values(),
                 'stockInternet' => $produit->quantite_stock_internet,
+                'fournisseur' => $produit->fournisseur?->nom_fournisseur,
+                'stockTotal' => $produit->stockTotal(),
                 'stocksMagasins' => $produit->magasins()
                     ->orderBy('ville')
                     ->get(['magasins.id', 'magasins.ville', 'magasins.adresse', 'magasin_produit.quantite_stock_magasin'])
@@ -86,6 +107,22 @@ class CatalogueController extends Controller
                     ])
                     ->values(),
             ],
+            // Produits du même rayon, pour la section « Vous aimerez aussi ».
+            'similaires' => Produit::query()
+                ->with(['rayon', 'photos'])
+                ->where('rayon_id', $produit->rayon_id)
+                ->whereKeyNot($produit->reference_produit)
+                ->inRandomOrder()
+                ->limit(4)
+                ->get()
+                ->map(fn (Produit $similaire): array => [
+                    'reference' => $similaire->reference_produit,
+                    'description' => $similaire->description_produit,
+                    'prixVente' => $similaire->prix_vente,
+                    'rayon' => $similaire->rayon?->nom_rayon,
+                    'photo' => $similaire->photos->first()?->url_photo,
+                    'stockInternet' => $similaire->quantite_stock_internet,
+                ]),
         ]);
     }
 }

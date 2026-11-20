@@ -7,6 +7,7 @@
  */
 export type User = {
     id: number;
+    code_cli: string;
     nom: string;
     prenom: string;
     email: string;
@@ -16,6 +17,7 @@ export type User = {
     ville: string;
     date_naissance: string | null;
     date_dernier_achat: string | null;
+    magasin_id: number | null;
     created_at: string;
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...

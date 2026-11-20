@@ -1,12 +1,18 @@
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
+import { PackageSearch, Search, SlidersHorizontal, X } from 'lucide-react';
+import { type FormEvent, useState } from 'react';
 
+import { Pagination } from '@/components/pagination';
+import { ProduitCard } from '@/components/produit-card';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import SiteLayout from '@/layouts/site-layout';
-import { index, show } from '@/routes/catalogue';
+import { pluriel } from '@/lib/format';
+import { index } from '@/routes/catalogue';
+import type { Pagine, ProduitCarte } from '@/types/catalogue';
 
 /**
- * Un rayon (sport) proposé comme filtre, tel que l'envoie CatalogueController.
+ * Un rayon (sport) proposé comme filtre du catalogue.
  */
 type Rayon = {
     id: number;
@@ -14,149 +20,199 @@ type Rayon = {
 };
 
 /**
- * Un produit affiché sous forme de carte dans la liste du catalogue.
+ * Ordres de tri proposés (valeurs comprises par CatalogueController).
  */
-type ProduitCarte = {
-    reference: string;
-    description: string;
-    prixVente: string;
-    rayon: string | null;
-    photo: string | null;
-};
+const TRIS = [
+    { value: 'rayon', label: 'Par rayon' },
+    { value: 'prix_croissant', label: 'Prix croissant' },
+    { value: 'prix_decroissant', label: 'Prix décroissant' },
+    { value: 'nouveautes', label: 'Nouveautés' },
+];
 
 /**
- * Un lien de pagination Laravel (« Précédent », « 1 », « 2 », « Suivant »…).
- */
-type LienPagination = {
-    url: string | null;
-    label: string;
-    active: boolean;
-};
-
-/**
- * Les produits d'une page, au format du paginateur Laravel.
- */
-type ProduitsPagines = {
-    data: ProduitCarte[];
-    links: LienPagination[];
-    total: number;
-};
-
-/**
- * Catalogue public (route « catalogue.index ») : les produits triés par rayon,
- * avec un filtre pour n'afficher qu'un seul sport.
- *
- * @param rayons Tous les rayons, pour les boutons de filtre.
- * @param rayonActif Identifiant du rayon filtré, ou null pour tous les rayons.
- * @param produits Les produits de la page courante.
+ * Catalogue public (route « catalogue.index ») : produits triés par rayon
+ * (sport), avec filtre par rayon, recherche et tri.
  */
 export default function CatalogueIndex({
     rayons,
     rayonActif,
+    recherche,
+    tri,
     produits,
 }: {
     rayons: Rayon[];
     rayonActif: number | null;
-    produits: ProduitsPagines;
+    recherche: string;
+    tri: string;
+    produits: Pagine<ProduitCarte>;
 }) {
-    return (
-        <SiteLayout title="Catalogue">
-            <h1 className="mb-4 text-2xl font-semibold">Catalogue</h1>
+    const [saisie, setSaisie] = useState(recherche);
+    const nomRayonActif = rayons.find((rayon) => rayon.id === rayonActif)?.nom;
 
-            <div className="mb-6 flex flex-wrap gap-2">
-                <Button
-                    render={<Link href={index()} />}
-                    nativeButton={false}
-                    variant={rayonActif === null ? 'default' : 'outline'}
+    /**
+     * Recharge le catalogue avec de nouveaux filtres, en gardant les autres.
+     */
+    const filtrer = (filtres: Record<string, string | number | null>) => {
+        const query = Object.fromEntries(
+            Object.entries({
+                rayon: rayonActif,
+                recherche: recherche || null,
+                tri: tri !== 'rayon' ? tri : null,
+                ...filtres,
+            }).filter(([, valeur]) => valeur !== null && valeur !== ''),
+        );
+
+        router.get(index.url({ query }), {}, { preserveState: true });
+    };
+
+    const rechercher = (evenement: FormEvent) => {
+        evenement.preventDefault();
+        filtrer({ recherche: saisie.trim() || null });
+    };
+
+    return (
+        <SiteLayout
+            title={nomRayonActif ? `Rayon ${nomRayonActif}` : 'Catalogue'}
+        >
+            <div className="animate-apparition mb-8 flex flex-col gap-2">
+                <p className="text-primary text-sm font-semibold uppercase">
+                    Catalogue
+                </p>
+                <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                    {nomRayonActif ?? 'Tous nos articles'}
+                </h1>
+                <p className="text-muted-foreground">
+                    {pluriel(produits.total, 'article')}
+                    {recherche && ` pour « ${recherche} »`}
+                </p>
+            </div>
+
+            <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-center">
+                <form
+                    onSubmit={rechercher}
+                    className="relative flex-1"
+                    role="search"
                 >
-                    Tous les rayons
-                </Button>
-                {rayons.map((rayon) => (
+                    <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+                    <Input
+                        value={saisie}
+                        onChange={(evenement) =>
+                            setSaisie(evenement.target.value)
+                        }
+                        placeholder="Rechercher par nom, référence ou sport…"
+                        aria-label="Rechercher dans le catalogue"
+                        className="h-11 rounded-xl pl-9"
+                    />
+                    {recherche && (
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setSaisie('');
+                                filtrer({ recherche: null });
+                            }}
+                            className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2"
+                            aria-label="Effacer la recherche"
+                        >
+                            <X className="size-4" />
+                        </button>
+                    )}
+                </form>
+                <label className="flex items-center gap-2 text-sm">
+                    <SlidersHorizontal className="text-muted-foreground size-4" />
+                    <span className="sr-only md:not-sr-only">Trier</span>
+                    <select
+                        value={tri}
+                        onChange={(evenement) =>
+                            filtrer({
+                                tri:
+                                    evenement.target.value === 'rayon'
+                                        ? null
+                                        : evenement.target.value,
+                            })
+                        }
+                        className="border-input bg-background h-11 rounded-xl border px-3 text-sm"
+                    >
+                        {TRIS.map((option) => (
+                            <option key={option.value} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+            </div>
+
+            <div className="-mx-4 mb-8 overflow-x-auto px-4">
+                <div className="flex w-max gap-2 pb-1">
                     <Button
-                        key={rayon.id}
                         render={
                             <Link
-                                href={index({ query: { rayon: rayon.id } })}
+                                href={index({
+                                    query: recherche ? { recherche } : {},
+                                })}
+                                preserveScroll
                             />
                         }
                         nativeButton={false}
-                        variant={
-                            rayonActif === rayon.id ? 'default' : 'outline'
-                        }
+                        variant={rayonActif === null ? 'default' : 'outline'}
+                        className="rounded-full"
                     >
-                        {rayon.nom}
+                        Tous les rayons
                     </Button>
-                ))}
+                    {rayons.map((rayon) => (
+                        <Button
+                            key={rayon.id}
+                            render={
+                                <Link
+                                    href={index({
+                                        query: {
+                                            rayon: rayon.id,
+                                            ...(recherche ? { recherche } : {}),
+                                        },
+                                    })}
+                                    preserveScroll
+                                />
+                            }
+                            nativeButton={false}
+                            variant={
+                                rayonActif === rayon.id ? 'default' : 'outline'
+                            }
+                            className="rounded-full"
+                        >
+                            {rayon.nom}
+                        </Button>
+                    ))}
+                </div>
             </div>
 
             {produits.data.length === 0 ? (
-                <p className="text-muted-foreground">
-                    Aucun produit dans ce rayon pour le moment.
-                </p>
+                <div className="animate-apparition flex flex-col items-center gap-3 rounded-2xl border border-dashed py-16 text-center">
+                    <PackageSearch className="text-muted-foreground size-12" />
+                    <p className="font-semibold">Aucun article trouvé</p>
+                    <p className="text-muted-foreground max-w-sm text-sm">
+                        Essayez un autre rayon ou une autre recherche.
+                    </p>
+                    <Button
+                        render={<Link href={index()} />}
+                        nativeButton={false}
+                        variant="outline"
+                    >
+                        Voir tout le catalogue
+                    </Button>
+                </div>
             ) : (
-                <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                    {produits.data.map((produit) => (
+                <ul className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                    {produits.data.map((produit, position) => (
                         <li key={produit.reference}>
-                            <Link
-                                href={show(produit.reference)}
-                                className="block h-full"
-                            >
-                                <Card className="h-full">
-                                    {produit.photo ? (
-                                        <img
-                                            src={produit.photo}
-                                            alt={produit.description}
-                                            className="aspect-4/3 w-full object-cover"
-                                        />
-                                    ) : (
-                                        <div className="bg-muted text-muted-foreground flex aspect-4/3 items-center justify-center text-sm">
-                                            Pas de photo
-                                        </div>
-                                    )}
-                                    <CardHeader>
-                                        <p className="text-muted-foreground text-xs uppercase">
-                                            {produit.rayon}
-                                        </p>
-                                        <CardTitle className="line-clamp-2">
-                                            {produit.description}
-                                        </CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <p className="text-lg font-semibold">
-                                            {produit.prixVente} €
-                                        </p>
-                                    </CardContent>
-                                </Card>
-                            </Link>
+                            <ProduitCard
+                                produit={produit}
+                                position={position}
+                            />
                         </li>
                     ))}
                 </ul>
             )}
 
-            {produits.links.length > 3 && (
-                <nav
-                    aria-label="Pagination"
-                    className="mt-6 flex flex-wrap justify-center gap-2"
-                >
-                    {produits.links.map((lien) =>
-                        lien.url ? (
-                            <Button
-                                key={lien.label}
-                                render={<Link href={lien.url} />}
-                                nativeButton={false}
-                                variant={lien.active ? 'default' : 'outline'}
-                                size="sm"
-                            >
-                                <span
-                                    dangerouslySetInnerHTML={{
-                                        __html: lien.label,
-                                    }}
-                                />
-                            </Button>
-                        ) : null,
-                    )}
-                </nav>
-            )}
+            <Pagination liens={produits.links} />
         </SiteLayout>
     );
 }
